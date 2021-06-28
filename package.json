@@ -1,5 +1,5 @@
 {
-    "name": "ts-starter",
+    "name": "COPE-client-utils",
     "author": "Logan Powell",
     "license": "MIT",
     "version": "0.2.67",
@@ -7,8 +7,8 @@
     "type": "module",
     "main": "./lib/index.js",
     "types": "./lib/index.d.ts",
-    "repository": "https://github.com/loganpowell/ts-starter",
-    "homepage": "https://github.com/loganpowell/ts-starter",
+    "repository": "https://github.com/loganpowell/COPE-client-utils",
+    "homepage": "https://github.com/loganpowell/COPE-client-utils",
     "scripts": {
         "pages": "npm run types && npm run jsdoc",
         "clean": "rm -rf ./lib & rm -rf ./dist &  rm -rf .cache",
@@ -51,9 +51,7 @@
         "ts-jest": "^27.0.3",
         "ts-node": "^10.0.0"
     },
-    "browserslist": [
-        "last 3 Chrome versions"
-    ],
+    "browserslist": [ "last 3 Chrome versions" ],
     "prettier": {
         "singleQuote": false,
         "printWidth": 100,
