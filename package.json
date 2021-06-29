@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "@-0/browser": "^0.3.4",
+        "@aws-amplify/api": "^4.0.4",
         "@aws-amplify/auth": "^4.1.0",
         "@aws-amplify/core": "^4.1.2",
         "@aws-amplify/datastore": "^3.1.2",
