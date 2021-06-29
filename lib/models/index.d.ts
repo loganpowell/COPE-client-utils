@@ -1,8 +1,3 @@
-export const Asset: import("@aws-amplify/datastore").PersistentModelConstructor<any> | import("@aws-amplify/datastore").NonModelTypeConstructor<any>;
-export const _Asset: import("@aws-amplify/datastore").PersistentModelConstructor<any> | import("@aws-amplify/datastore").NonModelTypeConstructor<any>;
-export const Node: import("@aws-amplify/datastore").PersistentModelConstructor<any> | import("@aws-amplify/datastore").NonModelTypeConstructor<any>;
-export const EdgeNode: import("@aws-amplify/datastore").PersistentModelConstructor<any> | import("@aws-amplify/datastore").NonModelTypeConstructor<any>;
-export const Edge: import("@aws-amplify/datastore").PersistentModelConstructor<any> | import("@aws-amplify/datastore").NonModelTypeConstructor<any>;
 export namespace NodeType {
     const H_AUTHOR: string;
     const H_TEAM: string;
