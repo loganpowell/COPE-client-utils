@@ -1,16 +1,16 @@
 {
     "tags": {
         "allowUnknownTags": true,
-        "dictionaries": ["jsdoc"]
+        "dictionaries": [ "jsdoc" ]
     },
-    "plugins": ["plugins/markdown", "node_modules/better-docs/typescript"],
+    "plugins": [ "plugins/markdown", "node_modules/better-docs/typescript" ],
     "source": {
-        "include": ["src", "README.md"],
+        "include": [ "src", "README.md" ],
         "includePattern": "\\.(jsx|js|ts|tsx)$",
-        "excludePattern": "(node_modules/|spool/)"
+        "excludePattern": "(node_modules//)"
     },
     "templates": {
-        "referenceTitle": "`@-0/spool` docs",
+        "referenceTitle": "COPE JS Client Utils",
         "disableSort": true,
         "collapse": false
     },
