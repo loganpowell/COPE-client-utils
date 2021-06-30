@@ -11,9 +11,7 @@ export const getAsset = /* GraphQL */ `
       name
       owner
       content
-      _version
-      _deleted
-      _lastChangedAt
+      editors
       updatedAt
     }
   }
@@ -33,13 +31,10 @@ export const listAssets = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -68,13 +63,10 @@ export const assetsByNode = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -103,13 +95,10 @@ export const assetsByType = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -138,44 +127,10 @@ export const assetsByOwner = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncAssets = /* GraphQL */ `
-  query SyncAssets(
-    $filter: ModelAssetFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAssets(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        node_id
-        createdAt
-        type
-        name
-        owner
-        content
-        _version
-        _deleted
-        _lastChangedAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -189,9 +144,7 @@ export const get_Asset = /* GraphQL */ `
       name
       owner
       content
-      _version
-      _deleted
-      _lastChangedAt
+      editors
       updatedAt
     }
   }
@@ -211,13 +164,10 @@ export const list_Assets = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -246,13 +196,10 @@ export const _assetsByNode = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -281,13 +228,10 @@ export const _assetsByTypeOwner = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -316,44 +260,10 @@ export const _assetsByOwner = /* GraphQL */ `
         name
         owner
         content
-        _version
-        _deleted
-        _lastChangedAt
+        editors
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const sync_Assets = /* GraphQL */ `
-  query Sync_Assets(
-    $filter: Model_AssetFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    sync_Assets(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        node_id
-        createdAt
-        type
-        name
-        owner
-        content
-        _version
-        _deleted
-        _lastChangedAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -366,20 +276,14 @@ export const getNode = /* GraphQL */ `
       createdAt
       updatedAt
       owner
-      _version
-      _deleted
-      _lastChangedAt
       assets {
         nextToken
-        startedAt
       }
       _assets {
         nextToken
-        startedAt
       }
       edges {
         nextToken
-        startedAt
       }
     }
   }
@@ -398,12 +302,8 @@ export const listNodes = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -431,12 +331,8 @@ export const nodesByTypeStatus = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -464,27 +360,27 @@ export const nodesByStatusType = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
-export const syncNodes = /* GraphQL */ `
-  query SyncNodes(
+export const nodesByStatus = /* GraphQL */ `
+  query NodesByStatus(
+    $status: NodeStatus
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
     $filter: ModelNodeFilterInput
     $limit: Int
     $nextToken: String
-    $lastSync: AWSTimestamp
   ) {
-    syncNodes(
+    nodesByStatus(
+      status: $status
+      createdAt: $createdAt
+      sortDirection: $sortDirection
       filter: $filter
       limit: $limit
       nextToken: $nextToken
-      lastSync: $lastSync
     ) {
       items {
         id
@@ -493,12 +389,8 @@ export const syncNodes = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -510,13 +402,9 @@ export const getEdge = /* GraphQL */ `
       createdAt
       owner
       weight
-      _version
-      _deleted
-      _lastChangedAt
       updatedAt
       nodes {
         nextToken
-        startedAt
       }
     }
   }
@@ -534,13 +422,9 @@ export const listEdges = /* GraphQL */ `
         createdAt
         owner
         weight
-        _version
-        _deleted
-        _lastChangedAt
         updatedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -567,71 +451,9 @@ export const edgesByType = /* GraphQL */ `
         createdAt
         owner
         weight
-        _version
-        _deleted
-        _lastChangedAt
         updatedAt
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncEdges = /* GraphQL */ `
-  query SyncEdges(
-    $filter: ModelEdgeFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncEdges(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        type
-        createdAt
-        owner
-        weight
-        _version
-        _deleted
-        _lastChangedAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncEdgeNodes = /* GraphQL */ `
-  query SyncEdgeNodes(
-    $filter: ModelEdgeNodeFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncEdgeNodes(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        edge_id
-        node_id
-        owner
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
     }
   }
 `;
