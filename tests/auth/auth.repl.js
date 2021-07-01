@@ -36,27 +36,25 @@ function checkUser() {
  * (see "Seamless transition between local and cloud environments" - paragraph 2)
  */
 const createFirst = async args => {
-    // upon signup, user must confirm signup via email
-    // until then, they are listed as `UNCONFIRMED` in Cognito
-    const username = "loganpowell@gmail.com"
+    const username = "loganp@tepper.cmu.edu"
     const password = "testing123"
 
-    /*
-    const user = await Auth.signUp({
-        username, // setup to be email address
-        password
-    })
-    console.log({ user })
-    */
+    // upon signup, user must confirm signup via email
+    // until then, they are listed as `UNCONFIRMED` in Cognito
+    // const user = await Auth.signUp({
+    //    username, // setup to be email address
+    //    password
+    // })
+    //console.log({ user })
 
     // After retrieveing the confirmation code from the user
     // provide confirmation code from email
-    /*
-    await Auth.confirmSignUp(username, "117096", {
-        // Optional. Force user confirmation irrespective of existing alias. By default set to True.
-        forceAliasCreation : true
-    }).then(data => console.log({ data })).catch(err => console.log({ err }))
-    */
+    //await Auth.confirmSignUp(username, "144603", {
+    //    // Optional. Force user confirmation irrespective of existing alias. By default set to True.
+    //    forceAliasCreation : true
+    //})
+    //    .then(data => console.log({ data }))
+    //    .catch(err => console.log({ err }))
 
     // https://aws-amplify.github.io/amplify-js/api/classes/authclass.html#signin
     const userSignedIn = await Auth.signIn(username, password).then(userSigned => {
@@ -113,7 +111,7 @@ const createFirst = async args => {
         authMode  : GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS // https://aws-amplify.github.io/amplify-js/api/enums/graphql_auth_mode.html
     }).catch(gqlError => console.warn("gqlError", JSON.stringify(gqlError, null, 4)))
 
-    console.log("some", JSON.stringify(some))
+    //console.log("some", JSON.stringify(some, null, 4))
 
     return some
 }
@@ -121,12 +119,11 @@ const createFirst = async args => {
 const first = {
     input : {
         status : enums.NodeStatus.DRAFT,
-        type   : enums.NodeType.A_GEM
-        // errors from required fields due to change-detection
-        // https://github.com/aws-amplify/amplify-cli/issues/4155#issuecomment-741860945
-        //_version : 1
-        //_lastChangedAt : Date.now()
+        type   : enums.NodeType.A_GEM,
+        id     : "longrandomstringthatsmyid"
     }
 }
 
-createFirst(first).then(j => console.log("result", j)).catch(e => console.error(JSON.stringify(e, null, 4))) //?
+createFirst(first)
+    .then(j => console.log("result:", JSON.stringify(j, null, 4)))
+    .catch(e => console.error(JSON.stringify(e, null, 4))) //?
