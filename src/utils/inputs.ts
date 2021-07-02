@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid"
 import { Relation, LinkInput, LinksConfig, AssetGroupInput, Asset, AssetConfig } from "../api"
-import { NodeStatus, NodeType, EdgeType, AssetType } from "../models"
+import { NodeStatus, NodeType, EdgeType, AssetType } from "../graphql/API"
 
 //generateWord(1) //?
 //generateSentence(2) //?

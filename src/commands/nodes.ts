@@ -1,4 +1,3 @@
-import * as enums from "../models"
 import * as mutations from "../graphql/mutations"
 import * as api from "../graphql/API"
 
@@ -13,7 +12,7 @@ import { CRUD } from "../utils"
 //
 //
 
-export const createNode = async (args: api.CreateNodeInput) => {
+export const nodeCreate = async (args: api.CreateNodeInput) => {
     const newNode = await CRUD({
         query: mutations.createNode,
         variables: {

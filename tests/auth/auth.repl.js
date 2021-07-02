@@ -1,10 +1,9 @@
-import { init, logIn, createNode } from "../../lib/commands"
-import { API, GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
-import * as enums from "../../lib/models"
+import { logIn, createNode } from "../../lib/commands"
+import { NodeStatus, NodeType } from "../../lib/graphql/API"
 
 const node = {
-    status : enums.NodeStatus.DRAFT,
-    type   : enums.NodeType.A_GEM,
+    status : NodeStatus.DRAFT,
+    type   : NodeType.A_GEM,
     id     : "longrandomstringthatsmyiD4"
 }
 

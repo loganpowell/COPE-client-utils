@@ -2,7 +2,7 @@
     "name": "COPE-client-utils",
     "author": "Logan Powell",
     "license": "MIT",
-    "version": "0.2.67",
+    "version": "0.0.1",
     "description": "typescript configuration and starter project",
     "type": "module",
     "main": "./lib/index.js",
