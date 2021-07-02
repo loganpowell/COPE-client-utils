@@ -36,7 +36,7 @@ function checkUser() {
  * (see "Seamless transition between local and cloud environments" - paragraph 2)
  */
 const createFirst = async args => {
-    const username = "loganp@tepper.cmu.edu"
+    const username = "loganpowell@gmail.com"
     const password = "testing123"
 
     // upon signup, user must confirm signup via email
@@ -120,7 +120,7 @@ const first = {
     input : {
         status : enums.NodeStatus.DRAFT,
         type   : enums.NodeType.A_GEM,
-        id     : "longrandomstringthatsmyid"
+        id     : "longrandomstringthatsmyiD1"
     }
 }
 

@@ -1,3 +1,4 @@
+/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -134,9 +135,9 @@ export const assetsByOwner = /* GraphQL */ `
     }
   }
 `;
-export const get_Asset = /* GraphQL */ `
-  query Get_Asset($id: ID!) {
-    get_Asset(id: $id) {
+export const getProxy = /* GraphQL */ `
+  query GetProxy($id: ID!) {
+    getProxy(id: $id) {
       id
       node_id
       createdAt
@@ -149,13 +150,13 @@ export const get_Asset = /* GraphQL */ `
     }
   }
 `;
-export const list_Assets = /* GraphQL */ `
-  query List_Assets(
-    $filter: Model_AssetFilterInput
+export const listProxys = /* GraphQL */ `
+  query ListProxys(
+    $filter: ModelProxyFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    list_Assets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listProxys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         node_id
@@ -171,16 +172,16 @@ export const list_Assets = /* GraphQL */ `
     }
   }
 `;
-export const _assetsByNode = /* GraphQL */ `
-  query _assetsByNode(
+export const proxiesByNode = /* GraphQL */ `
+  query ProxiesByNode(
     $node_id: ID
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: Model_AssetFilterInput
+    $filter: ModelProxyFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    _assetsByNode(
+    proxiesByNode(
       node_id: $node_id
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -203,18 +204,18 @@ export const _assetsByNode = /* GraphQL */ `
     }
   }
 `;
-export const _assetsByTypeOwner = /* GraphQL */ `
-  query _assetsByTypeOwner(
-    $type: AssetType
-    $ownerCreatedAt: Model_Asset_Assets_by_type_ownerCompositeKeyConditionInput
+export const proxiesByOwnerType = /* GraphQL */ `
+  query ProxiesByOwnerType(
+    $owner: String
+    $typeCreatedAt: ModelProxyProxies_by_owner_typeCompositeKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: Model_AssetFilterInput
+    $filter: ModelProxyFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    _assetsByTypeOwner(
-      type: $type
-      ownerCreatedAt: $ownerCreatedAt
+    proxiesByOwnerType(
+      owner: $owner
+      typeCreatedAt: $typeCreatedAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -235,16 +236,16 @@ export const _assetsByTypeOwner = /* GraphQL */ `
     }
   }
 `;
-export const _assetsByOwner = /* GraphQL */ `
-  query _assetsByOwner(
+export const proxiesByOwner = /* GraphQL */ `
+  query ProxiesByOwner(
     $owner: String
     $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: Model_AssetFilterInput
+    $filter: ModelProxyFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    _assetsByOwner(
+    proxiesByOwner(
       owner: $owner
       createdAt: $createdAt
       sortDirection: $sortDirection
@@ -277,12 +278,43 @@ export const getNode = /* GraphQL */ `
       updatedAt
       owner
       assets {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
-      _assets {
+      proxies {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
       edges {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -302,6 +334,15 @@ export const listNodes = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        assets {
+          nextToken
+        }
+        proxies {
+          nextToken
+        }
+        edges {
+          nextToken
+        }
       }
       nextToken
     }
@@ -331,6 +372,15 @@ export const nodesByTypeStatus = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        assets {
+          nextToken
+        }
+        proxies {
+          nextToken
+        }
+        edges {
+          nextToken
+        }
       }
       nextToken
     }
@@ -360,6 +410,15 @@ export const nodesByStatusType = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        assets {
+          nextToken
+        }
+        proxies {
+          nextToken
+        }
+        edges {
+          nextToken
+        }
       }
       nextToken
     }
@@ -389,6 +448,15 @@ export const nodesByStatus = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        assets {
+          nextToken
+        }
+        proxies {
+          nextToken
+        }
+        edges {
+          nextToken
+        }
       }
       nextToken
     }
@@ -404,6 +472,15 @@ export const getEdge = /* GraphQL */ `
       weight
       updatedAt
       nodes {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -423,6 +500,9 @@ export const listEdges = /* GraphQL */ `
         owner
         weight
         updatedAt
+        nodes {
+          nextToken
+        }
       }
       nextToken
     }
@@ -452,6 +532,9 @@ export const edgesByType = /* GraphQL */ `
         owner
         weight
         updatedAt
+        nodes {
+          nextToken
+        }
       }
       nextToken
     }

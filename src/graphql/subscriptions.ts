@@ -1,3 +1,4 @@
+/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -46,9 +47,9 @@ export const onDeleteAsset = /* GraphQL */ `
     }
   }
 `;
-export const onCreate_Asset = /* GraphQL */ `
-  subscription OnCreate_Asset($owner: String, $editors: String) {
-    onCreate_Asset(owner: $owner, editors: $editors) {
+export const onCreateProxy = /* GraphQL */ `
+  subscription OnCreateProxy($owner: String, $editors: String) {
+    onCreateProxy(owner: $owner, editors: $editors) {
       id
       node_id
       createdAt
@@ -61,9 +62,9 @@ export const onCreate_Asset = /* GraphQL */ `
     }
   }
 `;
-export const onUpdate_Asset = /* GraphQL */ `
-  subscription OnUpdate_Asset($owner: String, $editors: String) {
-    onUpdate_Asset(owner: $owner, editors: $editors) {
+export const onUpdateProxy = /* GraphQL */ `
+  subscription OnUpdateProxy($owner: String, $editors: String) {
+    onUpdateProxy(owner: $owner, editors: $editors) {
       id
       node_id
       createdAt
@@ -76,9 +77,9 @@ export const onUpdate_Asset = /* GraphQL */ `
     }
   }
 `;
-export const onDelete_Asset = /* GraphQL */ `
-  subscription OnDelete_Asset($owner: String, $editors: String) {
-    onDelete_Asset(owner: $owner, editors: $editors) {
+export const onDeleteProxy = /* GraphQL */ `
+  subscription OnDeleteProxy($owner: String, $editors: String) {
+    onDeleteProxy(owner: $owner, editors: $editors) {
       id
       node_id
       createdAt
@@ -101,12 +102,43 @@ export const onCreateNode = /* GraphQL */ `
       updatedAt
       owner
       assets {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
-      _assets {
+      proxies {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
       edges {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -122,12 +154,43 @@ export const onUpdateNode = /* GraphQL */ `
       updatedAt
       owner
       assets {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
-      _assets {
+      proxies {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
       edges {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -143,12 +206,43 @@ export const onDeleteNode = /* GraphQL */ `
       updatedAt
       owner
       assets {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
-      _assets {
+      proxies {
+        items {
+          id
+          node_id
+          createdAt
+          type
+          name
+          owner
+          content
+          editors
+          updatedAt
+        }
         nextToken
       }
       edges {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -164,6 +258,15 @@ export const onCreateEdge = /* GraphQL */ `
       weight
       updatedAt
       nodes {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -179,6 +282,15 @@ export const onUpdateEdge = /* GraphQL */ `
       weight
       updatedAt
       nodes {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -194,6 +306,15 @@ export const onDeleteEdge = /* GraphQL */ `
       weight
       updatedAt
       nodes {
+        items {
+          id
+          edge_id
+          node_id
+          owner
+          createdAt
+          updatedAt
+          editors
+        }
         nextToken
       }
     }
@@ -215,6 +336,15 @@ export const onCreateEdgeNode = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        assets {
+          nextToken
+        }
+        proxies {
+          nextToken
+        }
+        edges {
+          nextToken
+        }
       }
       edge {
         id
@@ -223,6 +353,9 @@ export const onCreateEdgeNode = /* GraphQL */ `
         owner
         weight
         updatedAt
+        nodes {
+          nextToken
+        }
       }
       editors
     }
@@ -244,6 +377,15 @@ export const onUpdateEdgeNode = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        assets {
+          nextToken
+        }
+        proxies {
+          nextToken
+        }
+        edges {
+          nextToken
+        }
       }
       edge {
         id
@@ -252,6 +394,9 @@ export const onUpdateEdgeNode = /* GraphQL */ `
         owner
         weight
         updatedAt
+        nodes {
+          nextToken
+        }
       }
       editors
     }
@@ -273,6 +418,15 @@ export const onDeleteEdgeNode = /* GraphQL */ `
         createdAt
         updatedAt
         owner
+        assets {
+          nextToken
+        }
+        proxies {
+          nextToken
+        }
+        edges {
+          nextToken
+        }
       }
       edge {
         id
@@ -281,6 +435,9 @@ export const onDeleteEdgeNode = /* GraphQL */ `
         owner
         weight
         updatedAt
+        nodes {
+          nextToken
+        }
       }
       editors
     }
