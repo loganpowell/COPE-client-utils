@@ -3,7 +3,7 @@
     "author": "Logan Powell",
     "license": "MIT",
     "version": "0.0.1",
-    "description": "typescript configuration and starter project",
+    "description": "CRUD utilities and types for the COPE platform",
     "type": "module",
     "main": "./lib/index.js",
     "types": "./lib/index.d.ts",
