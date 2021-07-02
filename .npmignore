@@ -5,6 +5,7 @@ examples/
 src/
 dist/
 tests/
+**/aws-exports.js
 .*
 **/**.config.js
 **/**.json

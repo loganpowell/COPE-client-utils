@@ -1,1 +1,1 @@
-export declare const init: {};
+export declare const initialize: (aws_exports: any) => {};

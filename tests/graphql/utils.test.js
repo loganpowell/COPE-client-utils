@@ -1,7 +1,7 @@
 import { gen_link_input, gen_link_cluster_input, gen_assets_for_node_input } from "../../lib/utils/inputs"
 import { abbreviateIDVals } from "../utils"
 import { create_assets_new_node, create_assets_old_node, dummy_links } from "./data"
-import { NodeStatus, NodeType, EdgeType } from "../../lib/models"
+import { NodeStatus, NodeType, EdgeType } from "../../lib/graphql/API"
 
 // prettier-ignore
 describe("gen_link_input", () => {

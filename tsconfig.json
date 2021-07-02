@@ -25,6 +25,7 @@
         "**/*.repl.js",
         "**/*.test.ts",
         "**/*.repl.ts",
+        "src/aws-exports.js",
         "node_modules",
         "src/misc"
     ]

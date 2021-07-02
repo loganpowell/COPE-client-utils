@@ -1,7 +1,7 @@
 //import { EnumType, jsonToGraphQLQuery as js2gql } from "json-to-graphql-query"
 //import { v4 as uuid } from "uuid"
 //import { abbreviateIDVals } from "../utils"
-import { NodeStatus, NodeType, EdgeType, AssetType } from "../../lib/models"
+import { NodeStatus, NodeType, EdgeType, AssetType } from "../../lib/graphql/API"
 const node_alias1 = { id: "001", status: NodeStatus.DRAFT, type: NodeType.A_ARTICLE }
 const node_alias2 = { id: "002", status: NodeStatus.PUBLISHED, type: NodeType.GR_COURSE }
 const edge_alias1 = { id: "1:1", type: EdgeType.HAS_CHILD, weight: null }
