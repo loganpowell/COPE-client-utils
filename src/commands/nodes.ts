@@ -1,16 +1,8 @@
 import * as mutations from "../graphql/mutations"
+import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 
 import { CRUD } from "../utils"
-//
-//                                       d8
-//   e88~~\ 888-~\  e88~~8e    /~~~8e  _d88__  e88~~8e
-//  d888    888    d888  88b       88b  888   d888  88b
-//  8888    888    8888__888  e88~-888  888   8888__888
-//  Y888    888    Y888    , C888  888  888   Y888    ,
-//   "88__/ 888     "88___/   "88_-888  "88_/  "88___/
-//
-//
 
 export const nodeCreate = async (args: api.CreateNodeInput) => {
     const newNode = await CRUD({
@@ -21,4 +13,37 @@ export const nodeCreate = async (args: api.CreateNodeInput) => {
     })
 
     return newNode
+}
+
+export const nodeRead = async (args: api.GetNodeQueryVariables) => {
+    const existingNode = await CRUD({
+        query: queries.getNode,
+        variables: {
+            input: args
+        }
+    })
+
+    return existingNode
+}
+
+export const nodeUpdate = async (args: api.UpdateNodeInput) => {
+    const updatedNode = await CRUD({
+        query: mutations.updateNode,
+        variables: {
+            input: args
+        }
+    })
+
+    return updatedNode
+}
+
+export const nodeDelete = async (args: api.DeleteNodeInput) => {
+    const deletedNode = await CRUD({
+        query: mutations.deleteNode,
+        variables: {
+            input: args
+        }
+    })
+
+    return deletedNode
 }
