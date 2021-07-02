@@ -1,4 +1,4 @@
-export * from "./API"
-export * from "./mutations"
-export * from "./queries"
-export * from "./subscriptions"
+export * as API from "./API"
+export * as mutations from "./mutations"
+export * as queries from "./queries"
+export * as subscriptions from "./subscriptions"
