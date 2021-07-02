@@ -21,12 +21,11 @@
     },
     "include": ["src"],
     "exclude": [
-        "**/*.test.ts",
         "**/*.test.js",
-        "**/*.repl.ts",
         "**/*.repl.js",
+        "**/*.test.ts",
+        "**/*.repl.ts",
         "node_modules",
-        "lib",
         "src/misc"
     ]
 }

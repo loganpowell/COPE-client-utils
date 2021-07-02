@@ -3,19 +3,19 @@ import {
     createEdge,
     createNode,
     createEdgeNode,
-    create_Asset,
+    createProxy,
     deleteAsset,
     deleteEdge,
     deleteNode,
     deleteEdgeNode,
-    delete_Asset,
+    deleteProxy,
     updateAsset,
     updateEdge,
     updateNode,
     updateEdgeNode,
-    update_Asset
+    updateProxy
 } from "../../src/graphql/mutations"
-import { _Asset, Asset, Edge, Node, EdgeNode } from "../../lib/models"
+import { Proxy, Asset, Edge, Node, EdgeNode } from "../../lib/models"
 import Amplify from "@aws-amplify/core"
 import { DataStore } from "@aws-amplify/datastore"
 import { auth, ass_type, edg_type, nod_status, nod_type } from "../../lib/api"
@@ -38,20 +38,20 @@ dotenv.config()
 //
 //
 
-const save_Asset = async config => {
+const saveProxy = async config => {
     const { name, node_id, type, createdAt, content } = config
-    await DataStore.save(new _Asset(config)).then(r => console.log("saved _Asset:", r)).catch(console.warn)
+    await DataStore.save(new Proxy(config)).then(r => console.log("saved Proxy:", r)).catch(console.warn)
 }
-const read_Assets = async () => {
-    const assets = await DataStore.query(_Asset).catch(console.warn)
+const readProxys = async () => {
+    const assets = await DataStore.query(Proxy).catch(console.warn)
     console.log("Read these _assets:", JSON.stringify(assets, null, 4))
 }
-save_Asset({
+saveProxy({
     name    : "created by DataStore",
     node_id : "0123456789",
     type    : ""
 }).then(
-    read_Assets() //?
+    readProxys() //?
 )
 
 let query = /* GraphQL */ `
