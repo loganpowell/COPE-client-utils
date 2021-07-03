@@ -1,6 +1,21 @@
-import { configureWith, logIn, nodeCreate, proxyCreate, assetCreate } from "../../lib/commands"
 import aws_exports from "../../src/aws-exports"
 import { NodeStatus, NodeType, AssetType } from "../../lib/graphql/API"
+import {
+    configureWith,
+    logIn,
+    nodeCreate,
+    nodeRead,
+    nodeUpdate,
+    nodeDelete,
+    proxyCreate,
+    proxyRead,
+    proxyUpdate,
+    proxyDelete,
+    assetCreate,
+    assetRead,
+    assetUpdate,
+    assetDelete
+} from "../../lib/commands"
 
 configureWith(aws_exports)
 
