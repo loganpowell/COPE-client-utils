@@ -13,8 +13,8 @@ export const proxyCreate = async ({
     editors,
     id,
     owner
-}: api.CreateProxyInput) =>
-    await CRUD({
+}: api.CreateProxyInput) => {
+    const newProxy = await CRUD({
         query: mutations.createProxy,
         variables: {
             input: {
@@ -29,12 +29,17 @@ export const proxyCreate = async ({
             }
         }
     })
+    return newProxy
+}
 
-export const proxyRead = async ({ id }: api.GetProxyQueryVariables) =>
-    await CRUD({
+export const proxyRead = async ({ id }: api.GetProxyQueryVariables) => {
+    const existingProxy = await CRUD({
         query: queries.getProxy,
         variables: id
     })
+
+    return existingProxy
+}
 
 export const proxyUpdate = async ({
     id,
@@ -45,8 +50,8 @@ export const proxyUpdate = async ({
     node_id,
     owner,
     type
-}: api.UpdateProxyInput) =>
-    await CRUD({
+}: api.UpdateProxyInput) => {
+    const updatedProxy = await CRUD({
         query: mutations.updateProxy,
         variables: {
             input: {
@@ -62,8 +67,14 @@ export const proxyUpdate = async ({
         }
     })
 
-export const proxyDelete = async ({ id }: api.DeleteProxyInput) =>
-    await CRUD({
+    return updatedProxy
+}
+
+export const proxyDelete = async ({ id }: api.DeleteProxyInput) => {
+    const deletedProxy = await CRUD({
         query: mutations.deleteProxy,
         variables: id
     })
+
+    return deletedProxy
+}
