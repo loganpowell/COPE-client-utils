@@ -7,15 +7,18 @@ import { API, GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
  * 
  */
 export const CRUD = async ({ query, variables }) => {
-    const res = await API.graphql({
-        query,
-        variables,
-        // must specify auth mode for non-default (API key) calls
-        // https://aws-amplify.github.io/amplify-js/api/enums/graphql_auth_mode.html
-        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
-    })
-        // @ts-ignore
-        .catch(e => console.warn("GraphQL CRUD Error:", JSON.stringify(e, null, 4)))
+    let res
+    try {
+        res = await API.graphql({
+            query,
+            variables,
+            // must specify auth mode for non-default (API key) calls
+            // https://aws-amplify.github.io/amplify-js/api/enums/graphql_auth_mode.html
+            authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+        })
+    } catch (e) {
+        console.warn("GraphQL CRUD Error:", JSON.stringify(e, null, 4))
+    }
     return res
 }
 

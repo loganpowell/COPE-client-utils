@@ -1,7 +1,7 @@
 import { Auth } from "@aws-amplify/auth"
 import { Amplify } from "@aws-amplify/core"
 
-export const initialize = aws_exports =>
+export const configureWith = aws_exports =>
     Amplify.configure({
         ...aws_exports,
         // fix for ownerField resolution provided by:

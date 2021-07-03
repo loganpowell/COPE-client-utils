@@ -1,1 +1,1 @@
-export declare const initialize: (aws_exports: any) => {};
+export declare const configureWith: (aws_exports: any) => {};

@@ -4,7 +4,7 @@ import * as api from "../graphql/API"
 
 import { CRUD } from "../utils"
 
-export const proxyCreate = async ({
+export const assetCreate = async ({
     name,
     node_id,
     type,
@@ -13,9 +13,9 @@ export const proxyCreate = async ({
     editors,
     id,
     owner
-}: api.CreateProxyInput) =>
+}: api.CreateAssetInput) =>
     await CRUD({
-        query: mutations.createProxy,
+        query: mutations.createAsset,
         variables: {
             input: {
                 name,
@@ -30,13 +30,13 @@ export const proxyCreate = async ({
         }
     })
 
-export const proxyRead = async ({ id }: api.GetProxyQueryVariables) =>
+export const assetRead = async ({ id }: api.GetAssetQueryVariables) =>
     await CRUD({
-        query: queries.getProxy,
+        query: queries.getAsset,
         variables: id
     })
 
-export const proxyUpdate = async ({
+export const assetUpdate = async ({
     id,
     content,
     createdAt,
@@ -45,9 +45,9 @@ export const proxyUpdate = async ({
     node_id,
     owner,
     type
-}: api.UpdateProxyInput) =>
+}: api.UpdateAssetInput) =>
     await CRUD({
-        query: mutations.updateProxy,
+        query: mutations.updateAsset,
         variables: {
             input: {
                 id,
@@ -62,8 +62,8 @@ export const proxyUpdate = async ({
         }
     })
 
-export const proxyDelete = async ({ id }: api.DeleteProxyInput) =>
+export const assetDelete = async ({ id }: api.DeleteAssetInput) =>
     await CRUD({
-        query: mutations.deleteProxy,
+        query: mutations.deleteAsset,
         variables: id
     })
