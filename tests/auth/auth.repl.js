@@ -26,6 +26,10 @@ logIn({ user: "loganp@tepper.cmu.edu", pass: "testingabc" })
         //const new_node = await node.create(_node)
 
         // TODO: discuss API with Tommy
-        const new_proxy = proxy.create(_asset)
+        const new_proxy = await proxy.create({
+            ..._asset,
+            id      : undefined,
+            editors : [ "loganpowell@gmail.com" ]
+        })
         return { new_proxy, user }
     }) //?
