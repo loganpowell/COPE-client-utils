@@ -4,16 +4,7 @@ import * as api from "../graphql/API"
 
 import { CRUD } from "../utils"
 
-export const assetCreate = async ({
-    name,
-    node_id,
-    type,
-    content,
-    createdAt,
-    editors,
-    id,
-    owner
-}: api.CreateAssetInput) => {
+const assetCreate = async ({ name, node_id, type, content, createdAt, editors, id, owner }: api.CreateAssetInput) => {
     const newAsset = await CRUD({
         query: mutations.createAsset,
         variables: {
@@ -32,7 +23,7 @@ export const assetCreate = async ({
     return newAsset
 }
 
-export const assetRead = async ({ id }: api.GetAssetQueryVariables) => {
+const assetRead = async ({ id }: api.GetAssetQueryVariables) => {
     const existingAsset = await CRUD({
         query: queries.getAsset,
         variables: id
@@ -41,16 +32,7 @@ export const assetRead = async ({ id }: api.GetAssetQueryVariables) => {
     return existingAsset
 }
 
-export const assetUpdate = async ({
-    id,
-    content,
-    createdAt,
-    editors,
-    name,
-    node_id,
-    owner,
-    type
-}: api.UpdateAssetInput) => {
+const assetUpdate = async ({ id, content, createdAt, editors, name, node_id, owner, type }: api.UpdateAssetInput) => {
     const updatedAsset = await CRUD({
         query: mutations.updateAsset,
         variables: {
@@ -70,11 +52,18 @@ export const assetUpdate = async ({
     return updatedAsset
 }
 
-export const assetDelete = async ({ id }: api.DeleteAssetInput) => {
+const assetDelete = async ({ id }: api.DeleteAssetInput) => {
     const deletedAsset = await CRUD({
         query: mutations.deleteAsset,
         variables: id
     })
 
     return deletedAsset
+}
+
+export const asset = {
+    create: assetCreate,
+    read: assetRead,
+    update: assetUpdate,
+    delete: assetDelete
 }

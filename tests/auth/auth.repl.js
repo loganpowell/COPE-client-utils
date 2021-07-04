@@ -1,32 +1,17 @@
 import aws_exports from "../../src/aws-exports"
 import { NodeStatus, NodeType, AssetType } from "../../lib/graphql/API"
-import {
-    configureWith,
-    logIn,
-    nodeCreate,
-    nodeRead,
-    nodeUpdate,
-    nodeDelete,
-    proxyCreate,
-    proxyRead,
-    proxyUpdate,
-    proxyDelete,
-    assetCreate,
-    assetRead,
-    assetUpdate,
-    assetDelete
-} from "../../lib/commands"
+import { configureWith, logIn, node, asset, proxy } from "../../lib/commands"
 
 configureWith(aws_exports)
 
 const id = "longrandomstringthatsmyiD5"
-const node = {
+const _node = {
     status : NodeStatus.DRAFT,
     type   : NodeType.A_GEM,
     id
 }
 
-const proxy = {
+const _asset = {
     node_id : id, // connect the proxy/asset to the Gem node
     id      : "thiswouldbeanotehrlongID",
     name    : "alt text for image 2",
@@ -38,8 +23,9 @@ const proxy = {
 logIn({ user: "loganp@tepper.cmu.edu", pass: "testingabc" })
     .catch(e => console.error("error:", JSON.stringify(e, null, 4)))
     .then(async user => {
-        //const new_node = await nodeCreate(node)
+        //const new_node = await node.create(_node)
 
-        const new_asset = await proxyCreate(proxy)
-        return { new_asset, user }
+        // TODO: discuss API with Tommy
+        const new_proxy = proxy.create(_asset)
+        return { new_proxy, user }
     }) //?

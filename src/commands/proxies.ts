@@ -4,16 +4,7 @@ import * as api from "../graphql/API"
 
 import { CRUD } from "../utils"
 
-export const proxyCreate = async ({
-    name,
-    node_id,
-    type,
-    content,
-    createdAt,
-    editors,
-    id,
-    owner
-}: api.CreateProxyInput) => {
+const proxyCreate = async ({ name, node_id, type, content, createdAt, editors, id, owner }: api.CreateProxyInput) => {
     const newProxy = await CRUD({
         query: mutations.createProxy,
         variables: {
@@ -32,7 +23,7 @@ export const proxyCreate = async ({
     return newProxy
 }
 
-export const proxyRead = async ({ id }: api.GetProxyQueryVariables) => {
+const proxyRead = async ({ id }: api.GetProxyQueryVariables) => {
     const existingProxy = await CRUD({
         query: queries.getProxy,
         variables: id
@@ -41,16 +32,7 @@ export const proxyRead = async ({ id }: api.GetProxyQueryVariables) => {
     return existingProxy
 }
 
-export const proxyUpdate = async ({
-    id,
-    content,
-    createdAt,
-    editors,
-    name,
-    node_id,
-    owner,
-    type
-}: api.UpdateProxyInput) => {
+const proxyUpdate = async ({ id, content, createdAt, editors, name, node_id, owner, type }: api.UpdateProxyInput) => {
     const updatedProxy = await CRUD({
         query: mutations.updateProxy,
         variables: {
@@ -70,11 +52,18 @@ export const proxyUpdate = async ({
     return updatedProxy
 }
 
-export const proxyDelete = async ({ id }: api.DeleteProxyInput) => {
+const proxyDelete = async ({ id }: api.DeleteProxyInput) => {
     const deletedProxy = await CRUD({
         query: mutations.deleteProxy,
         variables: id
     })
 
     return deletedProxy
+}
+
+export const proxy = {
+    create: proxyCreate,
+    read: proxyRead,
+    update: proxyUpdate,
+    delete: proxyDelete
 }
