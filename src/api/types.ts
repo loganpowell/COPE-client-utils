@@ -1,4 +1,4 @@
-import { NodeType, NodeStatus, EdgeType, AssetType } from "../models"
+import { NodeType, NodeStatus, EdgeType, AssetType } from "../graphql/API"
 
 //
 //
@@ -23,17 +23,17 @@ import { NodeType, NodeStatus, EdgeType, AssetType } from "../models"
 //
 
 export type Node = {
+    type: NodeType
+    status: NodeStatus
     id?: string
-    status?: NodeStatus
     createdAt?: string
-    type?: NodeType
 } | null
 
 export type Edge = {
+    type: EdgeType
     id?: string
     createdAt?: string
     weight?: number | null
-    type: EdgeType
 } | null
 
 export type EdgeNode = {
@@ -60,7 +60,7 @@ export type Asset = {
     id?: string
     createdAt?: string
     content?: string
-    node_id?: string
+    node_id: string
     type: AssetType
     name: string
 }

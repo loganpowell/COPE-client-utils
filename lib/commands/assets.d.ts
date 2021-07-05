@@ -4,4 +4,5 @@ export declare const asset: {
     read: ({ id }: api.GetAssetQueryVariables) => Promise<any>;
     update: ({ id, content, createdAt, editors, name, node_id, owner, type }: api.UpdateAssetInput) => Promise<any>;
     delete: ({ id }: api.DeleteAssetInput) => Promise<any>;
+    convert: ({ id }: api.GetAssetQueryVariables) => Promise<any>;
 };

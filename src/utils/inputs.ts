@@ -9,7 +9,7 @@ import { NodeStatus, NodeType, EdgeType, AssetType } from "../graphql/API"
 /**
  * any node id with length less than a threshold is treated as an alias
  */
-export const is_alias = (id, threshold = 10) => id.length < threshold
+export const is_alias = (id, threshold = 7) => id.length <= threshold
 /**
  * generates unique ids and aliases from LinkInput config object
  * 
@@ -39,15 +39,15 @@ export const is_alias = (id, threshold = 10) => id.length < threshold
  * //=>   e1_alias: false
  * //=> }
  */
-const gen_id_references = (config, refs = {}) => {
-    const { nodes, edge } = config
-    if (!nodes || !edge || nodes.length === 0 || Object.entries(edge).length === 0) {
-        console.warn(`gen_link_input args do not meet requirements. Check signature`)
+const gen_id_references = ({ edge, nodes }, refs = {}) => {
+    if (!nodes || nodes.length === 0) {
+        console.warn(`gen_link_input recieved no 'nodes' to connect`)
         return null
     }
 
     const [ { id: n1_id, ...n1 }, { id: n2_id, ...n2 } ] = nodes
-    const { id: e1_id, ...e1 } = edge
+    // FIXME: just require edge_type
+    const { id: e1_id = "alias", ...e1 } = edge
 
     const n1_UUID = refs[n1_id] || uuid()
     const n2_UUID = refs[n2_id] || uuid()
@@ -60,8 +60,8 @@ const gen_id_references = (config, refs = {}) => {
         n1_UUID,
         n2_UUID,
         e1_UUID,
-        n1_new: { id: n1_UUID, ...n1 },
-        n2_new: { id: n2_UUID, ...n2 },
+        n1_new: { id: n1_UUID, status: NodeStatus.DRAFT, ...n1 },
+        n2_new: { id: n2_UUID, status: NodeStatus.DRAFT, ...n2 },
         e1_new: { id: e1_UUID, ...e1 }
     }
 }
@@ -90,8 +90,8 @@ const gen_id_references = (config, refs = {}) => {
  * // =>   ] 
  * // => } 
  */
-export const gen_link_input = (config: LinkInput, refs = {}): Relation => {
-    const ids = gen_id_references(config, refs)
+export const gen_link_input = ({ edge, nodes }: LinkInput, refs = {}): Relation => {
+    const ids = gen_id_references({ edge, nodes }, refs)
     if (!ids) return {}
     // prettier-ignore
     const { 
@@ -107,16 +107,16 @@ export const gen_link_input = (config: LinkInput, refs = {}): Relation => {
     } = ids
 
     return {
-        nodes: [ is_alias(n1_id) ? n1_new : null, is_alias(n2_id) ? n2_new : null ],
-        edge: is_alias(e1_id) ? e1_new : null,
+        nodes: [ !n1_id || is_alias(n1_id) ? n1_new : null, !n2_id || is_alias(n2_id) ? n2_new : null ],
+        edge: e1_new,
         edge_nodes: [
             {
                 edge_id: is_alias(e1_id) ? e1_UUID : e1_id,
-                node_id: is_alias(n1_id) ? n1_UUID : n1_id
+                node_id: !n1_id || is_alias(n1_id) ? n1_UUID : n1_id
             },
             {
                 edge_id: is_alias(e1_id) ? e1_UUID : e1_id,
-                node_id: is_alias(n2_id) ? n2_UUID : n2_id
+                node_id: !n2_id || is_alias(n2_id) ? n2_UUID : n2_id
             }
         ]
     }
@@ -137,30 +137,30 @@ export const gen_link_input = (config: LinkInput, refs = {}): Relation => {
  *     },
  *     {
  *         nodes : [ { id: "001", status: "A", type: "D" }, node_alias2 ],
- *         edge  : { id: "this is long enough to be unique" }
+ *         edge  : { id: "this is long enough to be unique", type: 'TO', weight: 1 }
  *     }
  * ])
  * //=>{ refs:  
- * //=>   { 001: 'auto id for 001', 
+ * //=>   { 001: '919d427a-e28d-44e4-a69b-0f8249205c5d', 
  * //=>     002: 'magic id for 002', 
- * //=>     '1:1': 'yes, even edge ids 1:1' }, 
+ * //=>     '1:1': 'f0406b6e-5ecb-4451-a248-6b4702434aaf' }, 
  * //=>  links:  
  * //=>   [ { nodes:  
- * //=>        [ { id: 'auto id for 001', status: 'A', type: 'D' }, 
+ * //=>        [ { id: '919d427a-e28d-44e4-a69b-0f8249205c5d', status: 'A', type: 'D' }, 
  * //=>          { id: 'magic id for 002', status: 'H', type: 'I' } ], 
  * //=>       edge:  
- * //=>        { id: 'yes, even edge ids 1:1', type: 'FROM', weight: null }, 
+ * //=>        { id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', type: 'FROM', weight: null }, 
  * //=>       edge_nodes:  
- * //=>        [ { edge_id: 'yes, even edge ids 1:1', node_id: 'auto id for 001' }, 
- * //=>          { edge_id: 'yes, even edge ids 1:1', node_id: 'magic id for 002' } ] 
+ * //=>        [ { edge_id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', node_id: '919d427a-e28d-44e4-a69b-0f8249205c5d' }, 
+ * //=>          { edge_id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', node_id: 'magic id for 002' } ] 
  * //=>     }, 
  * //=>     { nodes:  
- * //=>        [ { id: 'auto id for 001', status: 'A', type: 'D' }, 
+ * //=>        [ { id: '919d427a-e28d-44e4-a69b-0f8249205c5d', status: 'A', type: 'D' }, 
  * //=>          { id: 'magic id for 002', status: 'A', type: 'B' } ], 
- * //=>       edge: null, 
+ * //=>       edge: { id: "this is long enough to be unique", type: 'TO', weight: 1 }, 
  * //=>       edge_nodes:  
  * //=>        [ { edge_id: 'this is long enough to be unique', 
- * //=>            node_id: 'auto id for 001' }, 
+ * //=>            node_id: '919d427a-e28d-44e4-a69b-0f8249205c5d' }, 
  * //=>          { edge_id: 'this is long enough to be unique', 
  * //=>            node_id: 'magic id for 002' } ] } ] 
  * //=>     } 

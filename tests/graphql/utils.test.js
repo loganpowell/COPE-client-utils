@@ -30,7 +30,7 @@ describe("gen_link_input", () => {
                 { id: "id0", status: NodeStatus.DRAFT, type: NodeType.A_ARTICLE }, 
                 { id: "id1", status: NodeStatus.PUBLISHED, type: NodeType.GR_COURSE } 
             ],
-            edge       : null,
+            edge       : { id: "edge_id" },
             edge_nodes : [ 
                 { edge_id: "edge_id", node_id: "id0" }, 
                 { edge_id: "edge_id", node_id: "id1" } 
@@ -98,7 +98,7 @@ describe("gen_link_input", () => {
                 null, 
                 { id: "id1", status: NodeStatus.PUBLISHED, type: NodeType.GR_COURSE } 
             ],
-            edge       : null,
+            edge       : { id: "edge_id" },
             edge_nodes : [ 
                 { edge_id: "edge_id", node_id: "id0" }, 
                 { edge_id: "edge_id", node_id: "id1" } 
@@ -115,7 +115,7 @@ describe("gen_link_input", () => {
                 { id: "id0", status: NodeStatus.DRAFT, type: NodeType.A_ARTICLE }, 
                 null 
             ],
-            edge       : null,
+            edge       : { id: "edge_id" },
             edge_nodes : [ 
                 { edge_id: "edge_id", node_id: "id0" }, 
                 { edge_id: "edge_id", node_id: "id1" } 
@@ -129,7 +129,7 @@ describe("gen_link_input", () => {
         const res_abv = abbreviateIDVals(res)
         const test = {
             nodes      : [ null, null ],
-            edge       : null,
+            edge       : { id: "edge_id" },
             edge_nodes : [ 
                 { edge_id: "edge_id", node_id: "id0" }, 
                 { edge_id: "edge_id", node_id: "id1" } 

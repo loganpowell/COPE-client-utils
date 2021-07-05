@@ -2,10 +2,12 @@ import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 
-import { CRUD } from "../utils"
+import { CRUD, gen_link_input } from "../utils"
+import { LinkInput } from "../api"
+import { node } from "./nodes"
 
-export const edgeCreate = async ({ id, type, createdAt, owner, weight }: api.CreateEdgeInput) => {
-    const newEdge = await CRUD({
+const edgeCreate = async ({ id, type, createdAt, owner, weight }: api.CreateEdgeInput) => {
+    const { data: { createEdge } } = await CRUD({
         query: mutations.createEdge,
         variables: {
             input: {
@@ -18,11 +20,11 @@ export const edgeCreate = async ({ id, type, createdAt, owner, weight }: api.Cre
         }
     })
 
-    return newEdge
+    return createEdge
 }
 
-export const edgeNodeCreate = async ({ edge_id, node_id, id, owner }: api.CreateEdgeNodeInput) => {
-    const newEdgeNode = await CRUD({
+const edgeNodeCreate = async ({ edge_id, node_id, id, owner }: api.CreateEdgeNodeInput) => {
+    const { data: { createEdgeNode } } = await CRUD({
         query: mutations.createEdgeNode,
         variables: {
             input: {
@@ -33,7 +35,7 @@ export const edgeNodeCreate = async ({ edge_id, node_id, id, owner }: api.Create
             }
         }
     })
-    return newEdgeNode
+    return createEdgeNode
 }
 /*
 * @example
@@ -53,36 +55,38 @@ export const edgeNodeCreate = async ({ edge_id, node_id, id, owner }: api.Create
 * // => } 
 */
 
-//export const genLink = async ({}: )
+//const genLink = async ({}: )
 
-export const edgeRead = async ({ id }: api.GetEdgeQueryVariables) => {
-    const existingEdge = await CRUD({
+const edgeRead = async ({ id }: api.GetEdgeQueryVariables) => {
+    const { data: { getEdge } } = await CRUD({
         query: queries.getEdge,
-        variables: id
+        variables: { id }
     })
-    return existingEdge
+    return getEdge
 }
 
 // @model (queries: null) == NO edgeNodeRead
 
-export const edgeUpdate = async ({ id, createdAt, owner, type, weight }: api.UpdateEdgeInput) => {
-    const updatedEdge = await CRUD({
+const edgeUpdate = async ({ id, createdAt, owner, type, weight }: api.UpdateEdgeInput) => {
+    const { createdAt: _c, owner: _o, type: _t, weight: _w } = await edgeRead({ id })
+    const { data: updateEdge } = await CRUD({
         query: mutations.updateEdge,
         variables: {
             input: {
                 id,
-                createdAt,
-                owner,
-                type,
-                weight
+                createdAt: createdAt || _c,
+                owner: owner || _o,
+                type: type || _t,
+                weight: weight || _w
             }
         }
     })
-    return updatedEdge
+    return updateEdge
 }
 
-export const edgeNodeUpdate = async ({ id, edge_id, node_id, owner }: api.UpdateEdgeNodeInput) => {
-    const updatedEdgeNode = await CRUD({
+const edgeNodeUpdate = async ({ id, edge_id, node_id, owner }: api.UpdateEdgeNodeInput) => {
+    // @model (queries: null) == NO edgeNodeRead
+    const { data: { updateEdgeNode } } = await CRUD({
         query: mutations.updateEdgeNode,
         variables: {
             input: {
@@ -93,21 +97,63 @@ export const edgeNodeUpdate = async ({ id, edge_id, node_id, owner }: api.Update
             }
         }
     })
-    return updatedEdgeNode
+    return updateEdgeNode
 }
 
-export const edgeDelete = async ({ id }: api.DeleteEdgeInput) => {
-    const deletedEdge = await CRUD({
+const edgeDelete = async ({ id }: api.DeleteEdgeInput) => {
+    const { data: { deleteEdge } } = await CRUD({
         query: mutations.deleteEdge,
-        variables: id
+        variables: { input: { id } }
     })
-    return deletedEdge
+    return deleteEdge
 }
 
-export const edgeNodeDelete = async ({ id }: api.DeleteEdgeNodeInput) => {
-    const deletedEdgeNode = await CRUD({
+const edgeNodeDelete = async ({ id }: api.DeleteEdgeNodeInput) => {
+    const { data: { deleteEdgeNode } } = await CRUD({
         query: mutations.deleteEdgeNode,
-        variables: id
+        variables: { input: { id } }
     })
-    return deletedEdgeNode
+    return deleteEdgeNode
+}
+
+const linkCreate = async ({ edge, nodes }: LinkInput) => {
+    const { nodes: _nodes, edge: _edge, edge_nodes } = gen_link_input({
+        edge,
+        nodes
+    })
+
+    console.log({ edge_nodes, _nodes, _edge })
+
+    const NODES = await Promise.all(_nodes.map(n => (!n ? null : node.create(n))))
+
+    const EDGES = await edgeCreate(_edge)
+
+    const EDGENODES = await Promise.all(edge_nodes.map(en => edgeNodeCreate(en)))
+
+    //console.log({ newNodes, newEdge, newEdgeNodes })
+    return { NODES, EDGES, EDGENODES }
+}
+
+// TODO
+const linkUpdate = async ({ edge, nodes }: LinkInput) => {
+    const { nodes: _nodes, edge: _edge, edge_nodes } = gen_link_input({
+        edge,
+        nodes
+    })
+
+    console.log({ edge_nodes, _nodes, _edge })
+
+    const NODES = await Promise.all(_nodes.map(n => (!n ? null : node.create(n))))
+
+    // @ts-ignore
+    const EDGES = await edgeUpdate(_edge)
+    // @ts-ignore
+    const EDGENODES = await Promise.all(edge_nodes.map(en => edgeNodeUpdate(en)))
+
+    //console.log({ newNodes, newEdge, newEdgeNodes })
+    return { NODES, EDGES, EDGENODES }
+}
+
+export const edge = {
+    create: linkCreate
 }
