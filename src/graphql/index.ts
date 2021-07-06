@@ -1,4 +1,9 @@
 export * as API from "./API"
-export * as mutations from "./mutations"
-export * as queries from "./queries"
-export * as subscriptions from "./subscriptions"
+import * as mutations from "./mutations"
+import * as queries from "./queries"
+import * as subscriptions from "./subscriptions"
+export const graphql = {
+    mutations,
+    queries,
+    subscriptions
+}

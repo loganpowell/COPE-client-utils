@@ -5,7 +5,7 @@ import { Auth } from "@aws-amplify/auth"
 // Auth: https://dev.to/dabit3/the-complete-guide-to-user-authentication-with-the-amplify-framework-2inh
 // Complete API: https://aws-amplify.github.io/amplify-js/api/index.html
 
-export const checkUser = () => {
+const checkUser = () => {
     Auth.currentAuthenticatedUser().then(user => console.log({ user })).catch(err => console.log(err))
 }
 
@@ -26,7 +26,7 @@ export const checkUser = () => {
  */
 //console.log({ init })
 
-export const signUp = async ({ user, pass }) => {
+const signUp = async ({ user, pass }) => {
     // upon signup, user must confirm signup via email
     // until then, they are listed as `UNCONFIRMED` in Cognito
     const signedUp = await Auth.signUp({
@@ -35,7 +35,7 @@ export const signUp = async ({ user, pass }) => {
     }).catch(signedUpError => console.warn({ signedUpError }))
 }
 
-export const confirmSignUp = async ({ user, code = "000000" }) => {
+const confirmSignUp = async ({ user, code = "000000" }) => {
     // After retrieveing the confirmation code from the user
     // provide confirmation code from email
     const confirmed = await Auth.confirmSignUp(user, code, {
@@ -47,7 +47,7 @@ export const confirmSignUp = async ({ user, code = "000000" }) => {
         .catch(confirmationError => console.log({ confirmationError }))
 }
 
-export const logIn = async ({ user, pass, code = "000000" }) => {
+const logIn = async ({ user, pass, code = "000000" }) => {
     // https://aws-amplify.github.io/amplify-js/api/classes/authclass.html#signin
     const userSignedIn = await Auth.signIn(user.toLowerCase(), pass)
         .then(userSigned => {
@@ -78,4 +78,11 @@ export const logIn = async ({ user, pass, code = "000000" }) => {
             }
         })
     return { payload: userSignedIn.signInUserSession.idToken.payload }
+}
+
+export const auth = {
+    logIn,
+    signUp,
+    confirmSignUp,
+    checkUser
 }
