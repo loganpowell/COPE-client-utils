@@ -2,7 +2,7 @@
     "name": "cope-client-utils",
     "author": "Logan Powell",
     "license": "MIT",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "CRUD utilities and types for the COPE platform",
     "type": "module",
     "main": "./lib/index.js",
