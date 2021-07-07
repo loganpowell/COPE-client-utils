@@ -1,5 +1,5 @@
 import aws_exports from "../../src/aws-exports"
-import { NodeStatus, NodeType, AssetType, EdgeType } from "../../lib/graphql/API"
+import { NodeStatus, NodeType, AssetType, EdgeType, ModelSortDirection } from "../../lib/graphql/API"
 import { configureWith, auth, node, asset, assetPr, edge } from "../../lib/commands"
 
 configureWith(aws_exports)
@@ -92,17 +92,16 @@ auth
         //let res = await node.list({ type: NodeType.A_PAGE })
         //let res = await node.list({ filter, limit, nextToken, owner, sortDirection, status, statusCreatedAt, type, typeCreatedAt })
         let res = await node.list({
-            status    : NodeStatus.DRAFT,
-            //type      : NodeType.A_GEM,
+            status        : NodeStatus.DRAFT,
+            type          : NodeType.A_GEM,
             //filter,
-            limit     : 1,
-            nextToken :
-                "eyJvd25lciI6eyJTIjoibG9nYW5wQHRlcHBlci5jbXUuZWR1In0sInN0YXR1cyNjcmVhdGVkQXQiOnsiUyI6IkRSQUZUIzIwMjEtMDctMDdUMTI6MTM6NDAuMzY2WiJ9LCJpZCI6eyJTIjoibG9uZ3JhbmRvbXN0cmluZ3RoYXRzbXlJRDEifX0",
-            owner     : "loganp@tepper.cmu.edu",
-            //sort,
+            //limit     : 1,
+            //nextToken :
+            //    "eyJvd25lciI6eyJTIjoibG9nYW5wQHRlcHBlci5jbXUuZWR1In0sInN0YXR1cyNjcmVhdGVkQXQiOnsiUyI6IkRSQUZUIzIwMjEtMDctMDdUMTI6MTM6NDAuMzY2WiJ9LCJpZCI6eyJTIjoibG9uZ3JhbmRvbXN0cmluZ3RoYXRzbXlJRDEifX0",
+            //owner     : "loganp@tepper.cmu.edu",
+            sortDirection : ModelSortDirection.ASC,
             //createdAt : [ "2020", "2022" ]
-            createdAt : "2021"
-            //type
+            createdAt     : "2021"
         })
 
         return { res }

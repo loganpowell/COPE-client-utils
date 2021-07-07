@@ -146,7 +146,7 @@ const list = async (variables: ListNodesInput) => {
 
     //console.log("entries:", JSON.stringify([ ...EM.keys() ], null, 4))
 
-    console.log({ match })
+    //console.log({ match })
 
     if (match.error) throw new Error(match.error)
 
