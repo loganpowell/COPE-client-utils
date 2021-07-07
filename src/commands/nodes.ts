@@ -72,48 +72,64 @@ const nodeDelete = async ({ id }: api.DeleteNodeInput) => {
 }
 
 const list = async (variables: ListNodesInput) => {
-    //const { filter, limit, nextToken, owner, sortDirection, status, statusCreatedAt, type, typeCreatedAt } = variables
-    const { filter, limit, nextToken, owner, sort, status, createdAt, type } = variables
+    const { filter, limit, nextToken, owner, sortDirection, status, createdAt, type } = variables
 
     const cleaned = Object.entries(variables).reduce((a, [ k, v ]) => {
         if (!v) return a
         return { ...a, [k]: v }
     }, {})
 
-    console.log("pre:", { variables, cleaned })
+    const composite_keys = [ "owner", "type", "createdAt", "status" ]
+
+    const pruned = Object.entries(cleaned).reduce((a, [ k, v ]) => {
+        const matches_this_key = x => x === k
+        if (composite_keys.some(matches_this_key)) return a
+        return { ...a, [k]: v }
+    }, {})
+
+    const list_only = Object.entries(pruned).reduce((a, [ k, v ]) => {
+        if (k === "sortDirection") return a
+        return { ...a, [k]: v }
+    }, {})
+
+    //console.log({ cleaned, pruned, list_only })
 
     const Q = {
         ST: queries.nodesByStatusType,
-        OS: queries.nodesByOwnerStatus
+        OS: queries.nodesByOwnerStatus,
+        LN: queries.listNodes
     }
+
+    const V = {
+        X: cleaned,
+        SO: { owner, statusCreatedAt: { beginsWith: { status } }, ...pruned },
+        ST: { status, typeCreatedAt: { beginsWith: { type } }, ...pruned },
+        STC: { status, typeCreatedAt: { beginsWith: { type, createdAt } }, ...pruned },
+        SOC: { owner, statusCreatedAt: { beginsWith: { status, createdAt } }, ...pruned }
+    }
+
+    const err_msg = (needs, has) => `Must provide \`${needs}\` when using \`${has}\` with \`createdAt\``
     // prettier-ignore
     const match = new EquivMap([
-        [ { status },                               { query: Q.ST, variables: cleaned } ],
-        [ { status, type },                         { query: Q.ST, variables: cleaned } ],
-        [ { status, type, createdAt },              { query: Q.ST, variables: {
-            status, typeCreatedAt: { /* TODO */ }
-        } } ],
-
-        //[ { status, type, createdAt }           , "STATUS TYPE CREATEDAT" ],
-        //[ { status, type, createdAt, condition }, "STATUS TYPE CREATEDAT CONDITION" ],
-        //[ { status, createdAt, condition }      , "STATUS CREATEDAT CONDITION" ],
-        //[ { status, createdAt }                 , "STATUS CREATEDAT" ],
-        //[ { type, createdAt, condition }        , "TYPE CREATEDAT CONDITION" ],
-        //[ { type, createdAt }                   , "TYPE CREATEDAT" ]
+        [ list_only,                               { query: Q.LN, variables: V.X } ],
+        [ { status, ...pruned },                   { query: Q.ST, variables: V.X } ],
+        [ { status, type, ...pruned },             { query: Q.ST, variables: V.ST } ], 
+        [ { status, createdAt, ...pruned },        { error: err_msg("type", "status")} ],
+        [ { owner, createdAt, ...pruned },         { error: err_msg("status", "owner")} ],
+        [ { status, type, createdAt, ...pruned  }, { query: Q.ST, variables: V.STC } ],
+        [ { owner, ...pruned },                    { query: Q.OS, variables: V.X } ],
+        [ { status, owner, ...pruned },            { query: Q.OS, variables: V.SO } ],
+        [ { status, owner, createdAt, ...pruned }, { query: Q.OS, variables: V.SOC } ]
         // @ts-ignore
     ]).get(cleaned)
 
-    return { match }
-
+    //console.log({ match })
+    if (match.error) {
+        console.error(match.error)
+        return
+    }
+    // @ts-ignore
     const { data } = await CRUD(match)
-    // example: { gt: { createdAt: "2021-07-05T21:14:59.953Z", type: A_GEM } }
-
-    //const { beginsWith, between, eq, ge, gt, le, lt }: ConditionInput = condition
-
-    //const nodes = await CRUD({
-    //    query: queries.nodesByStatusType,
-    //    variables: { typeCreatedAt: vars, status }
-    //})
 
     return data
 }

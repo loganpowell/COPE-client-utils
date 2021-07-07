@@ -40,7 +40,7 @@ export declare type AssetConfig = {
 };
 export declare type AWSDateTime = Date;
 export declare type ListNodesInput = {
-    sort?: api.ModelSortDirection;
+    sortDirection?: api.ModelSortDirection;
     limit?: number;
     filter?: api.ModelNodeFilterInput;
     status?: api.NodeStatus;

@@ -435,6 +435,21 @@ export type ModelStringKeyConditionInput = {
   beginsWith?: string | null,
 };
 
+export type ModelAssetAssets_by_owner_typeCompositeKeyConditionInput = {
+  eq?: ModelAssetAssets_by_owner_typeCompositeKeyInput | null,
+  le?: ModelAssetAssets_by_owner_typeCompositeKeyInput | null,
+  lt?: ModelAssetAssets_by_owner_typeCompositeKeyInput | null,
+  ge?: ModelAssetAssets_by_owner_typeCompositeKeyInput | null,
+  gt?: ModelAssetAssets_by_owner_typeCompositeKeyInput | null,
+  between?: Array< ModelAssetAssets_by_owner_typeCompositeKeyInput | null > | null,
+  beginsWith?: ModelAssetAssets_by_owner_typeCompositeKeyInput | null,
+};
+
+export type ModelAssetAssets_by_owner_typeCompositeKeyInput = {
+  type?: AssetType | null,
+  createdAt?: string | null,
+};
+
 export type ModelAssetPrFilterInput = {
   id?: ModelIDInput | null,
   node_id?: ModelIDInput | null,
@@ -482,17 +497,17 @@ export type ModelNodeConnection = {
   nextToken?: string | null,
 };
 
-export type ModelNodeNodes_by_type_status_createdAtCompositeKeyConditionInput = {
-  eq?: ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null,
-  le?: ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null,
-  lt?: ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null,
-  ge?: ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null,
-  gt?: ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null,
-  between?: Array< ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null > | null,
-  beginsWith?: ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null,
+export type ModelNodeNodes_by_status_type_createdAtCompositeKeyConditionInput = {
+  eq?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null,
+  le?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null,
+  lt?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null,
+  ge?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null,
+  gt?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null,
+  between?: Array< ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null > | null,
+  beginsWith?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null,
 };
 
-export type ModelNodeNodes_by_type_status_createdAtCompositeKeyInput = {
+export type ModelNodeNodes_by_status_type_createdAtCompositeKeyInput = {
   type?: NodeType | null,
   createdAt?: string | null,
 };
@@ -1177,17 +1192,17 @@ export type AssetsByTypeQuery = {
   } | null,
 };
 
-export type AssetsByOwnerQueryVariables = {
+export type AssetsByOwnerTypeQueryVariables = {
   owner?: string | null,
-  createdAt?: ModelStringKeyConditionInput | null,
+  typeCreatedAt?: ModelAssetAssets_by_owner_typeCompositeKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelAssetFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type AssetsByOwnerQuery = {
-  assetsByOwner?:  {
+export type AssetsByOwnerTypeQuery = {
+  assetsByOwnerType?:  {
     __typename: "ModelAssetConnection",
     items?:  Array< {
       __typename: "Asset",
@@ -1304,17 +1319,17 @@ export type AssetsPrByOwnerTypeQuery = {
   } | null,
 };
 
-export type AssetsPrByTypeNameQueryVariables = {
+export type AssetsPrByTypeQueryVariables = {
   type?: AssetType | null,
-  name?: ModelStringKeyConditionInput | null,
+  createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelAssetPrFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type AssetsPrByTypeNameQuery = {
-  assetsPrByTypeName?:  {
+export type AssetsPrByTypeQuery = {
+  assetsPrByType?:  {
     __typename: "ModelAssetPrConnection",
     items?:  Array< {
       __typename: "AssetPr",
@@ -1429,7 +1444,7 @@ export type ListNodesQuery = {
 
 export type NodesByStatusTypeQueryVariables = {
   status?: NodeStatus | null,
-  typeCreatedAt?: ModelNodeNodes_by_type_status_createdAtCompositeKeyConditionInput | null,
+  typeCreatedAt?: ModelNodeNodes_by_status_type_createdAtCompositeKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelNodeFilterInput | null,
   limit?: number | null,

@@ -92,13 +92,14 @@ auth
         //let res = await node.list({ type: NodeType.A_PAGE })
         //let res = await node.list({ filter, limit, nextToken, owner, sortDirection, status, statusCreatedAt, type, typeCreatedAt })
         let res = await node.list({
-            status : NodeStatus.DRAFT
+            status    : NodeStatus.PUBLISHED,
+            type      : NodeType.A_PAGE,
             //filter,
-            //limit,
-            //nextToken,
-            //owner,
+            //limit     : 1000,
+            //nextToken : "123123123"
+            //owner     : "loganpowell@gmail.com",
             //sort,
-            //createdAt,
+            createdAt : "2021"
             //type
         })
 

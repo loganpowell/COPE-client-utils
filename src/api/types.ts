@@ -73,7 +73,7 @@ export type AssetConfig = {
 export type AWSDateTime = Date
 
 export type ListNodesInput = {
-    sort?: api.ModelSortDirection
+    sortDirection?: api.ModelSortDirection
     limit?: number
     filter?: api.ModelNodeFilterInput
     status?: api.NodeStatus
