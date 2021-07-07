@@ -3,6 +3,7 @@ import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 import { ListNodesInput } from "../api"
 import { EquivMap } from "@thi.ng/associative"
+import { isArray, isString } from "@thi.ng/checks"
 
 import { CRUD } from "../utils"
 
@@ -100,49 +101,59 @@ const list = async (variables: ListNodesInput) => {
         LN: queries.listNodes
     }
 
+    const ca = isArray(createdAt) ? createdAt : [ null, null ]
+
     const V = {
         X: cleaned,
         SO: { owner, statusCreatedAt: { beginsWith: { status } }, ...pruned },
         ST: { status, typeCreatedAt: { beginsWith: { type } }, ...pruned },
         STC: { status, typeCreatedAt: { beginsWith: { type, createdAt } }, ...pruned },
-        SOC: { owner, statusCreatedAt: { beginsWith: { status, createdAt } }, ...pruned }
+        SOC: { owner, statusCreatedAt: { beginsWith: { status, createdAt } }, ...pruned },
+        STCB: {
+            status,
+            typeCreatedAt: { between: [ { type, createdAt: ca[0] }, { type, createdAt: ca[1] } ] },
+            ...pruned
+        },
+        SOCB: {
+            owner,
+            statusCreatedAt: { between: [ { status, createdAt: ca[0] }, { status, createdAt: ca[1] } ] },
+            ...pruned
+        }
     }
+
+    const CAA = isArray(createdAt) ? { createdAt } : { createdAt: undefined }
+    const CAR = !isArray(createdAt) ? { createdAt } : { createdAt: undefined }
 
     const err_msg = (needs, has) => `Must provide \`${needs}\` when using \`${has}\` with \`createdAt\``
     // prettier-ignore
     const match = new EquivMap([
-        [ list_only,                               { query: Q.LN, variables: V.X } ],
-        [ { status, ...pruned },                   { query: Q.ST, variables: V.X } ],
-        [ { status, type, ...pruned },             { query: Q.ST, variables: V.ST } ], 
-        [ { status, createdAt, ...pruned },        { error: err_msg("type", "status")} ],
-        [ { owner, createdAt, ...pruned },         { error: err_msg("status", "owner")} ],
-        [ { status, type, createdAt, ...pruned  }, { query: Q.ST, variables: V.STC } ],
-        [ { owner, ...pruned },                    { query: Q.OS, variables: V.X } ],
-        [ { status, owner, ...pruned },            { query: Q.OS, variables: V.SO } ],
-        [ { status, owner, createdAt, ...pruned }, { query: Q.OS, variables: V.SOC } ]
+        [ list_only,                            { query: Q.LN, variables: V.X } ],
+        [ { type, ...pruned },                  { error: "must provide `status` with `type`" } ],
+        [ { type, owner, ...pruned },           { error: "currently unsupported query: `owner` with `type`" } ],
+        [ { status, ...pruned },                { query: Q.ST, variables: V.X } ],
+        [ { status, type, ...pruned },          { query: Q.ST, variables: V.ST } ], 
+        [ { status, createdAt, ...pruned },     { error: err_msg("type", "status")} ],
+        [ { type, createdAt, ...pruned },       { error: err_msg("status", "type")} ],
+        [ { owner, createdAt, ...pruned },      { error: err_msg("status", "owner")} ],
+        [ { owner, ...pruned },                 { query: Q.OS, variables: V.X } ],
+        [ { status, owner, ...pruned },         { query: Q.OS, variables: V.SO } ],
+        [ { status, type, ...CAA, ...pruned  }, { query: Q.ST, variables: V.STCB } ],
+        [ { status, owner, ...CAA, ...pruned }, { query: Q.OS, variables: V.SOCB } ],
+        [ { status, type, ...CAR, ...pruned  }, { query: Q.ST, variables: V.STC } ],
+        [ { status, owner, ...CAR, ...pruned }, { query: Q.OS, variables: V.SOC } ]
         // @ts-ignore
-    ]).get(cleaned)
+    ]).get(cleaned) || { error: "no match for arguments provided to node.list" }
 
-    //console.log({ match })
-    if (match.error) {
-        console.error(match.error)
-        return
-    }
+    //console.log("entries:", JSON.stringify([ ...EM.keys() ], null, 4))
+
+    console.log({ match })
+
+    if (match.error) throw new Error(match.error)
+
     // @ts-ignore
     const { data } = await CRUD(match)
 
     return data
-}
-
-const nodesByStatusType = async ({ status, typeCreatedAt }: api.NodesByStatusTypeQueryVariables) => {
-    // example: { gt: { createdAt: "2021-07-05T21:14:59.953Z", type: A_GEM } }
-    const { beginsWith, between, eq, ge, gt, le, lt } = typeCreatedAt
-
-    const nodes = await CRUD({
-        query: queries.nodesByStatusType,
-        variables: { typeCreatedAt, status }
-    })
-    return { nodes }
 }
 
 export const node = {
