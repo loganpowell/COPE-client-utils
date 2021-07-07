@@ -5,5 +5,5 @@ export declare const node: {
     read: ({ id }: api.GetNodeQueryVariables) => Promise<any>;
     update: ({ id, type, status, owner, createdAt, updatedAt }: api.UpdateNodeInput) => Promise<any>;
     delete: ({ id }: api.DeleteNodeInput) => Promise<any>;
-    list: (variables: ListNodesInput) => Promise<any>;
+    list: ({ filter, limit, nextToken, owner, sortDirection, status, createdAt, type }: ListNodesInput) => Promise<any>;
 };

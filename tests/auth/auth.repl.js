@@ -92,16 +92,17 @@ auth
         //let res = await node.list({ type: NodeType.A_PAGE })
         //let res = await node.list({ filter, limit, nextToken, owner, sortDirection, status, statusCreatedAt, type, typeCreatedAt })
         let res = await node.list({
-            status        : NodeStatus.DRAFT,
-            type          : NodeType.A_GEM,
+            //status        : NodeStatus.DRAFT,
+            //type          : NodeType.A_GEM,
             //filter,
-            //limit     : 1,
+            limit : 3
             //nextToken :
             //    "eyJvd25lciI6eyJTIjoibG9nYW5wQHRlcHBlci5jbXUuZWR1In0sInN0YXR1cyNjcmVhdGVkQXQiOnsiUyI6IkRSQUZUIzIwMjEtMDctMDdUMTI6MTM6NDAuMzY2WiJ9LCJpZCI6eyJTIjoibG9uZ3JhbmRvbXN0cmluZ3RoYXRzbXlJRDEifX0",
-            //owner     : "loganp@tepper.cmu.edu",
-            sortDirection : ModelSortDirection.ASC,
+            //owner         : "loganp@tepper.cmu.edu",
+            //sortDirection : ModelSortDirection.ASC
+
             //createdAt : [ "2020", "2022" ]
-            createdAt     : "2021"
+            //createdAt     : "2021"
         })
 
         return { res }

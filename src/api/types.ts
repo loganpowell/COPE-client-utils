@@ -78,9 +78,9 @@ export type ListNodesInput = {
     filter?: api.ModelNodeFilterInput
     status?: api.NodeStatus
     type?: api.NodeType
-    createdAt?: string | [string] // TODO: add for
+    createdAt?: string | [string]
     nextToken?: string
-    owner?: any
+    owner?: string
 }
 
 //

@@ -47,7 +47,7 @@ export declare type ListNodesInput = {
     type?: api.NodeType;
     createdAt?: string | [string];
     nextToken?: string;
-    owner?: any;
+    owner?: string;
 };
 export interface LinkInput {
     nodes: Array<Node | null>;

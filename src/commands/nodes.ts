@@ -3,8 +3,7 @@ import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 import { ListNodesInput } from "../api"
 import { EquivMap } from "@thi.ng/associative"
-import { isArray, isString } from "@thi.ng/checks"
-
+import { isArray } from "@thi.ng/checks"
 import { CRUD } from "../utils"
 
 const nodeCreate = async ({ id, status, type, createdAt, owner, updatedAt }: api.CreateNodeInput) => {
@@ -72,8 +71,8 @@ const nodeDelete = async ({ id }: api.DeleteNodeInput) => {
     return deleteNode
 }
 
-const list = async (variables: ListNodesInput) => {
-    const { filter, limit, nextToken, owner, sortDirection, status, createdAt, type } = variables
+const list = async ({ filter, limit, nextToken, owner, sortDirection, status, createdAt, type }: ListNodesInput) => {
+    const variables = { filter, limit, nextToken, owner, sortDirection, status, createdAt, type }
 
     const cleaned = Object.entries(variables).reduce((a, [ k, v ]) => {
         if (!v) return a
@@ -93,15 +92,13 @@ const list = async (variables: ListNodesInput) => {
         return { ...a, [k]: v }
     }, {})
 
-    //console.log({ cleaned, pruned, list_only })
-
     const Q = {
         ST: queries.nodesByStatusType,
         OS: queries.nodesByOwnerStatus,
         LN: queries.listNodes
     }
 
-    const ca = isArray(createdAt) ? createdAt : [ null, null ]
+    const CA = isArray(createdAt) ? createdAt : [ null, null ]
 
     const V = {
         X: cleaned,
@@ -111,12 +108,12 @@ const list = async (variables: ListNodesInput) => {
         SOC: { owner, statusCreatedAt: { beginsWith: { status, createdAt } }, ...pruned },
         STCB: {
             status,
-            typeCreatedAt: { between: [ { type, createdAt: ca[0] }, { type, createdAt: ca[1] } ] },
+            typeCreatedAt: { between: [ { type, createdAt: CA[0] }, { type, createdAt: CA[1] } ] },
             ...pruned
         },
         SOCB: {
             owner,
-            statusCreatedAt: { between: [ { status, createdAt: ca[0] }, { status, createdAt: ca[1] } ] },
+            statusCreatedAt: { between: [ { status, createdAt: CA[0] }, { status, createdAt: CA[1] } ] },
             ...pruned
         }
     }
@@ -141,19 +138,20 @@ const list = async (variables: ListNodesInput) => {
         [ { status, owner, ...CAA, ...pruned }, { query: Q.OS, variables: V.SOCB } ],
         [ { status, type, ...CAR, ...pruned  }, { query: Q.ST, variables: V.STC } ],
         [ { status, owner, ...CAR, ...pruned }, { query: Q.OS, variables: V.SOC } ]
-        // @ts-ignore
-    ]).get(cleaned) || { error: "no match for arguments provided to node.list" }
+    ]).get(cleaned) || { error: "no match for arguments provided to node.list(arguments)" }
 
     //console.log("entries:", JSON.stringify([ ...EM.keys() ], null, 4))
 
-    //console.log({ match })
+    //console.log({ match, list_only, cleaned })
 
     if (match.error) throw new Error(match.error)
 
     // @ts-ignore
     const { data } = await CRUD(match)
 
-    return data
+    return data.nodesByOwnerStatus
+        ? data.nodesByOwnerStatus.items
+        : data.nodesByStatusType ? data.nodesByStatusType.items : data.listNodes ? data.listNodes.items : data
 }
 
 export const node = {
