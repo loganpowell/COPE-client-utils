@@ -57,6 +57,32 @@ const edgeNodeCreate = async ({ edge_id, node_id, id, owner }: api.CreateEdgeNod
 
 //const genLink = async ({}: )
 
+/**
+ * @example response 
+   { id: '942542de-9686-428e-ab33-de9d3bedb9af', 
+     type: 'HAS_CHILD', 
+     createdAt: '2021-07-05T21:15:00.042Z', 
+     owner: 'loganp@tepper.cmu.edu', 
+     weight: null, 
+     updatedAt: '2021-07-05T21:15:00.042Z', 
+     nodes:  
+      { items:  
+         [ { id: '2e7a0166-f90e-4d8f-846a-0482b69d32ed', 
+             edge_id: '942542de-9686-428e-ab33-de9d3bedb9af', 
+             node_id: 'f844eb36-0b70-45e5-9c64-2f0d6b7743e4', 
+             owner: 'loganp@tepper.cmu.edu', 
+             createdAt: '2021-07-05T21:15:00.129Z', 
+             updatedAt: '2021-07-05T21:15:00.129Z', 
+             editors: null }, 
+           { id: '4acebdfe-5c66-4ccd-926b-1f02c68be363', 
+             edge_id: '942542de-9686-428e-ab33-de9d3bedb9af', 
+             node_id: 'longrandomstringthatsmyID1', 
+             owner: 'loganp@tepper.cmu.edu', 
+             createdAt: '2021-07-05T21:15:00.117Z', 
+             updatedAt: '2021-07-05T21:15:00.117Z', 
+             editors: null } ], 
+        nextToken: null } } } 
+ */
 const edgeRead = async ({ id }: api.GetEdgeQueryVariables) => {
     const { data: { getEdge } } = await CRUD({
         query: queries.getEdge,
@@ -126,34 +152,31 @@ const linkCreate = async ({ edge, nodes }: LinkInput) => {
 
     const NODES = await Promise.all(_nodes.map(n => (!n ? null : node.create(n))))
 
-    const EDGES = await edgeCreate(_edge)
+    const EDGE = await edgeCreate(_edge)
 
     const EDGENODES = await Promise.all(edge_nodes.map(en => edgeNodeCreate(en)))
 
     //console.log({ newNodes, newEdge, newEdgeNodes })
-    return { NODES, EDGES, EDGENODES }
+    return { NODES, EDGE, EDGENODES }
 }
 
 // TODO
-const linkUpdate = async ({ edge, nodes }: LinkInput) => {
-    const { nodes: _nodes, edge: _edge, edge_nodes } = gen_link_input({
-        edge,
-        nodes
-    })
+const linkDelete = async ({ id }: api.DeleteEdgeInput) => {
+    // must delete edgeNodes before edge, else edges return
+    // invalid `null`s
+    const { nodes: { items } } = await edgeRead({ id })
 
-    console.log({ edge_nodes, _nodes, _edge })
+    console.log("edgeDelete:", { items })
 
-    const NODES = await Promise.all(_nodes.map(n => (!n ? null : node.create(n))))
+    const deleted_edgeNodes = await Promise.all(items.map(({ id, edge_id, node_id }) => edgeNodeDelete({ id })))
 
-    // @ts-ignore
-    const EDGES = await edgeUpdate(_edge)
-    // @ts-ignore
-    const EDGENODES = await Promise.all(edge_nodes.map(en => edgeNodeUpdate(en)))
+    const { nodes: { items: deleted_items } } = await edgeDelete({ id })
 
-    //console.log({ newNodes, newEdge, newEdgeNodes })
-    return { NODES, EDGES, EDGENODES }
+    return { deleted_edgeNodes, deleted_items }
 }
 
 export const edge = {
-    create: linkCreate
+    create: linkCreate,
+    read: edgeRead,
+    delete: linkDelete
 }

@@ -117,8 +117,8 @@ export declare type Resource = {
     content?: string | null;
     editors?: Array<string | null> | null;
 };
-export declare type Proxy = {
-    __typename: "Proxy";
+export declare type AssetPr = {
+    __typename: "AssetPr";
     id: string;
     node_id: string;
     createdAt: string;
@@ -142,7 +142,7 @@ export declare type UpdateAssetInput = {
 export declare type DeleteAssetInput = {
     id: string;
 };
-export declare type CreateProxyInput = {
+export declare type CreateAssetPrInput = {
     id?: string | null;
     node_id: string;
     createdAt?: string | null;
@@ -152,17 +152,17 @@ export declare type CreateProxyInput = {
     content?: string | null;
     editors?: Array<string | null> | null;
 };
-export declare type ModelProxyConditionInput = {
+export declare type ModelAssetPrConditionInput = {
     node_id?: ModelIDInput | null;
     createdAt?: ModelStringInput | null;
     type?: ModelAssetTypeInput | null;
     name?: ModelStringInput | null;
     content?: ModelStringInput | null;
-    and?: Array<ModelProxyConditionInput | null> | null;
-    or?: Array<ModelProxyConditionInput | null> | null;
-    not?: ModelProxyConditionInput | null;
+    and?: Array<ModelAssetPrConditionInput | null> | null;
+    or?: Array<ModelAssetPrConditionInput | null> | null;
+    not?: ModelAssetPrConditionInput | null;
 };
-export declare type UpdateProxyInput = {
+export declare type UpdateAssetPrInput = {
     id: string;
     node_id?: string | null;
     createdAt?: string | null;
@@ -172,7 +172,7 @@ export declare type UpdateProxyInput = {
     content?: string | null;
     editors?: Array<string | null> | null;
 };
-export declare type DeleteProxyInput = {
+export declare type DeleteAssetPrInput = {
     id: string;
 };
 export declare type CreateNodeInput = {
@@ -233,7 +233,7 @@ export declare type Node = {
     updatedAt: string;
     owner?: string | null;
     assets?: ModelAssetConnection | null;
-    proxies?: ModelProxyConnection | null;
+    assetsPr?: ModelAssetPrConnection | null;
     edges?: ModelEdgeNodeConnection | null;
 };
 export declare type ModelAssetConnection = {
@@ -241,9 +241,9 @@ export declare type ModelAssetConnection = {
     items?: Array<Asset | null> | null;
     nextToken?: string | null;
 };
-export declare type ModelProxyConnection = {
-    __typename: "ModelProxyConnection";
-    items?: Array<Proxy | null> | null;
+export declare type ModelAssetPrConnection = {
+    __typename: "ModelAssetPrConnection";
+    items?: Array<AssetPr | null> | null;
     nextToken?: string | null;
 };
 export declare type ModelEdgeNodeConnection = {
@@ -261,7 +261,6 @@ export declare type EdgeNode = {
     updatedAt: string;
     node: Node;
     edge: Edge;
-    editors?: string | null;
 };
 export declare type Edge = {
     __typename: "Edge";
@@ -366,6 +365,10 @@ export declare type ModelAssetFilterInput = {
     or?: Array<ModelAssetFilterInput | null> | null;
     not?: ModelAssetFilterInput | null;
 };
+export declare enum ModelSortDirection {
+    ASC = "ASC",
+    DESC = "DESC"
+}
 export declare type ModelStringKeyConditionInput = {
     eq?: string | null;
     le?: string | null;
@@ -375,11 +378,7 @@ export declare type ModelStringKeyConditionInput = {
     between?: Array<string | null> | null;
     beginsWith?: string | null;
 };
-export declare enum ModelSortDirection {
-    ASC = "ASC",
-    DESC = "DESC"
-}
-export declare type ModelProxyFilterInput = {
+export declare type ModelAssetPrFilterInput = {
     id?: ModelIDInput | null;
     node_id?: ModelIDInput | null;
     createdAt?: ModelStringInput | null;
@@ -388,20 +387,20 @@ export declare type ModelProxyFilterInput = {
     owner?: ModelStringInput | null;
     content?: ModelStringInput | null;
     editors?: ModelStringInput | null;
-    and?: Array<ModelProxyFilterInput | null> | null;
-    or?: Array<ModelProxyFilterInput | null> | null;
-    not?: ModelProxyFilterInput | null;
+    and?: Array<ModelAssetPrFilterInput | null> | null;
+    or?: Array<ModelAssetPrFilterInput | null> | null;
+    not?: ModelAssetPrFilterInput | null;
 };
-export declare type ModelProxyProxies_by_owner_typeCompositeKeyConditionInput = {
-    eq?: ModelProxyProxies_by_owner_typeCompositeKeyInput | null;
-    le?: ModelProxyProxies_by_owner_typeCompositeKeyInput | null;
-    lt?: ModelProxyProxies_by_owner_typeCompositeKeyInput | null;
-    ge?: ModelProxyProxies_by_owner_typeCompositeKeyInput | null;
-    gt?: ModelProxyProxies_by_owner_typeCompositeKeyInput | null;
-    between?: Array<ModelProxyProxies_by_owner_typeCompositeKeyInput | null> | null;
-    beginsWith?: ModelProxyProxies_by_owner_typeCompositeKeyInput | null;
+export declare type ModelAssetPrAssetsPr_by_owner_typeCompositeKeyConditionInput = {
+    eq?: ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput | null;
+    le?: ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput | null;
+    lt?: ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput | null;
+    ge?: ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput | null;
+    gt?: ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput | null;
+    between?: Array<ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput | null> | null;
+    beginsWith?: ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput | null;
 };
-export declare type ModelProxyProxies_by_owner_typeCompositeKeyInput = {
+export declare type ModelAssetPrAssetsPr_by_owner_typeCompositeKeyInput = {
     type?: AssetType | null;
     createdAt?: string | null;
 };
@@ -431,20 +430,20 @@ export declare type ModelNodeNodes_by_type_status_createdAtCompositeKeyCondition
     beginsWith?: ModelNodeNodes_by_type_status_createdAtCompositeKeyInput | null;
 };
 export declare type ModelNodeNodes_by_type_status_createdAtCompositeKeyInput = {
-    status?: NodeStatus | null;
+    type?: NodeType | null;
     createdAt?: string | null;
 };
-export declare type ModelNodeNodes_by_status_type_createdAtCompositeKeyConditionInput = {
-    eq?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null;
-    le?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null;
-    lt?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null;
-    ge?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null;
-    gt?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null;
-    between?: Array<ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null> | null;
-    beginsWith?: ModelNodeNodes_by_status_type_createdAtCompositeKeyInput | null;
+export declare type ModelNodeNodes_by_owner_status_createdAtCompositeKeyConditionInput = {
+    eq?: ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput | null;
+    le?: ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput | null;
+    lt?: ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput | null;
+    ge?: ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput | null;
+    gt?: ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput | null;
+    between?: Array<ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput | null> | null;
+    beginsWith?: ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput | null;
 };
-export declare type ModelNodeNodes_by_status_type_createdAtCompositeKeyInput = {
-    type?: NodeType | null;
+export declare type ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput = {
+    status?: NodeStatus | null;
     createdAt?: string | null;
 };
 export declare type ModelEdgeFilterInput = {
@@ -516,13 +515,13 @@ export declare type DeleteAssetMutation = {
         updatedAt: string;
     } | null;
 };
-export declare type CreateProxyMutationVariables = {
-    input: CreateProxyInput;
-    condition?: ModelProxyConditionInput | null;
+export declare type CreateAssetPrMutationVariables = {
+    input: CreateAssetPrInput;
+    condition?: ModelAssetPrConditionInput | null;
 };
-export declare type CreateProxyMutation = {
-    createProxy?: {
-        __typename: "Proxy";
+export declare type CreateAssetPrMutation = {
+    createAssetPr?: {
+        __typename: "AssetPr";
         id: string;
         node_id: string;
         createdAt: string;
@@ -534,13 +533,13 @@ export declare type CreateProxyMutation = {
         updatedAt: string;
     } | null;
 };
-export declare type UpdateProxyMutationVariables = {
-    input: UpdateProxyInput;
-    condition?: ModelProxyConditionInput | null;
+export declare type UpdateAssetPrMutationVariables = {
+    input: UpdateAssetPrInput;
+    condition?: ModelAssetPrConditionInput | null;
 };
-export declare type UpdateProxyMutation = {
-    updateProxy?: {
-        __typename: "Proxy";
+export declare type UpdateAssetPrMutation = {
+    updateAssetPr?: {
+        __typename: "AssetPr";
         id: string;
         node_id: string;
         createdAt: string;
@@ -552,13 +551,13 @@ export declare type UpdateProxyMutation = {
         updatedAt: string;
     } | null;
 };
-export declare type DeleteProxyMutationVariables = {
-    input: DeleteProxyInput;
-    condition?: ModelProxyConditionInput | null;
+export declare type DeleteAssetPrMutationVariables = {
+    input: DeleteAssetPrInput;
+    condition?: ModelAssetPrConditionInput | null;
 };
-export declare type DeleteProxyMutation = {
-    deleteProxy?: {
-        __typename: "Proxy";
+export declare type DeleteAssetPrMutation = {
+    deleteAssetPr?: {
+        __typename: "AssetPr";
         id: string;
         node_id: string;
         createdAt: string;
@@ -599,10 +598,10 @@ export declare type CreateNodeMutation = {
             } | null> | null;
             nextToken?: string | null;
         } | null;
-        proxies?: {
-            __typename: "ModelProxyConnection";
+        assetsPr?: {
+            __typename: "ModelAssetPrConnection";
             items?: Array<{
-                __typename: "Proxy";
+                __typename: "AssetPr";
                 id: string;
                 node_id: string;
                 createdAt: string;
@@ -625,7 +624,6 @@ export declare type CreateNodeMutation = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -660,10 +658,10 @@ export declare type UpdateNodeMutation = {
             } | null> | null;
             nextToken?: string | null;
         } | null;
-        proxies?: {
-            __typename: "ModelProxyConnection";
+        assetsPr?: {
+            __typename: "ModelAssetPrConnection";
             items?: Array<{
-                __typename: "Proxy";
+                __typename: "AssetPr";
                 id: string;
                 node_id: string;
                 createdAt: string;
@@ -686,7 +684,6 @@ export declare type UpdateNodeMutation = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -721,10 +718,10 @@ export declare type DeleteNodeMutation = {
             } | null> | null;
             nextToken?: string | null;
         } | null;
-        proxies?: {
-            __typename: "ModelProxyConnection";
+        assetsPr?: {
+            __typename: "ModelAssetPrConnection";
             items?: Array<{
-                __typename: "Proxy";
+                __typename: "AssetPr";
                 id: string;
                 node_id: string;
                 createdAt: string;
@@ -747,7 +744,6 @@ export declare type DeleteNodeMutation = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -776,7 +772,6 @@ export declare type CreateEdgeMutation = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -805,7 +800,6 @@ export declare type UpdateEdgeMutation = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -834,7 +828,6 @@ export declare type DeleteEdgeMutation = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -865,8 +858,8 @@ export declare type CreateEdgeNodeMutation = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -887,7 +880,6 @@ export declare type CreateEdgeNodeMutation = {
                 nextToken?: string | null;
             } | null;
         };
-        editors?: string | null;
     } | null;
 };
 export declare type UpdateEdgeNodeMutationVariables = {
@@ -915,8 +907,8 @@ export declare type UpdateEdgeNodeMutation = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -937,7 +929,6 @@ export declare type UpdateEdgeNodeMutation = {
                 nextToken?: string | null;
             } | null;
         };
-        editors?: string | null;
     } | null;
 };
 export declare type DeleteEdgeNodeMutationVariables = {
@@ -965,8 +956,8 @@ export declare type DeleteEdgeNodeMutation = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -987,7 +978,6 @@ export declare type DeleteEdgeNodeMutation = {
                 nextToken?: string | null;
             } | null;
         };
-        editors?: string | null;
     } | null;
 };
 export declare type GetAssetQueryVariables = {
@@ -1032,7 +1022,6 @@ export declare type ListAssetsQuery = {
 };
 export declare type AssetsByNodeQueryVariables = {
     node_id?: string | null;
-    createdAt?: ModelStringKeyConditionInput | null;
     sortDirection?: ModelSortDirection | null;
     filter?: ModelAssetFilterInput | null;
     limit?: number | null;
@@ -1108,12 +1097,12 @@ export declare type AssetsByOwnerQuery = {
         nextToken?: string | null;
     } | null;
 };
-export declare type GetProxyQueryVariables = {
+export declare type GetAssetPrQueryVariables = {
     id: string;
 };
-export declare type GetProxyQuery = {
-    getProxy?: {
-        __typename: "Proxy";
+export declare type GetAssetPrQuery = {
+    getAssetPr?: {
+        __typename: "AssetPr";
         id: string;
         node_id: string;
         createdAt: string;
@@ -1125,16 +1114,16 @@ export declare type GetProxyQuery = {
         updatedAt: string;
     } | null;
 };
-export declare type ListProxysQueryVariables = {
-    filter?: ModelProxyFilterInput | null;
+export declare type ListAssetPrsQueryVariables = {
+    filter?: ModelAssetPrFilterInput | null;
     limit?: number | null;
     nextToken?: string | null;
 };
-export declare type ListProxysQuery = {
-    listProxys?: {
-        __typename: "ModelProxyConnection";
+export declare type ListAssetPrsQuery = {
+    listAssetPrs?: {
+        __typename: "ModelAssetPrConnection";
         items?: Array<{
-            __typename: "Proxy";
+            __typename: "AssetPr";
             id: string;
             node_id: string;
             createdAt: string;
@@ -1148,19 +1137,18 @@ export declare type ListProxysQuery = {
         nextToken?: string | null;
     } | null;
 };
-export declare type ProxiesByNodeQueryVariables = {
+export declare type AssetsPrByNodeQueryVariables = {
     node_id?: string | null;
-    createdAt?: ModelStringKeyConditionInput | null;
     sortDirection?: ModelSortDirection | null;
-    filter?: ModelProxyFilterInput | null;
+    filter?: ModelAssetPrFilterInput | null;
     limit?: number | null;
     nextToken?: string | null;
 };
-export declare type ProxiesByNodeQuery = {
-    proxiesByNode?: {
-        __typename: "ModelProxyConnection";
+export declare type AssetsPrByNodeQuery = {
+    assetsPrByNode?: {
+        __typename: "ModelAssetPrConnection";
         items?: Array<{
-            __typename: "Proxy";
+            __typename: "AssetPr";
             id: string;
             node_id: string;
             createdAt: string;
@@ -1174,19 +1162,19 @@ export declare type ProxiesByNodeQuery = {
         nextToken?: string | null;
     } | null;
 };
-export declare type ProxiesByOwnerTypeQueryVariables = {
+export declare type AssetsPrByOwnerTypeQueryVariables = {
     owner?: string | null;
-    typeCreatedAt?: ModelProxyProxies_by_owner_typeCompositeKeyConditionInput | null;
+    typeCreatedAt?: ModelAssetPrAssetsPr_by_owner_typeCompositeKeyConditionInput | null;
     sortDirection?: ModelSortDirection | null;
-    filter?: ModelProxyFilterInput | null;
+    filter?: ModelAssetPrFilterInput | null;
     limit?: number | null;
     nextToken?: string | null;
 };
-export declare type ProxiesByOwnerTypeQuery = {
-    proxiesByOwnerType?: {
-        __typename: "ModelProxyConnection";
+export declare type AssetsPrByOwnerTypeQuery = {
+    assetsPrByOwnerType?: {
+        __typename: "ModelAssetPrConnection";
         items?: Array<{
-            __typename: "Proxy";
+            __typename: "AssetPr";
             id: string;
             node_id: string;
             createdAt: string;
@@ -1200,19 +1188,19 @@ export declare type ProxiesByOwnerTypeQuery = {
         nextToken?: string | null;
     } | null;
 };
-export declare type ProxiesByOwnerQueryVariables = {
-    owner?: string | null;
-    createdAt?: ModelStringKeyConditionInput | null;
+export declare type AssetsPrByTypeNameQueryVariables = {
+    type?: AssetType | null;
+    name?: ModelStringKeyConditionInput | null;
     sortDirection?: ModelSortDirection | null;
-    filter?: ModelProxyFilterInput | null;
+    filter?: ModelAssetPrFilterInput | null;
     limit?: number | null;
     nextToken?: string | null;
 };
-export declare type ProxiesByOwnerQuery = {
-    proxiesByOwner?: {
-        __typename: "ModelProxyConnection";
+export declare type AssetsPrByTypeNameQuery = {
+    assetsPrByTypeName?: {
+        __typename: "ModelAssetPrConnection";
         items?: Array<{
-            __typename: "Proxy";
+            __typename: "AssetPr";
             id: string;
             node_id: string;
             createdAt: string;
@@ -1254,10 +1242,10 @@ export declare type GetNodeQuery = {
             } | null> | null;
             nextToken?: string | null;
         } | null;
-        proxies?: {
-            __typename: "ModelProxyConnection";
+        assetsPr?: {
+            __typename: "ModelAssetPrConnection";
             items?: Array<{
-                __typename: "Proxy";
+                __typename: "AssetPr";
                 id: string;
                 node_id: string;
                 createdAt: string;
@@ -1280,7 +1268,6 @@ export declare type GetNodeQuery = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1306,43 +1293,8 @@ export declare type ListNodesQuery = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
-                nextToken?: string | null;
-            } | null;
-            edges?: {
-                __typename: "ModelEdgeNodeConnection";
-                nextToken?: string | null;
-            } | null;
-        } | null> | null;
-        nextToken?: string | null;
-    } | null;
-};
-export declare type NodesByTypeStatusQueryVariables = {
-    type?: NodeType | null;
-    statusCreatedAt?: ModelNodeNodes_by_type_status_createdAtCompositeKeyConditionInput | null;
-    sortDirection?: ModelSortDirection | null;
-    filter?: ModelNodeFilterInput | null;
-    limit?: number | null;
-    nextToken?: string | null;
-};
-export declare type NodesByTypeStatusQuery = {
-    nodesByTypeStatus?: {
-        __typename: "ModelNodeConnection";
-        items?: Array<{
-            __typename: "Node";
-            id: string;
-            status: NodeStatus;
-            type: NodeType;
-            createdAt: string;
-            updatedAt: string;
-            owner?: string | null;
-            assets?: {
-                __typename: "ModelAssetConnection";
-                nextToken?: string | null;
-            } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -1355,7 +1307,7 @@ export declare type NodesByTypeStatusQuery = {
 };
 export declare type NodesByStatusTypeQueryVariables = {
     status?: NodeStatus | null;
-    typeCreatedAt?: ModelNodeNodes_by_status_type_createdAtCompositeKeyConditionInput | null;
+    typeCreatedAt?: ModelNodeNodes_by_type_status_createdAtCompositeKeyConditionInput | null;
     sortDirection?: ModelSortDirection | null;
     filter?: ModelNodeFilterInput | null;
     limit?: number | null;
@@ -1376,8 +1328,8 @@ export declare type NodesByStatusTypeQuery = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -1388,16 +1340,16 @@ export declare type NodesByStatusTypeQuery = {
         nextToken?: string | null;
     } | null;
 };
-export declare type NodesByStatusQueryVariables = {
-    status?: NodeStatus | null;
-    createdAt?: ModelStringKeyConditionInput | null;
+export declare type NodesByOwnerStatusQueryVariables = {
+    owner?: string | null;
+    statusCreatedAt?: ModelNodeNodes_by_owner_status_createdAtCompositeKeyConditionInput | null;
     sortDirection?: ModelSortDirection | null;
     filter?: ModelNodeFilterInput | null;
     limit?: number | null;
     nextToken?: string | null;
 };
-export declare type NodesByStatusQuery = {
-    nodesByStatus?: {
+export declare type NodesByOwnerStatusQuery = {
+    nodesByOwnerStatus?: {
         __typename: "ModelNodeConnection";
         items?: Array<{
             __typename: "Node";
@@ -1411,8 +1363,8 @@ export declare type NodesByStatusQuery = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -1445,7 +1397,6 @@ export declare type GetEdgeQuery = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1556,13 +1507,13 @@ export declare type OnDeleteAssetSubscription = {
         updatedAt: string;
     } | null;
 };
-export declare type OnCreateProxySubscriptionVariables = {
+export declare type OnCreateAssetPrSubscriptionVariables = {
     owner?: string | null;
     editors?: string | null;
 };
-export declare type OnCreateProxySubscription = {
-    onCreateProxy?: {
-        __typename: "Proxy";
+export declare type OnCreateAssetPrSubscription = {
+    onCreateAssetPr?: {
+        __typename: "AssetPr";
         id: string;
         node_id: string;
         createdAt: string;
@@ -1574,13 +1525,13 @@ export declare type OnCreateProxySubscription = {
         updatedAt: string;
     } | null;
 };
-export declare type OnUpdateProxySubscriptionVariables = {
+export declare type OnUpdateAssetPrSubscriptionVariables = {
     owner?: string | null;
     editors?: string | null;
 };
-export declare type OnUpdateProxySubscription = {
-    onUpdateProxy?: {
-        __typename: "Proxy";
+export declare type OnUpdateAssetPrSubscription = {
+    onUpdateAssetPr?: {
+        __typename: "AssetPr";
         id: string;
         node_id: string;
         createdAt: string;
@@ -1592,13 +1543,13 @@ export declare type OnUpdateProxySubscription = {
         updatedAt: string;
     } | null;
 };
-export declare type OnDeleteProxySubscriptionVariables = {
+export declare type OnDeleteAssetPrSubscriptionVariables = {
     owner?: string | null;
     editors?: string | null;
 };
-export declare type OnDeleteProxySubscription = {
-    onDeleteProxy?: {
-        __typename: "Proxy";
+export declare type OnDeleteAssetPrSubscription = {
+    onDeleteAssetPr?: {
+        __typename: "AssetPr";
         id: string;
         node_id: string;
         createdAt: string;
@@ -1638,10 +1589,10 @@ export declare type OnCreateNodeSubscription = {
             } | null> | null;
             nextToken?: string | null;
         } | null;
-        proxies?: {
-            __typename: "ModelProxyConnection";
+        assetsPr?: {
+            __typename: "ModelAssetPrConnection";
             items?: Array<{
-                __typename: "Proxy";
+                __typename: "AssetPr";
                 id: string;
                 node_id: string;
                 createdAt: string;
@@ -1664,7 +1615,6 @@ export declare type OnCreateNodeSubscription = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1698,10 +1648,10 @@ export declare type OnUpdateNodeSubscription = {
             } | null> | null;
             nextToken?: string | null;
         } | null;
-        proxies?: {
-            __typename: "ModelProxyConnection";
+        assetsPr?: {
+            __typename: "ModelAssetPrConnection";
             items?: Array<{
-                __typename: "Proxy";
+                __typename: "AssetPr";
                 id: string;
                 node_id: string;
                 createdAt: string;
@@ -1724,7 +1674,6 @@ export declare type OnUpdateNodeSubscription = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1758,10 +1707,10 @@ export declare type OnDeleteNodeSubscription = {
             } | null> | null;
             nextToken?: string | null;
         } | null;
-        proxies?: {
-            __typename: "ModelProxyConnection";
+        assetsPr?: {
+            __typename: "ModelAssetPrConnection";
             items?: Array<{
-                __typename: "Proxy";
+                __typename: "AssetPr";
                 id: string;
                 node_id: string;
                 createdAt: string;
@@ -1784,7 +1733,6 @@ export declare type OnDeleteNodeSubscription = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1812,7 +1760,6 @@ export declare type OnCreateEdgeSubscription = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1840,7 +1787,6 @@ export declare type OnUpdateEdgeSubscription = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1868,7 +1814,6 @@ export declare type OnDeleteEdgeSubscription = {
                 owner?: string | null;
                 createdAt: string;
                 updatedAt: string;
-                editors?: string | null;
             } | null> | null;
             nextToken?: string | null;
         } | null;
@@ -1876,7 +1821,6 @@ export declare type OnDeleteEdgeSubscription = {
 };
 export declare type OnCreateEdgeNodeSubscriptionVariables = {
     owner?: string | null;
-    editors?: string | null;
 };
 export declare type OnCreateEdgeNodeSubscription = {
     onCreateEdgeNode?: {
@@ -1899,8 +1843,8 @@ export declare type OnCreateEdgeNodeSubscription = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -1921,12 +1865,10 @@ export declare type OnCreateEdgeNodeSubscription = {
                 nextToken?: string | null;
             } | null;
         };
-        editors?: string | null;
     } | null;
 };
 export declare type OnUpdateEdgeNodeSubscriptionVariables = {
     owner?: string | null;
-    editors?: string | null;
 };
 export declare type OnUpdateEdgeNodeSubscription = {
     onUpdateEdgeNode?: {
@@ -1949,8 +1891,8 @@ export declare type OnUpdateEdgeNodeSubscription = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -1971,12 +1913,10 @@ export declare type OnUpdateEdgeNodeSubscription = {
                 nextToken?: string | null;
             } | null;
         };
-        editors?: string | null;
     } | null;
 };
 export declare type OnDeleteEdgeNodeSubscriptionVariables = {
     owner?: string | null;
-    editors?: string | null;
 };
 export declare type OnDeleteEdgeNodeSubscription = {
     onDeleteEdgeNode?: {
@@ -1999,8 +1939,8 @@ export declare type OnDeleteEdgeNodeSubscription = {
                 __typename: "ModelAssetConnection";
                 nextToken?: string | null;
             } | null;
-            proxies?: {
-                __typename: "ModelProxyConnection";
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
                 nextToken?: string | null;
             } | null;
             edges?: {
@@ -2021,6 +1961,5 @@ export declare type OnDeleteEdgeNodeSubscription = {
                 nextToken?: string | null;
             } | null;
         };
-        editors?: string | null;
     } | null;
 };

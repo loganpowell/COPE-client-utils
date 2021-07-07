@@ -1,12 +1,12 @@
-import { NodeType, NodeStatus, EdgeType, AssetType } from "../graphql/API";
+import * as api from "../graphql/API";
 export declare type Node = {
-    type: NodeType;
-    status: NodeStatus;
+    type: api.NodeType;
+    status: api.NodeStatus;
     id?: string;
     createdAt?: string;
 } | null;
 export declare type Edge = {
-    type: EdgeType;
+    type: api.EdgeType;
     id?: string;
     createdAt?: string;
     weight?: number | null;
@@ -31,12 +31,23 @@ export declare type Asset = {
     createdAt?: string;
     content?: string;
     node_id: string;
-    type: AssetType;
+    type: api.AssetType;
     name: string;
 };
 export declare type AssetConfig = {
     node?: Node;
     assets: Array<Asset>;
+};
+export declare type AWSDateTime = Date;
+export declare type ListNodesInput = {
+    sort?: api.ModelSortDirection;
+    limit?: number;
+    filter?: api.ModelNodeFilterInput;
+    status?: api.NodeStatus;
+    type?: api.NodeType;
+    createdAt?: string | [string];
+    nextToken?: string;
+    owner?: any;
 };
 export interface LinkInput {
     nodes: Array<Node | null>;

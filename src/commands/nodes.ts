@@ -1,6 +1,8 @@
 import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
+import { ListNodesInput } from "../api"
+import { EquivMap } from "@thi.ng/associative"
 
 import { CRUD } from "../utils"
 
@@ -69,9 +71,68 @@ const nodeDelete = async ({ id }: api.DeleteNodeInput) => {
     return deleteNode
 }
 
+const list = async (variables: ListNodesInput) => {
+    //const { filter, limit, nextToken, owner, sortDirection, status, statusCreatedAt, type, typeCreatedAt } = variables
+    const { filter, limit, nextToken, owner, sort, status, createdAt, type } = variables
+
+    const cleaned = Object.entries(variables).reduce((a, [ k, v ]) => {
+        if (!v) return a
+        return { ...a, [k]: v }
+    }, {})
+
+    console.log("pre:", { variables, cleaned })
+
+    const Q = {
+        ST: queries.nodesByStatusType,
+        OS: queries.nodesByOwnerStatus
+    }
+    // prettier-ignore
+    const match = new EquivMap([
+        [ { status },                               { query: Q.ST, variables: cleaned } ],
+        [ { status, type },                         { query: Q.ST, variables: cleaned } ],
+        [ { status, type, createdAt },              { query: Q.ST, variables: {
+            status, typeCreatedAt: { /* TODO */ }
+        } } ],
+
+        //[ { status, type, createdAt }           , "STATUS TYPE CREATEDAT" ],
+        //[ { status, type, createdAt, condition }, "STATUS TYPE CREATEDAT CONDITION" ],
+        //[ { status, createdAt, condition }      , "STATUS CREATEDAT CONDITION" ],
+        //[ { status, createdAt }                 , "STATUS CREATEDAT" ],
+        //[ { type, createdAt, condition }        , "TYPE CREATEDAT CONDITION" ],
+        //[ { type, createdAt }                   , "TYPE CREATEDAT" ]
+        // @ts-ignore
+    ]).get(cleaned)
+
+    return { match }
+
+    const { data } = await CRUD(match)
+    // example: { gt: { createdAt: "2021-07-05T21:14:59.953Z", type: A_GEM } }
+
+    //const { beginsWith, between, eq, ge, gt, le, lt }: ConditionInput = condition
+
+    //const nodes = await CRUD({
+    //    query: queries.nodesByStatusType,
+    //    variables: { typeCreatedAt: vars, status }
+    //})
+
+    return data
+}
+
+const nodesByStatusType = async ({ status, typeCreatedAt }: api.NodesByStatusTypeQueryVariables) => {
+    // example: { gt: { createdAt: "2021-07-05T21:14:59.953Z", type: A_GEM } }
+    const { beginsWith, between, eq, ge, gt, le, lt } = typeCreatedAt
+
+    const nodes = await CRUD({
+        query: queries.nodesByStatusType,
+        variables: { typeCreatedAt, status }
+    })
+    return { nodes }
+}
+
 export const node = {
     create: nodeCreate,
     read: nodeRead,
     update: nodeUpdate,
-    delete: nodeDelete
+    delete: nodeDelete,
+    list
 }

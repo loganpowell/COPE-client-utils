@@ -1,4 +1,4 @@
-import { NodeType, NodeStatus, EdgeType, AssetType } from "../graphql/API"
+import * as api from "../graphql/API"
 
 //
 //
@@ -23,14 +23,14 @@ import { NodeType, NodeStatus, EdgeType, AssetType } from "../graphql/API"
 //
 
 export type Node = {
-    type: NodeType
-    status: NodeStatus
+    type: api.NodeType
+    status: api.NodeStatus
     id?: string
     createdAt?: string
 } | null
 
 export type Edge = {
-    type: EdgeType
+    type: api.EdgeType
     id?: string
     createdAt?: string
     weight?: number | null
@@ -61,13 +61,26 @@ export type Asset = {
     createdAt?: string
     content?: string
     node_id: string
-    type: AssetType
+    type: api.AssetType
     name: string
 }
 
 export type AssetConfig = {
     node?: Node
     assets: Array<Asset>
+}
+
+export type AWSDateTime = Date
+
+export type ListNodesInput = {
+    sort?: api.ModelSortDirection
+    limit?: number
+    filter?: api.ModelNodeFilterInput
+    status?: api.NodeStatus
+    type?: api.NodeType
+    createdAt?: string | [string]
+    nextToken?: string
+    owner?: any
 }
 
 //

@@ -40,7 +40,7 @@ const assetUpdate = async ({ id, content, createdAt, editors, name, node_id, own
         editors: _e,
         type: _t,
         owner: _o,
-        node_id: _ni
+        node_id: _no
     } = await assetRead({ id })
     const { data: { updateAsset } } = await CRUD({
         query: mutations.updateAsset,
@@ -51,7 +51,7 @@ const assetUpdate = async ({ id, content, createdAt, editors, name, node_id, own
                 createdA: createdAt || _cr,
                 editors: editors || _e,
                 name: name || _na,
-                node_id: node_id || _ni,
+                node_id: node_id || _no,
                 owner: owner || _o,
                 type: type || _t
             }
@@ -73,15 +73,15 @@ const assetDelete = async ({ id }: api.DeleteAssetInput) => {
 const assetConvert = async ({ id }: api.GetAssetQueryVariables) => {
     const { node_id, createdAt, type, name, owner, content, editors } = await assetDelete({ id })
 
-    const { data: { createProxy } } = await CRUD({
-        query: mutations.createProxy,
+    const { data: { createAssetPr } } = await CRUD({
+        query: mutations.createAssetPr,
         variables: {
             input: { id, node_id, createdAt, type, name, owner, content, editors }
         }
     })
-    console.log("Asset converted to Proxy")
+    console.log("Asset converted to AssetPr")
 
-    return createProxy
+    return createAssetPr
 }
 
 export const asset = {

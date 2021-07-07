@@ -1,3 +1,92 @@
+fragment assetsAndProxies on Node {
+  proxies {
+    items {
+      id
+      name
+      content
+    }
+  }
+}
+
+query nodesByStatusType {
+  nodesByStatusType(
+    status: DRAFT
+    
+    # typeCreatedAt: {between: [{type: A_GEM, createdAt: "2020"}, {type: A_GEM, createdAt: "2022"}]}
+  ) {
+    items {
+      id
+      type
+      status
+      createdAt
+    }
+  }
+}
+
+query listNodes {
+  listNodes {
+    items {
+      type
+      id
+      ...assetsAndProxies
+      edges {
+        items {
+          edge_id
+          edge {
+            type
+            nodes(sortDirection: DESC) {
+              items {
+                node_id
+                edge_id
+                createdAt
+                updatedAt
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query getEdges {
+  getNode(id: "longrandomstringthatsmyID1") {
+    id
+    type
+    edges {
+      items {
+        edge {
+          id
+          type
+          nodes(sortDirection: DESC) {
+            items {
+              node {
+                id
+                type
+                assets(filter: {type: {eq: A_IMAGE}}) {
+                  nextToken
+                  items {
+                    id
+                    name
+                    content
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query assetsByType {
+  assetsByNode(node_id: "longrandomstringthatsmyID1") {
+    items {
+      type
+    }
+  }
+}
 
 #  
 #  ,e,            d8                                                        d8   ,e,                   
