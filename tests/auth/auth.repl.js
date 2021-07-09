@@ -105,5 +105,7 @@ auth
             //createdAt     : "2021"
         })
 
+        let res2 = node.list({})
+
         return { res }
     }) //?

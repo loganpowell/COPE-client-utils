@@ -1,5 +1,5 @@
 fragment assetsAndProxies on Node {
-  proxies {
+  assets {
     items {
       id
       name
@@ -10,9 +10,21 @@ fragment assetsAndProxies on Node {
 
 query nodesByStatusType {
   nodesByStatusType(
-    status: DRAFT
+    status:DRAFT
+    typeCreatedAt:{
+      between:[
+        {
+          type: A_GEM,
+          createdAt:"2020"
+      	},
+        {
+          type:A_GEM,
+          createdAt:"2021"
+        }
+      ]
+    }
+   # typeCreatedAt: { beginsWith: { type: A_GEM } } 
     
-    # typeCreatedAt: {between: [{type: A_GEM, createdAt: "2020"}, {type: A_GEM, createdAt: "2022"}]}
   ) {
     items {
       id
@@ -23,8 +35,16 @@ query nodesByStatusType {
   }
 }
 
+query nodesByOwnerStatus {
+  nodesByOwnerStatus{
+    items{
+      id
+    }
+  }
+}
+
 query listNodes {
-  listNodes {
+  listNodes(limit:1) {
     items {
       type
       id
@@ -48,6 +68,7 @@ query listNodes {
     }
   }
 }
+
 
 query getEdges {
   getNode(id: "longrandomstringthatsmyID1") {
@@ -87,6 +108,8 @@ query assetsByType {
     }
   }
 }
+
+
 
 #  
 #  ,e,            d8                                                        d8   ,e,                   

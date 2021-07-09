@@ -168,7 +168,7 @@ const linkDelete = async ({ id }: api.DeleteEdgeInput) => {
 
     console.log("edgeDelete:", { items })
 
-    const deleted_edgeNodes = await Promise.all(items.map(({ id, edge_id, node_id }) => edgeNodeDelete({ id })))
+    const deleted_edgeNodes = await Promise.all(items.map(({ id /*, edge_id, node_id */ }) => edgeNodeDelete({ id })))
 
     const { nodes: { items: deleted_items } } = await edgeDelete({ id })
 
