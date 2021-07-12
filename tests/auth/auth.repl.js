@@ -24,6 +24,7 @@ auth
     .logIn({ user: "loganp@tepper.cmu.edu", pass: "testingabc" })
     .catch(e => console.error("error:", JSON.stringify(e, null, 4)))
     .then(async user => {
+        console.log({ user })
         //const new_node = await node.create(_node)
         //return { new_node }
 
@@ -95,7 +96,7 @@ auth
             //status        : NodeStatus.DRAFT,
             //type          : NodeType.A_GEM,
             //filter,
-            limit : 3
+            limit : 2
             //nextToken :
             //    "eyJvd25lciI6eyJTIjoibG9nYW5wQHRlcHBlci5jbXUuZWR1In0sInN0YXR1cyNjcmVhdGVkQXQiOnsiUyI6IkRSQUZUIzIwMjEtMDctMDdUMTI6MTM6NDAuMzY2WiJ9LCJpZCI6eyJTIjoibG9uZ3JhbmRvbXN0cmluZ3RoYXRzbXlJRDEifX0",
             //owner         : "loganp@tepper.cmu.edu",
