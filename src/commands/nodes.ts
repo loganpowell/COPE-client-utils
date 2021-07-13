@@ -168,11 +168,13 @@ const list = async (
     // @ts-ignore
     const { data } = await CRUD({ ...match, authMode })
 
-    return data.nodesByOwnerStatus
+    const response = data.nodesByOwnerStatus
         ? data.nodesByOwnerStatus.items
         : data.nodesByStatusType
           ? data.nodesByStatusType.items
           : data.listNodes ? data.listNodes.items : data
+
+    return response
 }
 
 export const node = {
