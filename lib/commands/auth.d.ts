@@ -1,3 +1,4 @@
+/// <reference types="amazon-cognito-identity-js" />
 export declare const auth: {
     logIn: ({ user, pass, code }: {
         user: any;
@@ -9,10 +10,14 @@ export declare const auth: {
     signUp: ({ user, pass }: {
         user: any;
         pass: any;
-    }) => Promise<void>;
+    }) => Promise<{
+        signedUp: void | import("amazon-cognito-identity-js").ISignUpResult;
+    }>;
     confirmSignUp: ({ user, code }: {
         user: any;
         code?: string;
-    }) => Promise<void>;
+    }) => Promise<{
+        confirmed: void;
+    }>;
     checkUser: () => void;
 };

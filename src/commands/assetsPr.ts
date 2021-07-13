@@ -1,19 +1,15 @@
+import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
+
 import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 
 import { CRUD } from "../utils"
 
-const assetPrCreate = async ({
-    name,
-    node_id,
-    type,
-    content,
-    createdAt,
-    editors,
-    id,
-    owner
-}: api.CreateAssetPrInput) => {
+const assetPrCreate = async (
+    { name, node_id, type, content, createdAt, editors, id, owner }: api.CreateAssetPrInput,
+    authMode?: GRAPHQL_AUTH_MODE,
+) => {
     const { data: { createAssetPr } } = await CRUD({
         query: mutations.createAssetPr,
         variables: {
@@ -25,32 +21,28 @@ const assetPrCreate = async ({
                 createdAt,
                 editors,
                 id,
-                owner
-            }
-        }
+                owner,
+            },
+        },
+        authMode,
     })
     return createAssetPr
 }
 
-const assetPrRead = async ({ id }: api.GetAssetPrQueryVariables) => {
+const assetPrRead = async ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
     const { data: { getAssetPr } } = await CRUD({
         query: queries.getAssetPr,
-        variables: { id }
+        variables: { id },
+        authMode,
     })
 
     return getAssetPr
 }
 
-const assetPrUpdate = async ({
-    id,
-    content,
-    createdAt,
-    editors,
-    name,
-    node_id,
-    owner,
-    type
-}: api.UpdateAssetPrInput) => {
+const assetPrUpdate = async (
+    { id, content, createdAt, editors, name, node_id, owner, type }: api.UpdateAssetPrInput,
+    authMode?: GRAPHQL_AUTH_MODE,
+) => {
     const {
         content: _co,
         name: _na,
@@ -58,7 +50,7 @@ const assetPrUpdate = async ({
         editors: _e,
         type: _t,
         owner: _o,
-        node_id: _no
+        node_id: _no,
     } = await assetPrRead({ id })
     const { data: { updateAssetPr } } = await CRUD({
         query: mutations.updateAssetPr,
@@ -71,33 +63,40 @@ const assetPrUpdate = async ({
                 name: name || _na,
                 node_id: node_id || _no,
                 owner: owner || _o,
-                type: type || _t
-            }
-        }
+                type: type || _t,
+            },
+        },
+        authMode,
     })
 
     return updateAssetPr
 }
 
-const assetPrDelete = async ({ id }: api.DeleteAssetPrInput) => {
+const assetPrDelete = async ({ id }: api.DeleteAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => {
     const { data: { deleteAssetPr } } = await CRUD({
         query: mutations.deleteAssetPr,
-        variables: { input: { id } }
+        variables: { input: { id } },
+        authMode,
     })
 
     return deleteAssetPr
 }
 
-const assetPrConvert = async ({ id }: api.GetAssetPrQueryVariables) => {
+const assetPrConvert = async (
+    { id }: api.GetAssetPrQueryVariables,
+    authMode?: GRAPHQL_AUTH_MODE,
+) => {
     const { node_id, createdAt, type, name, owner, content, editors } = await assetPrDelete({ id })
 
     const { data: { createAsset } } = await CRUD({
         query: mutations.createAsset,
         variables: {
-            input: { id, node_id, createdAt, type, name, owner, content, editors }
-        }
+            input: { id, node_id, createdAt, type, name, owner, content, editors },
+        },
+        authMode,
     })
     console.log("AssetPr converted to Asset")
+
     return createAsset
 }
 
@@ -106,5 +105,5 @@ export const assetPr = {
     read: assetPrRead,
     update: assetPrUpdate,
     delete: assetPrDelete,
-    convert: assetPrConvert
+    convert: assetPrConvert,
 }

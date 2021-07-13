@@ -1,12 +1,18 @@
+import { EquivMap } from "@thi.ng/associative"
+import { isArray } from "@thi.ng/checks"
+import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
+
 import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 import { ListNodesInput } from "../api"
-import { EquivMap } from "@thi.ng/associative"
-import { isArray } from "@thi.ng/checks"
+
 import { CRUD } from "../utils"
 
-const nodeCreate = async ({ id, status, type, createdAt, owner, updatedAt }: api.CreateNodeInput) => {
+const nodeCreate = async (
+    { id, status, type, createdAt, owner, updatedAt }: api.CreateNodeInput,
+    authMode?: GRAPHQL_AUTH_MODE,
+) => {
     const { data: { createNode } } = await CRUD({
         query: mutations.createNode,
         variables: {
@@ -16,18 +22,20 @@ const nodeCreate = async ({ id, status, type, createdAt, owner, updatedAt }: api
                 type,
                 createdAt,
                 owner,
-                updatedAt
-            }
-        }
+                updatedAt,
+            },
+        },
+        authMode,
     })
 
     return createNode
 }
 
-const nodeRead = async ({ id }: api.GetNodeQueryVariables) => {
+const nodeRead = async ({ id }: api.GetNodeQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
     const { data: { getNode } } = await CRUD({
         query: queries.getNode,
-        variables: { id }
+        variables: { id },
+        authMode,
     })
 
     return getNode
@@ -43,7 +51,10 @@ const nodeRead = async ({ id }: api.GetNodeQueryVariables) => {
  * 2. 1st call supplies any required and missing variables
  *    to the updateNode mutation (2nd call)
  */
-const nodeUpdate = async ({ id, type, status, owner, createdAt, updatedAt }: api.UpdateNodeInput) => {
+const nodeUpdate = async (
+    { id, type, status, owner, createdAt, updatedAt }: api.UpdateNodeInput,
+    authMode?: GRAPHQL_AUTH_MODE,
+) => {
     const { status: _s, type: _t, createdAt: _c, owner: _o } = await nodeRead({ id })
     const { data: { updateNode } } = await CRUD({
         query: mutations.updateNode,
@@ -54,24 +65,29 @@ const nodeUpdate = async ({ id, type, status, owner, createdAt, updatedAt }: api
                 status: status || _s,
                 owner: owner || _o,
                 createdAt: createdAt || _c,
-                updatedAt
-            }
-        }
+                updatedAt,
+            },
+        },
+        authMode,
     })
 
     return updateNode
 }
 
-const nodeDelete = async ({ id }: api.DeleteNodeInput) => {
+const nodeDelete = async ({ id }: api.DeleteNodeInput, authMode?: GRAPHQL_AUTH_MODE) => {
     const { data: { deleteNode } } = await CRUD({
         query: mutations.deleteNode,
-        variables: { input: { id } }
+        variables: { input: { id } },
+        authMode,
     })
 
     return deleteNode
 }
 
-const list = async ({ filter, limit, nextToken, owner, sortDirection, status, createdAt, type }: ListNodesInput) => {
+const list = async (
+    { filter, limit, nextToken, owner, sortDirection, status, createdAt, type }: ListNodesInput,
+    authMode?: GRAPHQL_AUTH_MODE,
+) => {
     const variables = { filter, limit, nextToken, owner, sortDirection, status, createdAt, type }
 
     const cleaned = Object.entries(variables).reduce((a, [ k, v ]) => {
@@ -95,10 +111,12 @@ const list = async ({ filter, limit, nextToken, owner, sortDirection, status, cr
     const Q = {
         ST: queries.nodesByStatusType,
         OS: queries.nodesByOwnerStatus,
-        LN: queries.listNodes
+        LN: queries.listNodes,
     }
 
-    const CA = isArray(createdAt) ? createdAt : [ null, null ]
+    const CA =
+        isArray(createdAt) ? createdAt :
+        [ null, null ]
 
     const V = {
         X: cleaned,
@@ -109,19 +127,26 @@ const list = async ({ filter, limit, nextToken, owner, sortDirection, status, cr
         STCB: {
             status,
             typeCreatedAt: { between: [ { type, createdAt: CA[0] }, { type, createdAt: CA[1] } ] },
-            ...pruned
+            ...pruned,
         },
         SOCB: {
             owner,
-            statusCreatedAt: { between: [ { status, createdAt: CA[0] }, { status, createdAt: CA[1] } ] },
-            ...pruned
-        }
+            statusCreatedAt: {
+                between: [ { status, createdAt: CA[0] }, { status, createdAt: CA[1] } ],
+            },
+            ...pruned,
+        },
     }
 
-    const CAA = isArray(createdAt) ? { createdAt } : { createdAt: undefined }
-    const CAR = !isArray(createdAt) ? { createdAt } : { createdAt: undefined }
+    const CAA =
+        isArray(createdAt) ? { createdAt } :
+        { createdAt: undefined }
+    const CAR =
+        !isArray(createdAt) ? { createdAt } :
+        { createdAt: undefined }
 
-    const err_msg = (needs, has) => `Must provide \`${needs}\` when using \`${has}\` with \`createdAt\``
+    const err_msg = (needs, has) =>
+        `Must provide \`${needs}\` when using \`${has}\` with \`createdAt\``
     // prettier-ignore
     const match = new EquivMap([
         [ list_only,                            { query: Q.LN, variables: V.X } ],
@@ -147,11 +172,15 @@ const list = async ({ filter, limit, nextToken, owner, sortDirection, status, cr
     if (match.error) throw new Error(match.error)
 
     // @ts-ignore
-    const { data } = await CRUD(match)
+    const { data } = await CRUD({ ...match, authMode })
 
-    return data.nodesByOwnerStatus
-        ? data.nodesByOwnerStatus.items
-        : data.nodesByStatusType ? data.nodesByStatusType.items : data.listNodes ? data.listNodes.items : data
+    return
+
+
+        data.nodesByOwnerStatus ? data.nodesByOwnerStatus.items :
+        data.nodesByStatusType ? data.nodesByStatusType.items :
+        data.listNodes ? data.listNodes.items :
+        data
 }
 
 export const node = {
@@ -159,5 +188,5 @@ export const node = {
     read: nodeRead,
     update: nodeUpdate,
     delete: nodeDelete,
-    list
+    list,
 }
