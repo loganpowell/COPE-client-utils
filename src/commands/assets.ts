@@ -58,7 +58,7 @@ const assetUpdate = async (
             input: {
                 id,
                 content: content || _co,
-                createdA: createdAt || _cr,
+                createdAt: createdAt || _cr,
                 editors: editors || _e,
                 name: name || _na,
                 node_id: node_id || _no,
