@@ -30,7 +30,7 @@
     "parserOptions": {
         "ecmaVersion": 11,
         "ecmaFeatures": {},
-        "project": "./tsconfig.json"
+        "sourceType": "module"
     },
     "settings": {}
 }
