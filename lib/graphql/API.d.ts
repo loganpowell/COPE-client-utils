@@ -185,12 +185,13 @@ export declare type CreateNodeInput = {
 };
 export declare enum NodeStatus {
     DRAFT = "DRAFT",
-    REVIEWED = "REVIEWED",
     PUBLISHED = "PUBLISHED",
+    REVIEWED = "REVIEWED",
     EDITED = "EDITED",
     DELETED = "DELETED"
 }
 export declare enum NodeType {
+    R_ACCOUNT = "R_ACCOUNT",
     H_AUTHOR = "H_AUTHOR",
     H_TEAM = "H_TEAM",
     A_ARTICLE = "A_ARTICLE",

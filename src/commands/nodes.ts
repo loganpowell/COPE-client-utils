@@ -114,9 +114,7 @@ const list = async (
         LN: queries.listNodes,
     }
 
-    const CA =
-        isArray(createdAt) ? createdAt :
-        [ null, null ]
+    const CA = isArray(createdAt) ? createdAt : [ null, null ]
 
     const V = {
         X: cleaned,
@@ -138,12 +136,8 @@ const list = async (
         },
     }
 
-    const CAA =
-        isArray(createdAt) ? { createdAt } :
-        { createdAt: undefined }
-    const CAR =
-        !isArray(createdAt) ? { createdAt } :
-        { createdAt: undefined }
+    const CAA = isArray(createdAt) ? { createdAt } : { createdAt: undefined }
+    const CAR = !isArray(createdAt) ? { createdAt } : { createdAt: undefined }
 
     const err_msg = (needs, has) =>
         `Must provide \`${needs}\` when using \`${has}\` with \`createdAt\``
@@ -174,13 +168,11 @@ const list = async (
     // @ts-ignore
     const { data } = await CRUD({ ...match, authMode })
 
-    return
-
-
-        data.nodesByOwnerStatus ? data.nodesByOwnerStatus.items :
-        data.nodesByStatusType ? data.nodesByStatusType.items :
-        data.listNodes ? data.listNodes.items :
-        data
+    return data.nodesByOwnerStatus
+        ? data.nodesByOwnerStatus.items
+        : data.nodesByStatusType
+          ? data.nodesByStatusType.items
+          : data.listNodes ? data.listNodes.items : data
 }
 
 export const node = {

@@ -6,11 +6,11 @@ export const log = console.log
 export const json = arg => JSON.stringify(arg, null, 2)
 export const JL = arg => log(json(arg))
 
-export const isEmpty = coll =>
-
-        isPlainObject(coll) && !Object.keys(coll).length ? true :
-        isArray(coll) && !coll.length ? true :
-        false
+export const isEmpty = coll => {
+    return isPlainObject(coll) && !Object.keys(coll).length
+        ? true
+        : isArray(coll) && !coll.length ? true : false
+}
 
 /**
  * @example
@@ -54,14 +54,11 @@ export const isEmpty = coll =>
  */
 export const collapse = (coll, sep = "/", crumbs = [], acc = {}) => {
     //log({ coll })
-    coll =
-
-            coll === null ? {} :
-            coll
+    coll = coll === null ? {} : coll
     Object.entries(coll).forEach(([ key, val ]) => {
-
-            isArray(val) || isPlainObject(val) ? collapse(val, sep, [ ...crumbs, key ], acc) :
-            (acc[[ ...crumbs, key ].join(sep)] = val)
+        isArray(val) || isPlainObject(val)
+            ? collapse(val, sep, [ ...crumbs, key ], acc)
+            : (acc[[ ...crumbs, key ].join(sep)] = val)
     })
     return acc
 }

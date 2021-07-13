@@ -1,5 +1,3 @@
-/* tslint:disable */
-/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const onCreateAsset = /* GraphQL */ `
@@ -16,7 +14,7 @@ export const onCreateAsset = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const onUpdateAsset = /* GraphQL */ `
   subscription OnUpdateAsset($owner: String, $editors: String) {
     onUpdateAsset(owner: $owner, editors: $editors) {
@@ -31,7 +29,7 @@ export const onUpdateAsset = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const onDeleteAsset = /* GraphQL */ `
   subscription OnDeleteAsset($owner: String, $editors: String) {
     onDeleteAsset(owner: $owner, editors: $editors) {
@@ -46,7 +44,7 @@ export const onDeleteAsset = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const onCreateAssetPr = /* GraphQL */ `
   subscription OnCreateAssetPr($owner: String, $editors: String) {
     onCreateAssetPr(owner: $owner, editors: $editors) {
@@ -61,7 +59,7 @@ export const onCreateAssetPr = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const onUpdateAssetPr = /* GraphQL */ `
   subscription OnUpdateAssetPr($owner: String, $editors: String) {
     onUpdateAssetPr(owner: $owner, editors: $editors) {
@@ -76,7 +74,7 @@ export const onUpdateAssetPr = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const onDeleteAssetPr = /* GraphQL */ `
   subscription OnDeleteAssetPr($owner: String, $editors: String) {
     onDeleteAssetPr(owner: $owner, editors: $editors) {
@@ -91,7 +89,7 @@ export const onDeleteAssetPr = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const onCreateNode = /* GraphQL */ `
   subscription OnCreateNode($owner: String) {
     onCreateNode(owner: $owner) {
@@ -142,7 +140,7 @@ export const onCreateNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onUpdateNode = /* GraphQL */ `
   subscription OnUpdateNode($owner: String) {
     onUpdateNode(owner: $owner) {
@@ -193,7 +191,7 @@ export const onUpdateNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onDeleteNode = /* GraphQL */ `
   subscription OnDeleteNode($owner: String) {
     onDeleteNode(owner: $owner) {
@@ -244,7 +242,7 @@ export const onDeleteNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onCreateEdge = /* GraphQL */ `
   subscription OnCreateEdge($owner: String) {
     onCreateEdge(owner: $owner) {
@@ -267,7 +265,7 @@ export const onCreateEdge = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onUpdateEdge = /* GraphQL */ `
   subscription OnUpdateEdge($owner: String) {
     onUpdateEdge(owner: $owner) {
@@ -290,7 +288,7 @@ export const onUpdateEdge = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onDeleteEdge = /* GraphQL */ `
   subscription OnDeleteEdge($owner: String) {
     onDeleteEdge(owner: $owner) {
@@ -313,7 +311,7 @@ export const onDeleteEdge = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onCreateEdgeNode = /* GraphQL */ `
   subscription OnCreateEdgeNode($owner: String) {
     onCreateEdgeNode(owner: $owner) {
@@ -353,7 +351,7 @@ export const onCreateEdgeNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onUpdateEdgeNode = /* GraphQL */ `
   subscription OnUpdateEdgeNode($owner: String) {
     onUpdateEdgeNode(owner: $owner) {
@@ -393,7 +391,7 @@ export const onUpdateEdgeNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const onDeleteEdgeNode = /* GraphQL */ `
   subscription OnDeleteEdgeNode($owner: String) {
     onDeleteEdgeNode(owner: $owner) {
@@ -433,4 +431,4 @@ export const onDeleteEdgeNode = /* GraphQL */ `
       }
     }
   }
-`;
+`

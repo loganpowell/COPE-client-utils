@@ -6,5 +6,5 @@ export declare const node: {
     read: ({ id }: api.GetNodeQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
     update: ({ id, type, status, owner, createdAt, updatedAt }: api.UpdateNodeInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
     delete: ({ id }: api.DeleteNodeInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
-    list: ({ filter, limit, nextToken, owner, sortDirection, status, createdAt, type }: ListNodesInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<void>;
+    list: ({ filter, limit, nextToken, owner, sortDirection, status, createdAt, type }: ListNodesInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
 };
