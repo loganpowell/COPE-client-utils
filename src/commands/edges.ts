@@ -1,97 +1,46 @@
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
-
+import { v4 as uuid } from "uuid"
 import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 
-import { CRUD, gen_link_input } from "../utils"
-import { LinkInput } from "../api"
-import { node } from "./nodes"
-
-const edgeCreate = async (
-    { id, type, createdAt, owner, weight }: api.CreateEdgeInput,
-    authMode?: GRAPHQL_AUTH_MODE,
-) => {
-    const { data: { createEdge } } = await CRUD({
-        query: mutations.createEdge,
-        variables: {
-            input: {
-                id,
-                weight,
-                type,
-                createdAt,
-                owner,
-            },
-        },
-        authMode,
-    })
-
-    return createEdge
-}
-
-const edgeNodeCreate = async (
-    { edge_id, node_id, id, owner }: api.CreateEdgeNodeInput,
-    authMode?: GRAPHQL_AUTH_MODE,
-) => {
-    const { data: { createEdgeNode } } = await CRUD({
-        query: mutations.createEdgeNode,
-        variables: {
-            input: {
-                edge_id,
-                node_id,
-                id,
-                owner,
-            },
-        },
-        authMode,
-    })
-    return createEdgeNode
-}
-/*
-* @example
-* gen_link_input({
-*    nodes : [ { id: "this is a reference" }, { id: "alias", status: "A", type: "B" } ],
-*    edge  : { id: "also a (edge) reference" }
-* })
-* // => { nodes: [ 
-* // =>     null, 
-* // =>     { id: 'bebc9d30-f844-4579-892d-e7b177c2a4e7', status: 'A', type: 'B' } 
-* // =>   ], 
-* // =>   edge: null, // reference = no new edge
-* // =>   edge_nodes: [ 
-* // =>      { edge_id: 'also a (edge) reference', node_id: 'this is a reference' }, 
-* // =>      { edge_id: 'also a (edge) reference', node_id: 'bebc9d30-f844-4579-892d-e7b177c2a4e7' } 
-* // =>   ] 
-* // => } 
-*/
-
-//const genLink = async ({}: )
+import { CRUD } from "../utils"
 
 /**
  * @example response 
-   { id: '942542de-9686-428e-ab33-de9d3bedb9af', 
-     type: 'HAS_CHILD', 
-     createdAt: '2021-07-05T21:15:00.042Z', 
-     owner: 'loganp@tepper.cmu.edu', 
-     weight: null, 
-     updatedAt: '2021-07-05T21:15:00.042Z', 
-     nodes:  
-      { items:  
-         [ { id: '2e7a0166-f90e-4d8f-846a-0482b69d32ed', 
-             edge_id: '942542de-9686-428e-ab33-de9d3bedb9af', 
-             node_id: 'f844eb36-0b70-45e5-9c64-2f0d6b7743e4', 
-             owner: 'loganp@tepper.cmu.edu', 
-             createdAt: '2021-07-05T21:15:00.129Z', 
-             updatedAt: '2021-07-05T21:15:00.129Z', 
-             editors: null }, 
-           { id: '4acebdfe-5c66-4ccd-926b-1f02c68be363', 
-             edge_id: '942542de-9686-428e-ab33-de9d3bedb9af', 
-             node_id: 'longrandomstringthatsmyID1', 
-             owner: 'loganp@tepper.cmu.edu', 
-             createdAt: '2021-07-05T21:15:00.117Z', 
-             updatedAt: '2021-07-05T21:15:00.117Z', 
-             editors: null } ], 
-        nextToken: null } } } 
+{
+  "data": {
+    "getEdge": {
+      "id": "testedge2",
+      "type": "HAS_CHILD",
+      "createdAt": "2021-07-17T17:25:24.477Z",
+      "owner": "logan@hyperlocals.com",
+      "weight": null,
+      "updatedAt": "2021-07-17T17:25:24.477Z",
+      "nodes": {
+        "items": [
+          {
+            "id": "edgeNode5",
+            "edge_id": "testedge2",
+            "node_id": "testNode1",
+            "owner": "logan@hyperlocals.com",
+            "createdAt": "2021-07-17T17:25:24.543Z",
+            "updatedAt": "2021-07-17T17:25:24.543Z"
+          },
+          {
+            "id": "edgeNode6",
+            "edge_id": "testedge2",
+            "node_id": "testNode3",
+            "owner": "logan@hyperlocals.com",
+            "createdAt": "2021-07-17T17:25:24.549Z",
+            "updatedAt": "2021-07-17T17:25:24.549Z"
+          }
+        ],
+        "nextToken": null
+      }
+    }
+  }
+}
  */
 const edgeRead = async ({ id }: api.GetEdgeQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
     const { data: { getEdge } } = await CRUD({
@@ -101,8 +50,6 @@ const edgeRead = async ({ id }: api.GetEdgeQueryVariables, authMode?: GRAPHQL_AU
     })
     return getEdge
 }
-
-// @model (queries: null) == NO edgeNodeRead
 
 const edgeUpdate = async (
     { id, createdAt, owner, type, weight }: api.UpdateEdgeInput,
@@ -125,82 +72,116 @@ const edgeUpdate = async (
     return updateEdge
 }
 
-const edgeNodeUpdate = async (
-    { id, edge_id, node_id, owner }: api.UpdateEdgeNodeInput,
+const linkCreate = async (
+    { id = uuid(), type = api.EdgeType.HAS_CHILD, weight = 0, from_node_id, to_node_id },
     authMode?: GRAPHQL_AUTH_MODE,
 ) => {
-    // @model (queries: null) == NO edgeNodeRead
-    const { data: { updateEdgeNode } } = await CRUD({
-        query: mutations.updateEdgeNode,
-        variables: {
-            input: {
-                id,
-                edge_id,
-                node_id,
-                owner,
-            },
-        },
-        authMode,
-    })
-    return updateEdgeNode
-}
-
-const edgeDelete = async ({ id }: api.DeleteEdgeInput, authMode?: GRAPHQL_AUTH_MODE) => {
-    const { data: { deleteEdge } } = await CRUD({
-        query: mutations.deleteEdge,
-        variables: { input: { id } },
-        authMode,
-    })
-    return deleteEdge
-}
-
-const edgeNodeDelete = async ({ id }: api.DeleteEdgeNodeInput, authMode?: GRAPHQL_AUTH_MODE) => {
-    const { data: { deleteEdgeNode } } = await CRUD({
-        query: mutations.deleteEdgeNode,
-        variables: { input: { id } },
-        authMode,
-    })
-    return deleteEdgeNode
-}
-
-const linkCreate = async ({ edge, nodes }: LinkInput, authMode?: GRAPHQL_AUTH_MODE) => {
-    const { nodes: _nodes, edge: _edge, edge_nodes } = gen_link_input({
-        edge,
-        nodes,
-    })
-
-    console.log({ edge_nodes, _nodes, _edge })
-
     // prettier-ignore
-    const NODES = await Promise.all( _nodes.map(n => !n ? null : node.create(n, authMode)))
+    const mutation = /* GraphQL */ `
+        mutation{
+            edge: createEdge(input: { 
+                id: "${id}", 
+                type: ${type}, 
+                weight: ${weight} 
+            }) { id }
+            edgeNodeFrom: createEdgeNode(input: { 
+                id: "${id + '|' + from_node_id}", 
+                edge_id: "${id}", 
+                node_id: "${from_node_id}"
+            }) { id } 
+            edgeNodeTo: createEdgeNode(input: {
+                 id: "${id + '|' + to_node_id}", 
+                 edge_id: "${id}", 
+                 node_id: "${to_node_id}"
+            }) { id }
+        }
+    `
 
-    const EDGE = await edgeCreate(_edge, authMode)
+    const results = await CRUD({
+        query: mutation,
+        variables: {},
+        authMode,
+    })
 
-    const EDGENODES = await Promise.all(edge_nodes.map(en => edgeNodeCreate(en, authMode)))
-
-    //console.log({ newNodes, newEdge, newEdgeNodes })
-    return { NODES, EDGE, EDGENODES }
+    return results
 }
-
-// TODO
-const linkDelete = async ({ id }: api.DeleteEdgeInput, authMode?: GRAPHQL_AUTH_MODE) => {
-    // must delete edgeNodes before edge, else edges return
-    // invalid `null`s
-    const { nodes: { items } } = await edgeRead({ id }, authMode)
-
-    console.log("edgeDelete:", { items })
-
-    const deleted_edgeNodes = await Promise.all(
-        items.map(({ id /*, edge_id, node_id */ }) => edgeNodeDelete({ id })),
-    )
-
-    const { nodes: { items: deleted_items } } = await edgeDelete({ id })
-
-    return { deleted_edgeNodes, deleted_items }
+/**
+ * @example response 
+{
+  "data": {
+    "getEdge": {
+      "id": "testedge2",
+      "type": "HAS_CHILD",
+      "createdAt": "2021-07-17T17:25:24.477Z",
+      "owner": "logan@hyperlocals.com",
+      "weight": null,
+      "updatedAt": "2021-07-17T17:25:24.477Z",
+      "nodes": {
+        "items": [
+          {
+            "id": "edgeNode5",
+            "edge_id": "testedge2",
+            "node_id": "testNode1",
+            "owner": "logan@hyperlocals.com",
+            "createdAt": "2021-07-17T17:25:24.543Z",
+            "updatedAt": "2021-07-17T17:25:24.543Z"
+          },
+          {
+            "id": "edgeNode6",
+            "edge_id": "testedge2",
+            "node_id": "testNode3",
+            "owner": "logan@hyperlocals.com",
+            "createdAt": "2021-07-17T17:25:24.549Z",
+            "updatedAt": "2021-07-17T17:25:24.549Z"
+          }
+        ],
+        "nextToken": null
+      }
+    }
+  }
 }
+ */
+const linkDelete = async ({ id }, authMode?: GRAPHQL_AUTH_MODE) => {
+    const { data: { getEdge } } = await CRUD({
+        query: queries.getEdge,
+        variables: { id },
+        authMode,
+    })
+    if (!getEdge) {
+        console.warn("No Edge found with this id:", id)
+        return
+    }
+    const { nodes: { items } } = getEdge
+    if (!items.length) {
+        console.warn("No items found for this Edge:", id)
+        return
+    }
+    const [ from, to ] = items.map(({ id }) => id)
+    const mutation = /* GraphQL */ `
+        mutation {
+            edge: deleteEdge(input: { 
+                id: "${id}"
+            }) { id }
+            edgeNodeFrom: deleteEdgeNode(input: { 
+                id: "${from}"
+            }) { id } 
+            edgeNodeTo: deleteEdgeNode(input: {
+                 id: "${to}"
+            }) { id }
+        }
+    `
 
+    const results = await CRUD({
+        query: mutation,
+        variables: {},
+        authMode,
+    })
+
+    return results
+}
 export const edge = {
     create: linkCreate,
     read: edgeRead,
+    update: edgeUpdate,
     delete: linkDelete,
 }

@@ -62,7 +62,7 @@ const gen_id_references = ({ edge, nodes }, refs = {}) => {
         e1_UUID,
         n1_new: { id: n1_UUID, status: NodeStatus.DRAFT, ...n1 },
         n2_new: { id: n2_UUID, status: NodeStatus.DRAFT, ...n2 },
-        e1_new: { id: e1_UUID, ...e1 }
+        e1_new: { id: e1_UUID, ...e1 },
     }
 }
 
@@ -81,14 +81,14 @@ const gen_id_references = ({ edge, nodes }, refs = {}) => {
  * })
  * // => { nodes: [ 
  * // =>     null, 
- * // =>     { id: 'bebc9d30-f844-4579-892d-e7b177c2a4e7', status: 'A', type: 'B' } 
- * // =>   ], 
- * // =>   edge: null, // reference = no new edge
+ * // =>     { id: 'bebc9d30-f844-4579-892d-e7b177c2a4e7', status: 'A', type: 'B' } 
+ * // =>   ], 
+ * // =>   edge: null, // reference = no new edge
  * // =>   edge_nodes: [ 
- * // =>      { edge_id: 'also a (edge) reference', node_id: 'this is a reference' }, 
+ * // =>      { edge_id: 'also a (edge) reference', node_id: 'this is a reference' }, 
  * // =>      { edge_id: 'also a (edge) reference', node_id: 'bebc9d30-f844-4579-892d-e7b177c2a4e7' } 
  * // =>   ] 
- * // => } 
+ * // => } 
  */
 export const gen_link_input = ({ edge, nodes }: LinkInput, refs = {}): Relation => {
     const ids = gen_id_references({ edge, nodes }, refs)
@@ -106,19 +106,25 @@ export const gen_link_input = ({ edge, nodes }: LinkInput, refs = {}): Relation 
         e1_new, 
     } = ids
 
+    const edge_id = is_alias(e1_id) ? e1_UUID : e1_id
+    const needs_id = n => !n || is_alias(n)
+    const node_id1 = needs_id(n1_id) ? n1_UUID : n1_id
+    const node_id2 = needs_id(n2_id) ? n2_UUID : n2_id
     return {
-        nodes: [ !n1_id || is_alias(n1_id) ? n1_new : null, !n2_id || is_alias(n2_id) ? n2_new : null ],
+        nodes: [ needs_id(n1_id) ? n1_new : null, needs_id(n2_id) ? n2_new : null ],
         edge: e1_new,
         edge_nodes: [
             {
-                edge_id: is_alias(e1_id) ? e1_UUID : e1_id,
-                node_id: !n1_id || is_alias(n1_id) ? n1_UUID : n1_id
+                id: edge_id + node_id1,
+                edge_id,
+                node_id: node_id1,
             },
             {
-                edge_id: is_alias(e1_id) ? e1_UUID : e1_id,
-                node_id: !n2_id || is_alias(n2_id) ? n2_UUID : n2_id
-            }
-        ]
+                id: edge_id + node_id2,
+                edge_id,
+                node_id: node_id2,
+            },
+        ],
     }
 }
 
@@ -140,30 +146,30 @@ export const gen_link_input = ({ edge, nodes }: LinkInput, refs = {}): Relation 
  *         edge  : { id: "this is long enough to be unique", type: 'TO', weight: 1 }
  *     }
  * ])
- * //=>{ refs:  
- * //=>   { 001: '919d427a-e28d-44e4-a69b-0f8249205c5d', 
- * //=>     002: 'magic id for 002', 
- * //=>     '1:1': 'f0406b6e-5ecb-4451-a248-6b4702434aaf' }, 
- * //=>  links:  
- * //=>   [ { nodes:  
- * //=>        [ { id: '919d427a-e28d-44e4-a69b-0f8249205c5d', status: 'A', type: 'D' }, 
- * //=>          { id: 'magic id for 002', status: 'H', type: 'I' } ], 
- * //=>       edge:  
- * //=>        { id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', type: 'FROM', weight: null }, 
- * //=>       edge_nodes:  
- * //=>        [ { edge_id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', node_id: '919d427a-e28d-44e4-a69b-0f8249205c5d' }, 
- * //=>          { edge_id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', node_id: 'magic id for 002' } ] 
- * //=>     }, 
- * //=>     { nodes:  
- * //=>        [ { id: '919d427a-e28d-44e4-a69b-0f8249205c5d', status: 'A', type: 'D' }, 
- * //=>          { id: 'magic id for 002', status: 'A', type: 'B' } ], 
- * //=>       edge: { id: "this is long enough to be unique", type: 'TO', weight: 1 }, 
- * //=>       edge_nodes:  
- * //=>        [ { edge_id: 'this is long enough to be unique', 
- * //=>            node_id: '919d427a-e28d-44e4-a69b-0f8249205c5d' }, 
- * //=>          { edge_id: 'this is long enough to be unique', 
+ * //=>{ refs:  
+ * //=>   { 001: '919d427a-e28d-44e4-a69b-0f8249205c5d', 
+ * //=>     002: 'magic id for 002', 
+ * //=>     '1:1': 'f0406b6e-5ecb-4451-a248-6b4702434aaf' }, 
+ * //=>  links:  
+ * //=>   [ { nodes:  
+ * //=>        [ { id: '919d427a-e28d-44e4-a69b-0f8249205c5d', status: 'A', type: 'D' }, 
+ * //=>          { id: 'magic id for 002', status: 'H', type: 'I' } ], 
+ * //=>       edge:  
+ * //=>        { id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', type: 'FROM', weight: null }, 
+ * //=>       edge_nodes:  
+ * //=>        [ { edge_id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', node_id: '919d427a-e28d-44e4-a69b-0f8249205c5d' }, 
+ * //=>          { edge_id: 'f0406b6e-5ecb-4451-a248-6b4702434aaf', node_id: 'magic id for 002' } ] 
+ * //=>     }, 
+ * //=>     { nodes:  
+ * //=>        [ { id: '919d427a-e28d-44e4-a69b-0f8249205c5d', status: 'A', type: 'D' }, 
+ * //=>          { id: 'magic id for 002', status: 'A', type: 'B' } ], 
+ * //=>       edge: { id: "this is long enough to be unique", type: 'TO', weight: 1 }, 
+ * //=>       edge_nodes:  
+ * //=>        [ { edge_id: 'this is long enough to be unique', 
+ * //=>            node_id: '919d427a-e28d-44e4-a69b-0f8249205c5d' }, 
+ * //=>          { edge_id: 'this is long enough to be unique', 
  * //=>            node_id: 'magic id for 002' } ] } ] 
- * //=>     } 
+ * //=>     } 
  */
 export const gen_link_cluster_input = (configs: Array<LinkInput>): LinksConfig => {
     return configs.reduce(
@@ -179,7 +185,7 @@ export const gen_link_cluster_input = (configs: Array<LinkInput>): LinksConfig =
             Object.entries({
                 n1_id: is_alias(n1_id),
                 n2_id: is_alias(n2_id),
-                e1_id: is_alias(e1_id)
+                e1_id: is_alias(e1_id),
             }).forEach(([ key, is_alias ]) => {
                 if (is_alias) {
                     // id is an alias, add ref UUID
@@ -200,7 +206,7 @@ export const gen_link_cluster_input = (configs: Array<LinkInput>): LinksConfig =
             //console.log({ res })
             return res
         },
-        { refs: {}, links: [] }
+        { refs: {}, links: [] },
     )
 }
 
@@ -272,6 +278,6 @@ export const gen_assets_for_node_input = (config: AssetGroupInput): AssetConfig 
 
     return {
         node: { id: node_id, ...ns },
-        assets: assets_linked
+        assets: assets_linked,
     }
 }

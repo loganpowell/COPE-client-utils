@@ -1,14 +1,22 @@
+import dotenv from "dotenv"
 import aws_exports from "../../src/aws-exports"
-import { NodeStatus, NodeType, AssetType, EdgeType, ModelSortDirection } from "../../lib/graphql/API"
+import {
+    NodeStatus,
+    NodeType,
+    AssetType,
+    EdgeType,
+    ModelSortDirection,
+} from "../../lib/graphql/API"
 import { configureWith, auth, node, asset, assetPr, edge } from "../../lib/commands"
 
+dotenv.config()
 configureWith(aws_exports)
 
 const id = "longrandomstringthatsmyID2"
 const _node = {
     status : NodeStatus.DRAFT,
     type   : NodeType.A_GEM,
-    id
+    id,
 }
 
 const _asset = {
@@ -17,11 +25,11 @@ const _asset = {
     name    : "alt text for image 2",
     content :
         "https://public.govdelivery.com/system/images/72747/original/Census%20Registered%20Banner%20%28High-res%29.png?1553871440",
-    type    : AssetType.A_IMAGE
+    type    : AssetType.A_IMAGE,
 }
 
 auth
-    .logIn({ user: "loganp@tepper.cmu.edu", pass: "testingabc" })
+    .logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
     .catch(e => console.error("error:", JSON.stringify(e, null, 4)))
     .then(async user => {
         console.log({ user })
@@ -40,7 +48,7 @@ auth
         //return { existing_node }
         // TODO: discuss API with Tommy
 
-        const assetPr_id = "id2"
+        //const assetPr_id = "id2"
 
         //const new_assetPr = await assetPr.create({
         //    ..._asset,
@@ -92,21 +100,30 @@ auth
 
         //let res = await node.list({ type: NodeType.A_PAGE })
         //let res = await node.list({ filter, limit, nextToken, owner, sortDirection, status, statusCreatedAt, type, typeCreatedAt })
-        let res = await node.list({
-            //status        : NodeStatus.DRAFT,
-            //type          : NodeType.A_GEM,
-            //filter,
-            limit : 2
-            //nextToken :
-            //    "eyJvd25lciI6eyJTIjoibG9nYW5wQHRlcHBlci5jbXUuZWR1In0sInN0YXR1cyNjcmVhdGVkQXQiOnsiUyI6IkRSQUZUIzIwMjEtMDctMDdUMTI6MTM6NDAuMzY2WiJ9LCJpZCI6eyJTIjoibG9uZ3JhbmRvbXN0cmluZ3RoYXRzbXlJRDEifX0",
-            //owner         : "loganp@tepper.cmu.edu",
-            //sortDirection : ModelSortDirection.ASC
+        //let res = await node.list({
+        //    //status        : NodeStatus.DRAFT,
+        //    //type          : NodeType.A_GEM,
+        //    //filter,
+        //    limit : 2
+        //    //nextToken :
+        //    //    "eyJvd25lciI6eyJTIjoibG9nYW5wQHRlcHBlci5jbXUuZWR1In0sInN0YXR1cyNjcmVhdGVkQXQiOnsiUyI6IkRSQUZUIzIwMjEtMDctMDdUMTI6MTM6NDAuMzY2WiJ9LCJpZCI6eyJTIjoibG9uZ3JhbmRvbXN0cmluZ3RoYXRzbXlJRDEifX0",
+        //    //owner         : "loganp@tepper.cmu.edu",
+        //    //sortDirection : ModelSortDirection.ASC
 
-            //createdAt : [ "2020", "2022" ]
-            //createdAt     : "2021"
-        })
+        //    //createdAt : [ "2020", "2022" ]
+        //    //createdAt     : "2021"
+        //})
 
-        let res2 = node.list({})
+        //let res2 = node.list({})
 
-        return { res }
+        //const created = await edge.create({
+        //    from_node_id : "testNode1",
+        //    to_node_id   : "testNode3",
+        //    id           : "testEdge04",
+        //    type         : EdgeType.HAS_NEXT,
+        //})
+
+        const deleted = await edge.delete({ id: "testEdge04" })
+
+        return { deleted }
     }) //?
