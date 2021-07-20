@@ -7,7 +7,7 @@ import * as api from "../graphql/API"
 import { CRUD } from "../utils"
 
 const assetPrCreate = async (
-    { name, node_id, type, content, createdAt, editors, id, owner }: api.CreateAssetPrInput,
+    { name, node_id, type, content, createdAt, editors, id, owner, index }: api.CreateAssetPrInput,
     authMode?: GRAPHQL_AUTH_MODE,
 ) => {
     const { data: { createAssetPr } } = await CRUD({
@@ -22,6 +22,7 @@ const assetPrCreate = async (
                 editors,
                 id,
                 owner,
+                index,
             },
         },
         authMode,
@@ -40,7 +41,7 @@ const assetPrRead = async ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAP
 }
 
 const assetPrUpdate = async (
-    { id, content, createdAt, editors, name, node_id, owner, type }: api.UpdateAssetPrInput,
+    { id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetPrInput,
     authMode?: GRAPHQL_AUTH_MODE,
 ) => {
     const {
@@ -51,6 +52,7 @@ const assetPrUpdate = async (
         type: _t,
         owner: _o,
         node_id: _no,
+        index: _i,
     } = await assetPrRead({ id })
     const { data: { updateAssetPr } } = await CRUD({
         query: mutations.updateAssetPr,
@@ -64,6 +66,7 @@ const assetPrUpdate = async (
                 node_id: node_id || _no,
                 owner: owner || _o,
                 type: type || _t,
+                index: index || _i,
             },
         },
         authMode,
@@ -86,12 +89,14 @@ const assetPrConvert = async (
     { id }: api.GetAssetPrQueryVariables,
     authMode?: GRAPHQL_AUTH_MODE,
 ) => {
-    const { node_id, createdAt, type, name, owner, content, editors } = await assetPrDelete({ id })
+    const { node_id, createdAt, type, name, owner, content, editors, index } = await assetPrDelete({
+        id,
+    })
 
     const { data: { createAsset } } = await CRUD({
         query: mutations.createAsset,
         variables: {
-            input: { id, node_id, createdAt, type, name, owner, content, editors },
+            input: { id, node_id, createdAt, type, name, owner, content, editors, index },
         },
         authMode,
     })

@@ -7,7 +7,7 @@ import * as api from "../graphql/API"
 import { CRUD } from "../utils"
 
 const assetCreate = async (
-    { name, node_id, type, content, createdAt, editors, id, owner }: api.CreateAssetInput,
+    { name, node_id, type, content, createdAt, editors, id, owner, index }: api.CreateAssetInput,
     authMode?: GRAPHQL_AUTH_MODE,
 ) => {
     const { data: { createAsset } } = await CRUD({
@@ -22,6 +22,7 @@ const assetCreate = async (
                 editors,
                 id,
                 owner,
+                index,
             },
         },
         authMode,
@@ -40,7 +41,7 @@ const assetRead = async ({ id }: api.GetAssetQueryVariables, authMode?: GRAPHQL_
 }
 
 const assetUpdate = async (
-    { id, content, createdAt, editors, name, node_id, owner, type }: api.UpdateAssetInput,
+    { id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetInput,
     authMode?: GRAPHQL_AUTH_MODE,
 ) => {
     const {
@@ -51,6 +52,7 @@ const assetUpdate = async (
         type: _t,
         owner: _o,
         node_id: _no,
+        index: _i,
     } = await assetRead({ id })
     const { data: { updateAsset } } = await CRUD({
         query: mutations.updateAsset,
@@ -64,6 +66,7 @@ const assetUpdate = async (
                 node_id: node_id || _no,
                 owner: owner || _o,
                 type: type || _t,
+                index: index || _i,
             },
         },
         authMode,
@@ -83,12 +86,14 @@ const assetDelete = async ({ id }: api.DeleteAssetInput, authMode?: GRAPHQL_AUTH
 }
 
 const assetConvert = async ({ id }: api.GetAssetQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
-    const { node_id, createdAt, type, name, owner, content, editors } = await assetDelete({ id })
+    const { node_id, createdAt, type, name, owner, content, editors, index } = await assetDelete({
+        id,
+    })
 
     const { data: { createAssetPr } } = await CRUD({
         query: mutations.createAssetPr,
         variables: {
-            input: { id, node_id, createdAt, type, name, owner, content, editors },
+            input: { id, node_id, createdAt, type, name, owner, content, editors, index },
         },
         authMode,
     })

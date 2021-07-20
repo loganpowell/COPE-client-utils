@@ -4,6 +4,7 @@ export declare type CreateAssetInput = {
     createdAt?: string | null;
     type: AssetType;
     name: string;
+    index?: number | null;
     owner?: string | null;
     content?: string | null;
     editors?: Array<string | null> | null;
@@ -35,6 +36,7 @@ export declare type ModelAssetConditionInput = {
     createdAt?: ModelStringInput | null;
     type?: ModelAssetTypeInput | null;
     name?: ModelStringInput | null;
+    index?: ModelIntInput | null;
     content?: ModelStringInput | null;
     and?: Array<ModelAssetConditionInput | null> | null;
     or?: Array<ModelAssetConditionInput | null> | null;
@@ -95,6 +97,17 @@ export declare type ModelAssetTypeInput = {
     eq?: AssetType | null;
     ne?: AssetType | null;
 };
+export declare type ModelIntInput = {
+    ne?: number | null;
+    eq?: number | null;
+    le?: number | null;
+    lt?: number | null;
+    ge?: number | null;
+    gt?: number | null;
+    between?: Array<number | null> | null;
+    attributeExists?: boolean | null;
+    attributeType?: ModelAttributeTypes | null;
+};
 export declare type Asset = {
     __typename: "Asset";
     id: string;
@@ -102,6 +115,7 @@ export declare type Asset = {
     createdAt: string;
     type: AssetType;
     name: string;
+    index?: number | null;
     owner?: string | null;
     content?: string | null;
     editors?: Array<string | null> | null;
@@ -124,6 +138,7 @@ export declare type AssetPr = {
     createdAt: string;
     type: AssetType;
     name: string;
+    index?: number | null;
     owner?: string | null;
     content?: string | null;
     editors?: Array<string | null> | null;
@@ -135,6 +150,7 @@ export declare type UpdateAssetInput = {
     createdAt?: string | null;
     type?: AssetType | null;
     name?: string | null;
+    index?: number | null;
     owner?: string | null;
     content?: string | null;
     editors?: Array<string | null> | null;
@@ -148,6 +164,7 @@ export declare type CreateAssetPrInput = {
     createdAt?: string | null;
     type: AssetType;
     name: string;
+    index?: number | null;
     owner?: string | null;
     content?: string | null;
     editors?: Array<string | null> | null;
@@ -157,6 +174,7 @@ export declare type ModelAssetPrConditionInput = {
     createdAt?: ModelStringInput | null;
     type?: ModelAssetTypeInput | null;
     name?: ModelStringInput | null;
+    index?: ModelIntInput | null;
     content?: ModelStringInput | null;
     and?: Array<ModelAssetPrConditionInput | null> | null;
     or?: Array<ModelAssetPrConditionInput | null> | null;
@@ -168,6 +186,7 @@ export declare type UpdateAssetPrInput = {
     createdAt?: string | null;
     type?: AssetType | null;
     name?: string | null;
+    index?: number | null;
     owner?: string | null;
     content?: string | null;
     editors?: Array<string | null> | null;
@@ -185,8 +204,8 @@ export declare type CreateNodeInput = {
 };
 export declare enum NodeStatus {
     DRAFT = "DRAFT",
-    PUBLISHED = "PUBLISHED",
     REVIEWED = "REVIEWED",
+    PUBLISHED = "PUBLISHED",
     EDITED = "EDITED",
     DELETED = "DELETED"
 }
@@ -310,17 +329,6 @@ export declare type ModelEdgeTypeInput = {
     eq?: EdgeType | null;
     ne?: EdgeType | null;
 };
-export declare type ModelIntInput = {
-    ne?: number | null;
-    eq?: number | null;
-    le?: number | null;
-    lt?: number | null;
-    ge?: number | null;
-    gt?: number | null;
-    between?: Array<number | null> | null;
-    attributeExists?: boolean | null;
-    attributeType?: ModelAttributeTypes | null;
-};
 export declare type UpdateEdgeInput = {
     id: string;
     type?: EdgeType | null;
@@ -359,6 +367,7 @@ export declare type ModelAssetFilterInput = {
     createdAt?: ModelStringInput | null;
     type?: ModelAssetTypeInput | null;
     name?: ModelStringInput | null;
+    index?: ModelIntInput | null;
     owner?: ModelStringInput | null;
     content?: ModelStringInput | null;
     editors?: ModelStringInput | null;
@@ -398,6 +407,7 @@ export declare type ModelAssetPrFilterInput = {
     createdAt?: ModelStringInput | null;
     type?: ModelAssetTypeInput | null;
     name?: ModelStringInput | null;
+    index?: ModelIntInput | null;
     owner?: ModelStringInput | null;
     content?: ModelStringInput | null;
     editors?: ModelStringInput | null;
@@ -487,6 +497,7 @@ export declare type CreateAssetMutation = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -505,6 +516,7 @@ export declare type UpdateAssetMutation = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -523,6 +535,7 @@ export declare type DeleteAssetMutation = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -541,6 +554,7 @@ export declare type CreateAssetPrMutation = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -559,6 +573,7 @@ export declare type UpdateAssetPrMutation = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -577,6 +592,7 @@ export declare type DeleteAssetPrMutation = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -605,6 +621,7 @@ export declare type CreateNodeMutation = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -621,6 +638,7 @@ export declare type CreateNodeMutation = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -665,6 +683,7 @@ export declare type UpdateNodeMutation = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -681,6 +700,7 @@ export declare type UpdateNodeMutation = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -725,6 +745,7 @@ export declare type DeleteNodeMutation = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -741,6 +762,7 @@ export declare type DeleteNodeMutation = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1005,6 +1027,7 @@ export declare type GetAssetQuery = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1026,6 +1049,7 @@ export declare type ListAssetsQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1051,6 +1075,7 @@ export declare type AssetsByNodeQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1077,6 +1102,7 @@ export declare type AssetsByTypeQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1103,6 +1129,7 @@ export declare type AssetsByOwnerTypeQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1122,6 +1149,7 @@ export declare type GetAssetPrQuery = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1143,6 +1171,7 @@ export declare type ListAssetPrsQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1168,6 +1197,7 @@ export declare type AssetsPrByNodeQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1194,6 +1224,7 @@ export declare type AssetsPrByOwnerTypeQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1220,6 +1251,7 @@ export declare type AssetsPrByTypeQuery = {
             createdAt: string;
             type: AssetType;
             name: string;
+            index?: number | null;
             owner?: string | null;
             content?: string | null;
             editors?: Array<string | null> | null;
@@ -1249,6 +1281,7 @@ export declare type GetNodeQuery = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1265,6 +1298,7 @@ export declare type GetNodeQuery = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1479,6 +1513,7 @@ export declare type OnCreateAssetSubscription = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1497,6 +1532,7 @@ export declare type OnUpdateAssetSubscription = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1515,6 +1551,7 @@ export declare type OnDeleteAssetSubscription = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1533,6 +1570,7 @@ export declare type OnCreateAssetPrSubscription = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1551,6 +1589,7 @@ export declare type OnUpdateAssetPrSubscription = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1569,6 +1608,7 @@ export declare type OnDeleteAssetPrSubscription = {
         createdAt: string;
         type: AssetType;
         name: string;
+        index?: number | null;
         owner?: string | null;
         content?: string | null;
         editors?: Array<string | null> | null;
@@ -1596,6 +1636,7 @@ export declare type OnCreateNodeSubscription = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1612,6 +1653,7 @@ export declare type OnCreateNodeSubscription = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1655,6 +1697,7 @@ export declare type OnUpdateNodeSubscription = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1671,6 +1714,7 @@ export declare type OnUpdateNodeSubscription = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1714,6 +1758,7 @@ export declare type OnDeleteNodeSubscription = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;
@@ -1730,6 +1775,7 @@ export declare type OnDeleteNodeSubscription = {
                 createdAt: string;
                 type: AssetType;
                 name: string;
+                index?: number | null;
                 owner?: string | null;
                 content?: string | null;
                 editors?: Array<string | null> | null;

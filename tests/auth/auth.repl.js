@@ -7,7 +7,9 @@ import {
     EdgeType,
     ModelSortDirection,
 } from "../../lib/graphql/API"
-import { configureWith, auth, node, asset, assetPr, edge } from "../../lib/commands"
+import { configureWith, auth, node, asset, assetPr, edge, storagePut } from "../../lib/commands"
+import { createReadStream, readFile, readFileSync, promises } from "fs"
+import util from "util"
 
 dotenv.config()
 configureWith(aws_exports)
@@ -123,7 +125,12 @@ auth
         //    type         : EdgeType.HAS_NEXT,
         //})
 
-        const deleted = await edge.delete({ id: "testEdge04" })
+        //const deleted = await edge.delete({ id: "testEdge04" })
 
-        return { deleted }
+        //return { deleted }
+
+        const base = readFileSync("./tests/assets/bot-cropped.jpg")
+        const file = await Buffer.from(base)
+        const stuff = await storagePut({ file_name_w_extension: "bot-crops.jpg", object: file })
+        console.log({ file, stuff })
     }) //?

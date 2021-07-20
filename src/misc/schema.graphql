@@ -65,12 +65,60 @@ enum EdgeType {
 enum AssetType {
     # Documentation #############################
     """
-    A [description](http://spec.graphql.org/_Asset/#sec-Descriptions), 
+    A [description](http://spec.graphql.org/June2018/#sec-Descriptions), 
     here in parentheses, is `markdown` friendly!
     """
     DEPRECATED @deprecated(reason: "the reason is _also_ `markdown` friendly!") 
 
     # Multimedia Assets ##############################
+    TXT_TXT
+    TXT_CSV
+    TXT_CSS
+    TXT_HTML
+    TXT_XML
+    TXT_ICS
+
+    IMG_TIFF
+    IMG_JPEG
+    IMG_JPG
+    IMG_GIF
+    IMG_PNG
+    IMG_BMP
+    IMG_SVG
+    IMG_WEBP
+
+    AUD_WEBA
+    AUD_AAC
+    AUD_MP3
+    AUD_WAV
+    AUD_OGA
+    AUD_OPUS
+
+    VID_WEBM
+    VID_MP4
+    VID_OGV
+    VID_AVI
+    VID_TS
+    VID_MPEG
+
+    APP_JSON
+    APP_JSONLD
+    APP_RTF
+    APP_PDF
+    APP_DOC
+    APP_DOCX
+    APP_XLS
+    APP_XLSX
+    APP_PPT
+    APP_ODP
+    APP_ODS
+    APP_ODT
+    APP_ICO
+
+    ZIP_ZIP
+    ZIP_RAR
+    ZIP_7Z
+    
     A_IMAGE
     A_OG_IMAGE # open graph (https://ogp.me/#metadata)
     A_OG_AUDIO
