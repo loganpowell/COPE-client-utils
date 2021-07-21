@@ -146,6 +146,8 @@ export type Resource = {
   createdAt: string,
   type: AssetType,
   name: string,
+  index?: number | null,
+  owner?: string | null,
   content?: string | null,
   editors?: Array< string | null > | null,
 };

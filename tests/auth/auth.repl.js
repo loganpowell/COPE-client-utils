@@ -7,8 +7,19 @@ import {
     EdgeType,
     ModelSortDirection,
 } from "../../lib/graphql/API"
-import { configureWith, auth, node, asset, assetPr, edge, storagePut } from "../../lib/commands"
+import {
+    configureWith,
+    $global$,
+    auth,
+    node,
+    asset,
+    assetPr,
+    edge,
+    storeObject,
+} from "../../lib/commands"
 import { createReadStream, readFile, readFileSync, promises } from "fs"
+import FormData from "form-data"
+
 import util from "util"
 
 dotenv.config()
@@ -129,8 +140,44 @@ auth
 
         //return { deleted }
 
-        const base = readFileSync("./tests/assets/bot-cropped.jpg")
-        const file = await Buffer.from(base)
-        const stuff = await storagePut({ file_name_w_extension: "bot-crops.jpg", object: file })
-        console.log({ file, stuff })
+        // 🔥
+        function streamToBlob(stream, mimeType) {
+            if (mimeType != null && typeof mimeType !== "string") {
+                throw new Error("Invalid mimetype, expected string.")
+            }
+            return new Promise((resolve, reject) => {
+                const chunks = []
+                stream
+                    .on("data", chunk => chunks.push(chunk))
+                    .once("end", () => {
+                        const blob =
+                            mimeType != null
+                                ? new Blob(chunks, { type: mimeType })
+                                : new Blob(chunks)
+                        resolve(blob)
+                    })
+                    .once("error", reject)
+            })
+        }
+
+        const form = new FormData()
+
+        const file = createReadStream("./tests/assets/bot-cropped.jpg")
+
+        const blob = await streamToBlob(file, "image/jpeg")
+        form.append("form-file", file)
+        const fileForUpload = new File(
+            [ blob ],
+            "robot.jpg", //
+            { type: "image/jpeg" }, //
+        )
+        const stuff = await storeObject({
+            fileForUpload,
+            id            : "testingFileUpload1",
+            node_id       : "testNode1",
+            type          : AssetType.A_IMAGE,
+            index         : 1,
+        })
+        console.log({ stuff })
+        // 🔥
     }) //?

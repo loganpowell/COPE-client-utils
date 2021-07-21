@@ -1,5 +1,3 @@
-/* tslint:disable */
-/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const createAsset = /* GraphQL */ `
@@ -20,7 +18,7 @@ export const createAsset = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const updateAsset = /* GraphQL */ `
   mutation UpdateAsset(
     $input: UpdateAssetInput!
@@ -39,7 +37,7 @@ export const updateAsset = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const deleteAsset = /* GraphQL */ `
   mutation DeleteAsset(
     $input: DeleteAssetInput!
@@ -58,7 +56,7 @@ export const deleteAsset = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const createAssetPr = /* GraphQL */ `
   mutation CreateAssetPr(
     $input: CreateAssetPrInput!
@@ -77,7 +75,7 @@ export const createAssetPr = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const updateAssetPr = /* GraphQL */ `
   mutation UpdateAssetPr(
     $input: UpdateAssetPrInput!
@@ -96,7 +94,7 @@ export const updateAssetPr = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const deleteAssetPr = /* GraphQL */ `
   mutation DeleteAssetPr(
     $input: DeleteAssetPrInput!
@@ -115,7 +113,7 @@ export const deleteAssetPr = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const createNode = /* GraphQL */ `
   mutation CreateNode(
     $input: CreateNodeInput!
@@ -171,7 +169,7 @@ export const createNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const updateNode = /* GraphQL */ `
   mutation UpdateNode(
     $input: UpdateNodeInput!
@@ -227,7 +225,7 @@ export const updateNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const deleteNode = /* GraphQL */ `
   mutation DeleteNode(
     $input: DeleteNodeInput!
@@ -283,7 +281,7 @@ export const deleteNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const createEdge = /* GraphQL */ `
   mutation CreateEdge(
     $input: CreateEdgeInput!
@@ -309,7 +307,7 @@ export const createEdge = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const updateEdge = /* GraphQL */ `
   mutation UpdateEdge(
     $input: UpdateEdgeInput!
@@ -335,7 +333,7 @@ export const updateEdge = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const deleteEdge = /* GraphQL */ `
   mutation DeleteEdge(
     $input: DeleteEdgeInput!
@@ -361,7 +359,7 @@ export const deleteEdge = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const createEdgeNode = /* GraphQL */ `
   mutation CreateEdgeNode(
     $input: CreateEdgeNodeInput!
@@ -404,7 +402,7 @@ export const createEdgeNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const updateEdgeNode = /* GraphQL */ `
   mutation UpdateEdgeNode(
     $input: UpdateEdgeNodeInput!
@@ -447,7 +445,7 @@ export const updateEdgeNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const deleteEdgeNode = /* GraphQL */ `
   mutation DeleteEdgeNode(
     $input: DeleteEdgeNodeInput!
@@ -490,4 +488,4 @@ export const deleteEdgeNode = /* GraphQL */ `
       }
     }
   }
-`;
+`

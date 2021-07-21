@@ -1,5 +1,3 @@
-/* tslint:disable */
-/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const getAsset = /* GraphQL */ `
@@ -17,7 +15,7 @@ export const getAsset = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listAssets = /* GraphQL */ `
   query ListAssets(
     $filter: ModelAssetFilterInput
@@ -40,7 +38,7 @@ export const listAssets = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const assetsByNode = /* GraphQL */ `
   query AssetsByNode(
     $node_id: ID
@@ -71,7 +69,7 @@ export const assetsByNode = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const assetsByType = /* GraphQL */ `
   query AssetsByType(
     $type: AssetType
@@ -104,7 +102,7 @@ export const assetsByType = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const assetsByOwnerType = /* GraphQL */ `
   query AssetsByOwnerType(
     $owner: String
@@ -137,7 +135,7 @@ export const assetsByOwnerType = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const getAssetPr = /* GraphQL */ `
   query GetAssetPr($id: ID!) {
     getAssetPr(id: $id) {
@@ -153,7 +151,7 @@ export const getAssetPr = /* GraphQL */ `
       updatedAt
     }
   }
-`;
+`
 export const listAssetPrs = /* GraphQL */ `
   query ListAssetPrs(
     $filter: ModelAssetPrFilterInput
@@ -176,7 +174,7 @@ export const listAssetPrs = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const assetsPrByNode = /* GraphQL */ `
   query AssetsPrByNode(
     $node_id: ID
@@ -207,7 +205,7 @@ export const assetsPrByNode = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const assetsPrByOwnerType = /* GraphQL */ `
   query AssetsPrByOwnerType(
     $owner: String
@@ -240,7 +238,7 @@ export const assetsPrByOwnerType = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const assetsPrByType = /* GraphQL */ `
   query AssetsPrByType(
     $type: AssetType
@@ -273,7 +271,7 @@ export const assetsPrByType = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const getNode = /* GraphQL */ `
   query GetNode($id: ID!) {
     getNode(id: $id) {
@@ -326,7 +324,7 @@ export const getNode = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const listNodes = /* GraphQL */ `
   query ListNodes(
     $filter: ModelNodeFilterInput
@@ -354,7 +352,7 @@ export const listNodes = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const nodesByStatusType = /* GraphQL */ `
   query NodesByStatusType(
     $status: NodeStatus
@@ -392,7 +390,7 @@ export const nodesByStatusType = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const nodesByOwnerStatus = /* GraphQL */ `
   query NodesByOwnerStatus(
     $owner: String
@@ -430,7 +428,7 @@ export const nodesByOwnerStatus = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const getEdge = /* GraphQL */ `
   query GetEdge($id: ID!) {
     getEdge(id: $id) {
@@ -453,7 +451,7 @@ export const getEdge = /* GraphQL */ `
       }
     }
   }
-`;
+`
 export const listEdges = /* GraphQL */ `
   query ListEdges(
     $filter: ModelEdgeFilterInput
@@ -475,7 +473,7 @@ export const listEdges = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
 export const edgesByType = /* GraphQL */ `
   query EdgesByType(
     $type: EdgeType
@@ -507,4 +505,4 @@ export const edgesByType = /* GraphQL */ `
       nextToken
     }
   }
-`;
+`
