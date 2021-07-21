@@ -135,8 +135,8 @@ export const storeObject = async (
         owner,
         editors,
     }: CreateFileAssetInput,
+    isAssetPr = true,
     level: Level = Level.protected,
-    isPr = true,
 ) => {
     const {
         // @ts-ignore
@@ -164,7 +164,7 @@ export const storeObject = async (
         .then(async s3Response => {
             console.log({ s3Response })
             const { data } = await CRUD({
-                query: (isPr && mutations.createAssetPr) || mutations.createAsset,
+                query: (isAssetPr && mutations.createAssetPr) || mutations.createAsset,
                 variables: {
                     input: {
                         name,
@@ -181,7 +181,7 @@ export const storeObject = async (
                 },
             })
             console.log({ data })
-            return (isPr && data.createAssetPr) || data.createAsset
+            return (isAssetPr && data.createAssetPr) || data.createAsset
         })
         .catch(error => {
             console.error("Error storing file:", { fileForUpload }, { error })

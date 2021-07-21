@@ -20,5 +20,5 @@ declare type CreateFileAssetInput = {
     owner?: string;
     editors?: string[];
 };
-export declare const storeObject: ({ fileForUpload, name, id, node_id, createdAt, type, index, owner, editors, }: CreateFileAssetInput, level?: Level, isPr?: boolean) => Promise<any>;
+export declare const storeObject: ({ fileForUpload, name, id, node_id, createdAt, type, index, owner, editors, }: CreateFileAssetInput, isAssetPr?: boolean, level?: Level) => Promise<any>;
 export {};

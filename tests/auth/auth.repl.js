@@ -41,6 +41,23 @@ const _asset = {
     type    : AssetType.A_IMAGE,
 }
 
+function streamToBlob(stream, mimeType) {
+    if (mimeType != null && typeof mimeType !== "string") {
+        throw new Error("Invalid mimetype, expected string.")
+    }
+    return new Promise((resolve, reject) => {
+        const chunks = []
+        stream
+            .on("data", chunk => chunks.push(chunk))
+            .once("end", () => {
+                const blob =
+                    mimeType != null ? new Blob(chunks, { type: mimeType }) : new Blob(chunks)
+                resolve(blob)
+            })
+            .once("error", reject)
+    })
+}
+
 auth
     .logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
     .catch(e => console.error("error:", JSON.stringify(e, null, 4)))
@@ -66,7 +83,7 @@ auth
         //const new_assetPr = await assetPr.create({
         //    ..._asset,
         //    id      : assetPr_id,
-        //    editors : [ "loganpowell@gmail.com" ]
+        //    editors : [ "test@test.com" ]
         //})
         //return { new_assetPr }
 
@@ -141,24 +158,6 @@ auth
         //return { deleted }
 
         // 🔥
-        function streamToBlob(stream, mimeType) {
-            if (mimeType != null && typeof mimeType !== "string") {
-                throw new Error("Invalid mimetype, expected string.")
-            }
-            return new Promise((resolve, reject) => {
-                const chunks = []
-                stream
-                    .on("data", chunk => chunks.push(chunk))
-                    .once("end", () => {
-                        const blob =
-                            mimeType != null
-                                ? new Blob(chunks, { type: mimeType })
-                                : new Blob(chunks)
-                        resolve(blob)
-                    })
-                    .once("error", reject)
-            })
-        }
 
         const form = new FormData()
 
