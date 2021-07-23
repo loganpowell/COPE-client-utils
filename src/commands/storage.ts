@@ -83,7 +83,7 @@ export const storeObject = async (
                     input: {
                         name,
                         // public is different: `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
-                        content: `https://${bucket}.s3.${region}.amazonaws.com/protected/${user_id}/${key}`,
+                        content: `https://${bucket}.s3.${region}.amazonaws.com/${level}/${user_id}/${key}`,
                         id,
                         node_id,
                         createdAt,
