@@ -21,11 +21,9 @@ export const CRUD = async ({
             authMode,
         })
     } catch (e) {
+        console.warn("Graphql Error for query: \n", JSON.stringify(query, null, 4))
+        console.warn("... called with these variables: \n", JSON.stringify(variables, null, 4))
         console.warn(JSON.stringify(e, null, 4))
-        console.warn(
-            "GraphQL CRUD Error with these variables: \n",
-            JSON.stringify(variables, null, 4),
-        )
     }
     return res
 }

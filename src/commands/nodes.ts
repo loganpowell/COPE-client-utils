@@ -11,7 +11,7 @@ import { CRUD } from "../utils"
 
 const nodeCreate = async (
     { id, status, type, createdAt, owner, updatedAt }: api.CreateNodeInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const { data: { createNode } } = await CRUD({
         query: mutations.createNode,
@@ -31,7 +31,10 @@ const nodeCreate = async (
     return createNode
 }
 
-const nodeRead = async ({ id }: api.GetNodeQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
+const nodeRead = async (
+    { id }: api.GetNodeQueryVariables,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { getNode } } = await CRUD({
         query: queries.getNode,
         variables: { id },
@@ -52,8 +55,8 @@ const nodeRead = async ({ id }: api.GetNodeQueryVariables, authMode?: GRAPHQL_AU
  *    to the updateNode mutation (2nd call)
  */
 const nodeUpdate = async (
-    { id, type, status, owner, createdAt, updatedAt }: api.UpdateNodeInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    { id, type, status, owner, createdAt /*, updatedAt */}: api.UpdateNodeInput,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const { status: _s, type: _t, createdAt: _c, owner: _o } = await nodeRead({ id })
     const { data: { updateNode } } = await CRUD({
@@ -65,7 +68,7 @@ const nodeUpdate = async (
                 status: status || _s,
                 owner: owner || _o,
                 createdAt: createdAt || _c,
-                updatedAt,
+                //updatedAt,
             },
         },
         authMode,
@@ -74,7 +77,10 @@ const nodeUpdate = async (
     return updateNode
 }
 
-const nodeDelete = async ({ id }: api.DeleteNodeInput, authMode?: GRAPHQL_AUTH_MODE) => {
+const nodeDelete = async (
+    { id }: api.DeleteNodeInput,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { deleteNode } } = await CRUD({
         query: mutations.deleteNode,
         variables: { input: { id } },
@@ -86,7 +92,7 @@ const nodeDelete = async ({ id }: api.DeleteNodeInput, authMode?: GRAPHQL_AUTH_M
 
 const list = async (
     { filter, limit, nextToken, owner, sortDirection, status, createdAt, type }: ListNodesInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const variables = { filter, limit, nextToken, owner, sortDirection, status, createdAt, type }
 
@@ -168,11 +174,10 @@ const list = async (
     // @ts-ignore
     const { data } = await CRUD({ ...match, authMode })
 
-    const response = data.nodesByOwnerStatus
-        ? data.nodesByOwnerStatus.items
-        : data.nodesByStatusType
-          ? data.nodesByStatusType.items
-          : data.listNodes ? data.listNodes.items : data
+    const response = 
+        data?.nodesByOwnerStatus?.items ||
+        data?.nodesByStatusType?.items ||
+        data?.listNodes?.items || data
 
     return response
 }

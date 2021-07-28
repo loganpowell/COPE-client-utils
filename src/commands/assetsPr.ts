@@ -8,7 +8,7 @@ import { CRUD } from "../utils"
 
 const assetPrCreate = async (
     { name, node_id, type, content, createdAt, editors, id, owner, index }: api.CreateAssetPrInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const { data: { createAssetPr } } = await CRUD({
         query: mutations.createAssetPr,
@@ -30,7 +30,10 @@ const assetPrCreate = async (
     return createAssetPr
 }
 
-const assetPrRead = async ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
+const assetPrRead = async (
+    { id }: api.GetAssetPrQueryVariables,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { getAssetPr } } = await CRUD({
         query: queries.getAssetPr,
         variables: { id },
@@ -42,7 +45,7 @@ const assetPrRead = async ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAP
 
 const assetPrUpdate = async (
     { id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetPrInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const {
         content: _co,
@@ -75,7 +78,10 @@ const assetPrUpdate = async (
     return updateAssetPr
 }
 
-const assetPrDelete = async ({ id }: api.DeleteAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => {
+const assetPrDelete = async (
+    { id }: api.DeleteAssetPrInput,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { deleteAssetPr } } = await CRUD({
         query: mutations.deleteAssetPr,
         variables: { input: { id } },
@@ -87,7 +93,7 @@ const assetPrDelete = async ({ id }: api.DeleteAssetPrInput, authMode?: GRAPHQL_
 
 const assetPrConvert = async (
     { id }: api.GetAssetPrQueryVariables,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const { node_id, createdAt, type, name, owner, content, editors, index } = await assetPrDelete({
         id,

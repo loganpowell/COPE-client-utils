@@ -42,7 +42,10 @@ import { CRUD } from "../utils"
   }
 }
  */
-const edgeRead = async ({ id }: api.GetEdgeQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
+const edgeRead = async (
+    { id }: api.GetEdgeQueryVariables,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { getEdge } } = await CRUD({
         query: queries.getEdge,
         variables: { id },
@@ -53,7 +56,7 @@ const edgeRead = async ({ id }: api.GetEdgeQueryVariables, authMode?: GRAPHQL_AU
 
 const edgeUpdate = async (
     { id, createdAt, owner, type, weight }: api.UpdateEdgeInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const { createdAt: _c, owner: _o, type: _t, weight: _w } = await edgeRead({ id })
     const { data: updateEdge } = await CRUD({
@@ -74,7 +77,7 @@ const edgeUpdate = async (
 
 const linkCreate = async (
     { id = uuid(), type = api.EdgeType.HAS_CHILD, weight = 0, from_node_id, to_node_id },
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     // prettier-ignore
     const mutation = /* GraphQL */ `
@@ -141,7 +144,10 @@ const linkCreate = async (
   }
 }
  */
-const linkDelete = async ({ id }, authMode?: GRAPHQL_AUTH_MODE) => {
+const linkDelete = async (
+    { id },
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { getEdge } } = await CRUD({
         query: queries.getEdge,
         variables: { id },

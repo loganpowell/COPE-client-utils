@@ -8,7 +8,7 @@ import { CRUD } from "../utils"
 
 const assetCreate = async (
     { name, node_id, type, content, createdAt, editors, id, owner, index }: api.CreateAssetInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const { data: { createAsset } } = await CRUD({
         query: mutations.createAsset,
@@ -30,7 +30,10 @@ const assetCreate = async (
     return createAsset
 }
 
-const assetRead = async ({ id }: api.GetAssetQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
+const assetRead = async (
+    { id }: api.GetAssetQueryVariables,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { getAsset } } = await CRUD({
         query: queries.getAsset,
         variables: { id },
@@ -42,7 +45,7 @@ const assetRead = async ({ id }: api.GetAssetQueryVariables, authMode?: GRAPHQL_
 
 const assetUpdate = async (
     { id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetInput,
-    authMode?: GRAPHQL_AUTH_MODE,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const {
         content: _co,
@@ -75,7 +78,10 @@ const assetUpdate = async (
     return updateAsset
 }
 
-const assetDelete = async ({ id }: api.DeleteAssetInput, authMode?: GRAPHQL_AUTH_MODE) => {
+const assetDelete = async (
+    { id }: api.DeleteAssetInput,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { data: { deleteAsset } } = await CRUD({
         query: mutations.deleteAsset,
         variables: { input: { id } },
@@ -85,7 +91,10 @@ const assetDelete = async ({ id }: api.DeleteAssetInput, authMode?: GRAPHQL_AUTH
     return deleteAsset
 }
 
-const assetConvert = async ({ id }: api.GetAssetQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => {
+const assetConvert = async (
+    { id }: api.GetAssetQueryVariables,
+    authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+) => {
     const { node_id, createdAt, type, name, owner, content, editors, index } = await assetDelete({
         id,
     })
