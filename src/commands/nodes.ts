@@ -55,10 +55,19 @@ const nodeRead = async (
  *    to the updateNode mutation (2nd call)
  */
 const nodeUpdate = async (
-    { id, type, status, owner, createdAt /*, updatedAt */}: api.UpdateNodeInput,
+    { id, type, status, owner, createdAt }: api.UpdateNodeInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
-    const { status: _s, type: _t, createdAt: _c, owner: _o } = await nodeRead({ id })
+    const asIs = await nodeRead({ id })
+    const { status: _s, type: _t, createdAt: _c, owner: _o } = asIs
+
+    // check to see if update matches existing node
+    const no_change = new EquivMap([
+        [{status: _s, type: _t, createdAt: _c, owner: _o}, true]
+    ]).get({type, status, owner, createdAt })
+
+    if (no_change) return asIs
+
     const { data: { updateNode } } = await CRUD({
         query: mutations.updateNode,
         variables: {
@@ -68,7 +77,6 @@ const nodeUpdate = async (
                 status: status || _s,
                 owner: owner || _o,
                 createdAt: createdAt || _c,
-                //updatedAt,
             },
         },
         authMode,

@@ -1,5 +1,5 @@
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
-
+import { EquivMap } from "@thi.ng/associative"
 import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
@@ -47,6 +47,7 @@ const assetUpdate = async (
     { id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
+    const asIs = await assetRead({ id })
     const {
         content: _co,
         name: _na,
@@ -56,7 +57,26 @@ const assetUpdate = async (
         owner: _o,
         node_id: _no,
         index: _i,
-    } = await assetRead({ id })
+    } = asIs
+
+    const no_change = new EquivMap([
+        [
+            {
+                content: _co,
+                name: _na,
+                createdAt: _cr,
+                editors: _e,
+                type: _t,
+                owner: _o,
+                node_id: _no,
+                index: _i,
+            },
+            true,
+        ],
+    ]).get({ content, createdAt, editors, name, node_id, owner, type, index })
+
+    if (no_change) return asIs
+
     const { data: { updateAsset } } = await CRUD({
         query: mutations.updateAsset,
         variables: {

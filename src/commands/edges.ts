@@ -1,4 +1,5 @@
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
+import { EquivMap } from "@thi.ng/associative"
 import { v4 as uuid } from "uuid"
 import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
@@ -58,7 +59,15 @@ const edgeUpdate = async (
     { id, createdAt, owner, type, weight }: api.UpdateEdgeInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
-    const { createdAt: _c, owner: _o, type: _t, weight: _w } = await edgeRead({ id })
+    const asIs = await edgeRead({ id })
+    const { createdAt: _c, owner: _o, type: _t, weight: _w } = asIs
+
+    const no_change = new EquivMap([
+        [ { createdAt: _c, owner: _o, type: _t, weight: _w }, true ],
+    ]).get({ createdAt, owner, type, weight })
+
+    if (no_change) return asIs
+
     const { data: updateEdge } = await CRUD({
         query: mutations.updateEdge,
         variables: {
