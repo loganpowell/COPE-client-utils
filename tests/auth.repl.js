@@ -1,12 +1,7 @@
 import dotenv from "dotenv"
-import aws_exports from "../../src/aws-exports"
-import {
-    NodeStatus,
-    NodeType,
-    AssetType,
-    EdgeType,
-    ModelSortDirection,
-} from "../../lib/graphql/API"
+import { Storage } from "@aws-amplify/storage"
+import aws_exports from "../src/aws-exports"
+import { NodeStatus, NodeType, AssetType, EdgeType, ModelSortDirection } from "../lib/graphql/API"
 import {
     configureWith,
     $global$,
@@ -16,7 +11,7 @@ import {
     assetPr,
     edge,
     storeObject,
-} from "../../lib/commands"
+} from "../lib/commands"
 import { createReadStream, readFile, readFileSync, promises } from "fs"
 import FormData from "form-data"
 
@@ -159,24 +154,24 @@ auth
 
         // 🔥
 
-        const form = new FormData()
+        //const form = new FormData()
 
-        const file = createReadStream("./tests/assets/bot-cropped.jpg")
+        //const file = createReadStream("./tests/assets/bot-cropped.jpg")
 
-        const blob = await streamToBlob(file, "image/jpeg")
-        form.append("form-file", file)
-        const fileForUpload = new File(
-            [ blob ],
-            "robot.jpg", //
-            { type: "image/jpeg" }, //
-        )
-        const stuff = await storeObject({
-            fileForUpload,
-            id            : "testingFileUpload1",
-            node_id       : "testNode1",
-            type          : AssetType.A_IMAGE,
-            index         : 1,
-        })
-        console.log({ stuff })
+        //const blob = await streamToBlob(file, "image/jpeg")
+        //form.append("form-file", file)
+        //const fileForUpload = new File(
+        //    [ blob ],
+        //    "robot.jpg", //
+        //    { type: "image/jpeg" }, //
+        //)
+        //const stuff = await storeObject({
+        //    fileForUpload,
+        //    id            : "testingFileUpload1",
+        //    node_id       : "testNode1",
+        //    type          : AssetType.A_IMAGE,
+        //    index         : 1,
+        //})
+        //console.log({ stuff })
         // 🔥
     }) //?

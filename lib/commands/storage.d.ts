@@ -8,9 +8,16 @@ declare type MimeType = string;
 interface HTMLFileInput {
     type: MimeType;
     name: string;
+    size: number;
+    lastModified: number;
+    lastModifiedDate: Date;
 }
-declare type CreateFileAssetInput = {
-    fileForUpload: HTMLFileInput;
+export declare const isFile: ({ type, content }: {
+    type: any;
+    content: any;
+}) => any;
+export declare type CreateFileAssetInput = {
+    content: HTMLFileInput | any;
     name: string;
     id?: string;
     node_id: string;
@@ -20,5 +27,8 @@ declare type CreateFileAssetInput = {
     owner?: string;
     editors?: string[];
 };
-export declare const storeObject: ({ fileForUpload, name, id, node_id, createdAt, type, index, owner, editors, }: CreateFileAssetInput, isAssetPr?: boolean, level?: Level) => Promise<any>;
+export declare const storeObject: ({ content, name, id, node_id, createdAt, type, index, owner, editors }: CreateFileAssetInput, isAssetPr?: boolean, level?: Level) => Promise<any>;
+export declare const removeObject: (url: any, { level }?: {
+    level: string;
+}) => Promise<any>;
 export {};

@@ -21,10 +21,17 @@ type MimeType = string
 interface HTMLFileInput {
     type: MimeType
     name: string
+    size: number
+    lastModified: number
+    lastModifiedDate: Date
 }
-
-type CreateFileAssetInput = {
-    fileForUpload: HTMLFileInput
+export const isFile = ({ type, content}) => {
+    const [cat, sub] = type.split("_")
+    const isFile = content?.size // a File object has a size property
+    return cat === "F" && isFile
+}
+export type CreateFileAssetInput = {
+    content: HTMLFileInput | any
     name: string
     id?: string
     node_id: string
@@ -38,17 +45,7 @@ type CreateFileAssetInput = {
 // https://w3c.github.io/FileAPI/#filelist-section
 // https://www.sufle.io/blog/aws-amplify-storage-part-3
 export const storeObject = async (
-    {
-        fileForUpload,
-        name,
-        id,
-        node_id,
-        createdAt,
-        type,
-        index,
-        owner,
-        editors,
-    }: CreateFileAssetInput,
+    { content, name, id, node_id, createdAt, type, index, owner, editors }: CreateFileAssetInput,
     isAssetPr = true,
     level = Level.protected,
 ) => {
@@ -60,16 +57,16 @@ export const storeObject = async (
     } = $global$.deref().config
 
     //console.log({ bucket, region })
-    const { type: mimeType, name: file_name } = fileForUpload
+    const { type: mimeType, name: file_name } = content
     const file_parts = file_name.split(".")
     const cut = file_parts.length - 1
     const extension = file_parts[cut]
     const UID = uuid()
     const key = `${extension}/${UID}--${file_name}`
-    //console.log({ key, fileForUpload, level, mimeType, file_name })
+    //console.log({ key, content, level, mimeType, file_name })
     const { id: user_id } = await Auth.currentUserInfo()
     //console.log({ user_id, ...rest })
-    return await Storage.put(key, fileForUpload, {
+    return await Storage.put(key, content, {
         level,
         contentType: mimeType,
         // others: https://github.com/aws-amplify/amplify-js/blob/a047ce73/packages/storage/src/Storage.ts#L185
@@ -98,6 +95,31 @@ export const storeObject = async (
             return (isAssetPr && data.createAssetPr) || data.createAsset
         })
         .catch(error => {
-            console.error("Error storing file:", { fileForUpload }, { error })
+            console.error("Error storing file:", { content, error })
         })
+}
+// "https://cope-storage-bucket180042-dev.s3.us-east-1.amazonaws.com/protected/us-east-1:92a4c58a-36ff-44ca-8f04-ae3cf469c3ec/jpg/99b318a9-9902-4fcb-87a3-fce9c05b6f51--jimi.jpg"
+
+export const removeObject = async (url, { level } = { level: "protected" }) => {
+    const [ _, target ] = url.split(level)
+    const [ __, bucket, format, file ] = target.split("/")
+    const todo = [ format, file ].join("/")
+    //console.log({ bucket, format, file, todo })
+
+    const deleted = await Storage.remove(todo).catch(e => {
+        console.warn("Error deleting S3 Object:", e)
+    })
+
+    return deleted
+    //const list = async () => {
+    //    const stored = await Storage.list("jpg", {
+    //        level: "protected",
+    //    })
+    //    console.log({ stored })
+    //    const deleted = await Storage.remove(
+    //        "jpg/8066e433-bad7-48be-bef7-244833a4ce80--jimi.jpg",
+    //        { level: "protected" },
+    //    )
+
+    //}
 }
