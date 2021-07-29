@@ -106,7 +106,7 @@ export const removeObject = async (url, { level } = { level: "protected" }) => {
     const todo = [ format, file ].join("/")
     console.log("removing s3 Object:", { bucket, format, file, todo })
 
-    const deleted = await Storage.remove(todo).catch(e => {
+    const deleted = await Storage.remove(todo, { level }).catch(e => {
         console.warn("Error deleting S3 Object:", e)
     })
 
