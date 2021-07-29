@@ -101,35 +101,3 @@ export const storeObject = async (
             console.error("Error storing file:", { fileForUpload }, { error })
         })
 }
-
-/*
-const submission = e => console.log(e)
-
-const button = document.getElementById("button-id")
-const inputs = button.parentNode.getElementsByTagName("input")
-const fileInput = Array.from(inputs).filter(c => c.type.toLowerCase() === "file")[0]
-
-let file
-fileInput.onchange = e => {
-    file = e.target.files[0]
-    console.log("file changed", file)
-}
-
-button.addEventListener("click", e => {
-    e.preventDefault()
-    submission({ e, inputs, file })
-})
-
-// => 
-name: "bot.jpg"
-lastModified: 1624290092242
-lastModifiedDate: Mon Jun 21 2021 11:41:32 GMT-0400 (Eastern Daylight Time)
-webkitRelativePath: ""
-size: 281676
-type: "image/jpeg"
-arrayBuffer: ƒ arrayBuffer() {}
-slice: ƒ slice() {}
-stream: ƒ stream() {}
-text: ƒ text() {}
-<constructor>: "File"
-*/
