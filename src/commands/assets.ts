@@ -89,7 +89,7 @@ const assetUpdate = async (
                 node_id: node_id || _no,
                 owner: owner || _o,
                 type: type || _t,
-                index: index || _i,
+                index: index === 0 ? index : index || _i,
             },
         },
         authMode,
