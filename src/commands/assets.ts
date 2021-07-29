@@ -152,9 +152,10 @@ const assetDelete = async (
         authMode,
     })
     const { type, content } = deleteAsset
-    const [ cat, sub ] = type.split("_")
+    const [ cat ] = type.split("_")
     if (cat === "F" && content.length) {
         await removeObject(content)
+        console.log("removed S3 Object:", content)
     }
     return deleteAsset
 }

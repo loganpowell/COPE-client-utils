@@ -25,9 +25,9 @@ interface HTMLFileInput {
     lastModified: number
     lastModifiedDate: Date
 }
-export const isFile = ({ type, content}) => {
-    const [cat, sub] = type.split("_")
-    const isFile = content?.size // a File object has a size property
+export const isFile = ({ type, content }) => {
+    const [ cat, sub ] = type.split("_")
+    const isFile = content.size // a File object has a size property
     return cat === "F" && isFile
 }
 export type CreateFileAssetInput = {
@@ -104,7 +104,7 @@ export const removeObject = async (url, { level } = { level: "protected" }) => {
     const [ _, target ] = url.split(level)
     const [ __, bucket, format, file ] = target.split("/")
     const todo = [ format, file ].join("/")
-    //console.log({ bucket, format, file, todo })
+    console.log("removing s3 Object:", { bucket, format, file, todo })
 
     const deleted = await Storage.remove(todo).catch(e => {
         console.warn("Error deleting S3 Object:", e)
