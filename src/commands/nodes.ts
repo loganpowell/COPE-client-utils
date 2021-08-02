@@ -2,10 +2,9 @@ import { EquivMap } from "@thi.ng/associative"
 import { isArray } from "@thi.ng/checks"
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 
-import * as mutations from "../graphql/mutations"
-import * as queries from "../graphql/queries"
-import * as api from "../graphql/API"
+import { graphql, API as api } from "../graphql"
 import { ListNodesInput } from "../api"
+const { mutations, queries, custom } = graphql
 
 import { CRUD } from "../utils"
 
@@ -44,6 +43,62 @@ const nodeRead = async (
     return getNode
 }
 
+/*
+{
+  "data": {
+    "getNode": {
+      "type": "A_PAGE",
+      "id": "MockCourseModule02",
+      "edges": {
+        "items": [
+          {
+            "edge": {
+              "id": "abcad4b3-53a7-4ade-a129-ab7e2f5416b7",
+              "type": "HAS_PART",
+              "createdAt": "2021-07-27T15:14:05.373Z",
+              "owner": "tommynguyen0512@gmail.com",
+              "weight": 0,
+              "updatedAt": "2021-07-27T15:14:05.373Z",
+              "nodes": {
+                "items": [
+                  {
+                    "node": {
+                      "id": "MockCourseModule02",
+                      "status": "DRAFT",
+                      "type": "A_PAGE",
+                      "createdAt": "2021-07-27T15:12:06.834Z",
+                      "updatedAt": "2021-07-27T15:12:06.834Z",
+                      "owner": "tommynguyen0512@gmail.com",
+                      "assets": {
+                        "items": [
+                          {
+                            "id": "c29c4c84-c28d-49c9-be13-9a8712a3ec53",
+                            "name": "Video1",
+                            
+  */
+interface GetNodeOptionsQueryVariables {
+    id: string,
+    edgeType?: api.EdgeType
+} 
+
+export const getConnectedNodesByNodeID = async ({ id, edgeType }: GetNodeOptionsQueryVariables, authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS) => {
+    const { data: { getNode } } = await CRUD({
+        query: custom.getNodesWithEdges,
+        variables: { id },
+        authMode
+    })
+
+    //console.log({ getNode })
+   const others = getNode?.edges?.items.reduce((a, c) => {
+       const { edge } = c
+    //   console.log({ edge })
+       const not_me = edge?.nodes?.items.filter(({ node }) => node.id !== id )
+       return a.concat({...edge, nodes: 1, node: not_me[0]?.node })
+   }, [])
+
+//   console.log({ others })
+   return edgeType ? others.filter(({ type }) => type === edgeType ) : others
+}
 /**
  * "When updating any part of the composite sort key for
  * @key 'Nodes_by_type_status_createdAt', you must provide
@@ -195,5 +250,6 @@ export const node = {
     read: nodeRead,
     update: nodeUpdate,
     delete: nodeDelete,
+    connections: getConnectedNodesByNodeID,
     list,
 }

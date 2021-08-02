@@ -155,7 +155,7 @@ const assetDelete = async (
     const [ cat ] = type.split("_")
     if (cat === "F" && content.length) {
         const removed = await removeObject(content)
-        console.log("removed S3 Object:\n", { removed, content })
+        //console.log("removed S3 Object:\n", { removed, content })
     }
     return deleteAsset
 }

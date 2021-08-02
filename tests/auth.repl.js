@@ -16,6 +16,7 @@ import { createReadStream, readFile, readFileSync, promises } from "fs"
 import FormData from "form-data"
 
 import util from "util"
+import API from "@aws-amplify/api"
 
 dotenv.config()
 configureWith(aws_exports)
@@ -174,4 +175,11 @@ auth
         //})
         //console.log({ stuff })
         // 🔥
+
+        const res = await node.connections({
+            id       : "MockCourseModule02",
+            edgeType : EdgeType.HAS_PART,
+        })
+
+        console.log("res:", JSON.stringify(res, null, 2))
     }) //?
