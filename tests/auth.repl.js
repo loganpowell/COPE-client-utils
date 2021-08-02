@@ -11,6 +11,7 @@ import {
     assetPr,
     edge,
     storeObject,
+    toggleAssets,
 } from "../lib/commands"
 import { createReadStream, readFile, readFileSync, promises } from "fs"
 import FormData from "form-data"
@@ -176,9 +177,13 @@ auth
         //console.log({ stuff })
         // 🔥
 
-        const res = await node.connections({
-            id       : "MockCourseModule02",
-            edgeType : EdgeType.HAS_PART,
+        //const res = await node.connections({
+        //    id       : "MockCourseModule02",
+        //    edgeType : EdgeType.HAS_PART,
+        //})
+
+        const res = await toggleAssets({
+            id : "MockCourseNodeId",
         })
 
         console.log("res:", JSON.stringify(res, null, 2))

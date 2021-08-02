@@ -125,7 +125,7 @@ const assetPrConvert = async (
         },
         authMode,
     })
-    console.log("AssetPr converted to Asset")
+    console.log("AssetPr converted to Asset:", id)
 
     return createAsset
 }

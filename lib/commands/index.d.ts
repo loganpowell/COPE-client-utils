@@ -5,3 +5,4 @@ export * from "./assets";
 export * from "./assetsPr";
 export * from "./edges";
 export * from "./storage";
+export * from "./publish";
