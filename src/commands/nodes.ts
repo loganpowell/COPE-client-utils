@@ -82,7 +82,9 @@ const nodeUpdate = async (
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const asIs = await nodeRead({ id })
-    const { status: _s, type: _t, createdAt: _c, owner: _o, id: _i } = asIs
+    // if the id changes asIs is undefined
+    const { status: _s, type: _t, createdAt: _c, owner: _o, id: _i } = asIs || 
+    { id, type, status, owner, createdAt }
 
     // check to see if update matches existing node
     const no_change = new EquivMap([
