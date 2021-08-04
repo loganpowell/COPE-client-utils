@@ -71,8 +71,9 @@ export const getConnectedNodesByNodeID = async ({ id, edgeType }: GetNodeOptions
  * @key 'Nodes_by_type_status_createdAt', you must provide
  * all fields for the key."
  *
- * Makes two API calls:
+ * Makes one->two API calls:
  * 1. for reading the existing node by ID
+ * if no change -> return: elseif change:
  * 2. 1st call supplies any required and missing variables
  *    to the updateNode mutation (2nd call)
  */
@@ -81,12 +82,12 @@ const nodeUpdate = async (
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const asIs = await nodeRead({ id })
-    const { status: _s, type: _t, createdAt: _c, owner: _o } = asIs
+    const { status: _s, type: _t, createdAt: _c, owner: _o, id: _i } = asIs
 
     // check to see if update matches existing node
     const no_change = new EquivMap([
-        [{status: _s, type: _t, createdAt: _c, owner: _o}, true]
-    ]).get({type, status, owner, createdAt })
+        [{status: _s, type: _t, createdAt: _c, owner: _o, id: _i}, true]
+    ]).get({type, status, owner, createdAt, id })
 
     if (no_change) return asIs
 
@@ -94,7 +95,7 @@ const nodeUpdate = async (
         query: mutations.updateNode,
         variables: {
             input: {
-                id,
+                id: id || _i,
                 type: type || _t,
                 status: status || _s,
                 owner: owner || _o,
