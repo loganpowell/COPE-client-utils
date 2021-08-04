@@ -43,39 +43,6 @@ const nodeRead = async (
     return getNode
 }
 
-/*
-{
-  "data": {
-    "getNode": {
-      "type": "A_PAGE",
-      "id": "MockCourseModule02",
-      "edges": {
-        "items": [
-          {
-            "edge": {
-              "id": "abcad4b3-53a7-4ade-a129-ab7e2f5416b7",
-              "type": "HAS_PART",
-              "createdAt": "2021-07-27T15:14:05.373Z",
-              "owner": "tommynguyen0512@gmail.com",
-              "weight": 0,
-              "updatedAt": "2021-07-27T15:14:05.373Z",
-              "nodes": {
-                "items": [
-                  {
-                    "node": {
-                      "id": "MockCourseModule02",
-                      "status": "DRAFT",
-                      "type": "A_PAGE",
-                      "createdAt": "2021-07-27T15:12:06.834Z",
-                      "updatedAt": "2021-07-27T15:12:06.834Z",
-                      "owner": "tommynguyen0512@gmail.com",
-                      "assets": {
-                        "items": [
-                          {
-                            "id": "c29c4c84-c28d-49c9-be13-9a8712a3ec53",
-                            "name": "Video1",
-                            
-  */
 interface GetNodeOptionsQueryVariables {
     id: string,
     edgeType?: api.EdgeType
@@ -240,7 +207,8 @@ const list = async (
     const response = 
         data?.nodesByOwnerStatus?.items ||
         data?.nodesByStatusType?.items ||
-        data?.listNodes?.items || data
+        data?.listNodes?.items || 
+        data
 
     return response
 }
