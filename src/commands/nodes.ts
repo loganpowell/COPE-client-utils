@@ -4,7 +4,9 @@ import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 
 import { graphql, API as api } from "../graphql"
 import { ListNodesInput } from "../api"
+import { edge } from "../commands"
 const { mutations, queries, custom } = graphql
+
 
 import { CRUD } from "../utils"
 
@@ -66,10 +68,20 @@ export const getConnectedNodesByNodeID = async ({ id, edgeType }: GetNodeOptions
 //   console.log({ others })
    return edgeType ? others.filter(({ type }) => type === edgeType ) : others
 }
+
+type UpdateNodeWithNewIdInput = {
+    id: string
+    new_id?: string
+    status?: api.NodeStatus | null
+    type?: api.NodeType | null
+    createdAt?: string | null
+    updatedAt?: string | null
+    owner?: string | null
+}
 /**
  * "When updating any part of the composite sort key for
  * @key 'Nodes_by_type_status_createdAt', you must provide
- * all fields for the key."
+ * all fields for the key
  *
  * Makes one->two API calls:
  * 1. for reading the existing node by ID
@@ -78,36 +90,82 @@ export const getConnectedNodesByNodeID = async ({ id, edgeType }: GetNodeOptions
  *    to the updateNode mutation (2nd call)
  */
 const nodeUpdate = async (
-    { id, type, status, owner, createdAt }: api.UpdateNodeInput,
+    { id, new_id, type, status, owner, createdAt }: UpdateNodeWithNewIdInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
-    const asIs = await nodeRead({ id })
     // if the id changes asIs is undefined
-    const { status: _s, type: _t, createdAt: _c, owner: _o, id: _i } = asIs || 
-    { id, type, status, owner, createdAt }
+    // change everything but id
+    // could be the wrong id was input -> error
+    // could be the id has changed -> update
+    if( !new_id ) {
+        const asIs = await nodeRead({ id })
+        if( !asIs ) {
+            console.warn("No Node found for this id:", id)
+            return
+        }
+        const { id: _i,  type: _t, status: _s,  owner: _o,createdAt: _c, } = asIs
 
-    // check to see if update matches existing node
+        // check to see if update matches existing node
+        const no_change = new EquivMap([
+            [{ type: _t, status: _s, owner: _o, createdAt: _c }, true]
+        ]).get({type, status, owner, createdAt})
+
+        if (no_change) return asIs
+
+        const { data: { updateNode } } = await CRUD({
+            query: mutations.updateNode,
+            variables: {
+                input: {
+                    id: id || _i,
+                    type: type || _t,
+                    status: status || _s,
+                    owner: owner || _o,
+                    createdAt: createdAt || _c,
+                },
+            },
+            authMode,
+        })
+        console.log({ updateNode })
+        return updateNode
+    }
+    const asIs = await nodeRead({ id: new_id })
+    const { data: { getEdge }} = await edge.read({ id })
+    const { id: edge_id } = getEdge
+    const { type: _t, status: _s,  owner: _o, createdAt: _c, } = asIs || 
+    { type, status, owner, createdAt }
+
     const no_change = new EquivMap([
-        [{status: _s, type: _t, createdAt: _c, owner: _o, id: _i}, true]
-    ]).get({type, status, owner, createdAt, id })
+        [{ type: _t, status: _s, owner: _o, createdAt: _c }, true]
+    ]).get({type, status, owner, createdAt})
 
     if (no_change) return asIs
-
-    const { data: { updateNode } } = await CRUD({
-        query: mutations.updateNode,
+    const { data: { deleteNode } } = await CRUD({
+        query: mutations.deleteNode,
+        variables: {
+            input: { id },
+        },
+        authMode,
+    })
+    console.log({ deleteNode })
+    const {  data: { createNode } } = await CRUD({
+        query: mutations.createNode,
         variables: {
             input: {
-                id: id || _i,
+                id: new_id,
                 type: type || _t,
                 status: status || _s,
                 owner: owner || _o,
                 createdAt: createdAt || _c,
-            },
-        },
-        authMode,
+            }
+        }
     })
-
-    return updateNode
+    console.log({ createNode })
+    const updatedEdge = await edge.relink({
+        edge_id, 
+        node_id: id
+    })
+    console.log({ updatedEdge })
+    return ({ createNode, updatedEdge })
 }
 
 const nodeDelete = async (
