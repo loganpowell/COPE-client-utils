@@ -117,8 +117,9 @@ const nodeUpdate = async (
     const title_asset = ass.items.filter(({ type }) => type === API.AssetType.T_OG_TITLE)[0]
     // check to see if update matches existing node
     const is_hashed = title_asset.split("~")[1]
-    // title hasn't yet been integrated into node_id
+
     if (is_hashed && title_asset !== _i) {
+        // title hasn't yet been integrated into node_id
         // UPDATE ASSETS
         const updated_assets = await Promise.all(ass.items.map(async ({ 
             id, content, createdAt, editors, index, name, node_id, type 
@@ -144,9 +145,9 @@ const nodeUpdate = async (
             variables: {
                 input: {
                     id: title_asset,
-                    type,
-                    status,
-                    createdAt,
+                    type: type || _t,
+                    status: status || _s,
+                    createdAt: createdAt || _c,
                 }
             }
         })
