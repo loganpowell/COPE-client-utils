@@ -129,7 +129,7 @@ const nodeUpdate = async (
         return updateNode
     }
     const edges = await getConnectedNodesByNodeID({ id })
-    const new_edges = await Promise.all(edges.map(async ({edge}) => {
+    const new_edges = edges && await Promise.all(edges.map(async ({edge}) => {
         const { id: edge_id } = edge
         const updatedEdge = await edge.relink({
             edge_id, 
@@ -137,7 +137,7 @@ const nodeUpdate = async (
         })
         console.log({ updatedEdge })
         return ({ createNode, updatedEdge })
-    }))
+    })) || null
     //const new_assets = await assets
     const { data: { deleteNode } } = await CRUD({
         query: mutations.deleteNode,
