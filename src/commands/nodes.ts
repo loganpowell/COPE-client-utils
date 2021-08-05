@@ -160,8 +160,8 @@ const nodeUpdate = async (
     })
     const { assets, assetsPr } = createNode
     const op = assets?.items.length ? asset : assetPr
-    const ass = assets?.items.length? assets: assetsPr
-    const todos = await Promise.all(ass.map(async ({ id, }) => {
+    const ass = assets?.items.length ? assets : assetsPr
+    const todos = await Promise.all(ass.items.map(async ({ id, }) => {
         return await op.update({ id, node_id: new_id })
     }))
     console.log({ new_edges, createNode, todos })
