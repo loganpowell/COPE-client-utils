@@ -4,7 +4,7 @@ import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 
 import { graphql, API as api } from "../graphql"
 import { ListNodesInput } from "../api"
-import { edge } from "../commands"
+import { edge, assetPr, asset } from "../commands"
 const { mutations, queries, custom } = graphql
 
 
@@ -138,6 +138,7 @@ const nodeUpdate = async (
         console.log({ updatedEdge })
         return ({ createNode, updatedEdge })
     }))
+    //const new_assets = await assets
     const { data: { deleteNode } } = await CRUD({
         query: mutations.deleteNode,
         variables: {
@@ -153,12 +154,17 @@ const nodeUpdate = async (
                 id: new_id,
                 type,
                 status,
-                owner,
                 createdAt,
             }
         }
     })
-    console.log({ new_edges, createNode })
+    const { assets, assetsPr } = createNode
+    const op = assets?.items.length ? asset : assetPr
+    const ass = assets?.items.length? assets: assetsPr
+    const todos = await Promise.all(ass.map(async ({ id, }) => {
+        return await op.update({ id, node_id: new_id })
+    }))
+    console.log({ new_edges, createNode, todos })
     return new_edges
 }
 
