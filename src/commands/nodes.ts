@@ -52,7 +52,7 @@ interface GetNodeOptionsQueryVariables {
 
 export const getConnectedNodesByNodeID = async ({ id, edgeType }: GetNodeOptionsQueryVariables, authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS) => {
     const { data: { getNode } } = await CRUD({
-        query: custom.getNodesWithEdges,
+        query: custom.getEdgesByNodeID,
         variables: { id },
         authMode
     })
@@ -65,7 +65,7 @@ export const getConnectedNodesByNodeID = async ({ id, edgeType }: GetNodeOptions
        return a.concat({...edge, nodes: 1, node: not_me[0]?.node })
    }, [])
 
-//   console.log({ others })
+   console.log({ others })
    return edgeType ? others.filter(({ type }) => type === edgeType ) : others
 }
 
@@ -128,17 +128,16 @@ const nodeUpdate = async (
         console.log({ updateNode })
         return updateNode
     }
-    const asIs = await nodeRead({ id: new_id })
-    const { data: { getEdge }} = await edge.read({ id })
-    const { id: edge_id } = getEdge
-    const { type: _t, status: _s,  owner: _o, createdAt: _c, } = asIs || 
-    { type, status, owner, createdAt }
-
-    const no_change = new EquivMap([
-        [{ type: _t, status: _s, owner: _o, createdAt: _c }, true]
-    ]).get({type, status, owner, createdAt})
-
-    if (no_change) return asIs
+    const edges = await getConnectedNodesByNodeID({ id })
+    const new_edges = await Promise.all(edges.map(async ({edge}) => {
+        const { id: edge_id } = edge
+        const updatedEdge = await edge.relink({
+            edge_id, 
+            node_id: id
+        })
+        console.log({ updatedEdge })
+        return ({ createNode, updatedEdge })
+    }))
     const { data: { deleteNode } } = await CRUD({
         query: mutations.deleteNode,
         variables: {
@@ -152,20 +151,15 @@ const nodeUpdate = async (
         variables: {
             input: {
                 id: new_id,
-                type: type || _t,
-                status: status || _s,
-                owner: owner || _o,
-                createdAt: createdAt || _c,
+                type,
+                status,
+                owner,
+                createdAt,
             }
         }
     })
-    console.log({ createNode })
-    const updatedEdge = await edge.relink({
-        edge_id, 
-        node_id: id
-    })
-    console.log({ updatedEdge })
-    return ({ createNode, updatedEdge })
+    console.log({ new_edges, createNode })
+    return new_edges
 }
 
 const nodeDelete = async (

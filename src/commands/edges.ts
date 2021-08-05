@@ -3,6 +3,7 @@ import { EquivMap } from "@thi.ng/associative"
 import { v4 as uuid } from "uuid"
 import * as mutations from "../graphql/mutations"
 import * as queries from "../graphql/queries"
+//import { getEdgesByNodeID } from "../graphql/custom"
 import * as api from "../graphql/API"
 
 import { CRUD } from "../utils"
@@ -89,7 +90,7 @@ const linkCreate = async (
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     // prettier-ignore
-    const mutation = /* GraphQL */ `
+    const batch = /* GraphQL */ `
         mutation{
             edge: createEdge(input: { 
                 id: "${id}", 
@@ -110,7 +111,7 @@ const linkCreate = async (
     `
 
     const results = await CRUD({
-        query: mutation,
+        query: batch,
         variables: {},
         authMode,
     })

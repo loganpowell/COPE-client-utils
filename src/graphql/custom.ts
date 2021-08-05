@@ -52,7 +52,7 @@ export const fragmentEdge = /* GraphQL */ `
     }
 `
 
-export const getNodesWithEdges = /* GraphQL */ `
+export const getEdgesByNodeID = /* GraphQL */ `
     ${fragmentEdge}
     query getNodesByEdgeType($id:ID!){
         getNode(id: $id){
