@@ -2,7 +2,7 @@ import { EquivMap } from "@thi.ng/associative"
 import { isArray } from "@thi.ng/checks"
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 
-import { graphql, API as api } from "../graphql"
+import { graphql, API as api, API } from "../graphql"
 import { ListNodesInput } from "../api"
 import { edge, assetPr, asset } from "../commands"
 const { mutations, queries, custom } = graphql
@@ -90,83 +90,102 @@ type UpdateNodeWithNewIdInput = {
  *    to the updateNode mutation (2nd call)
  */
 const nodeUpdate = async (
-    { id, new_id, type, status, owner, createdAt }: UpdateNodeWithNewIdInput,
+    { id, type, status, owner, createdAt }: API.UpdateNodeInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     // if the id changes asIs is undefined
     // change everything but id
     // could be the wrong id was input -> error
     // could be the id has changed -> update
-    if( !new_id ) {
-        const asIs = await nodeRead({ id })
-        if( !asIs ) {
-            console.warn("No Node found for this id:", id)
-            return
-        }
-        const { id: _i,  type: _t, status: _s,  owner: _o,createdAt: _c, } = asIs
+    const asIs = await nodeRead({ id })
+    if( !asIs ) {
+        console.warn("No Node found for this id:", id)
+        return
+    }
+    const { 
+        id: _i,  
+        type: _t, 
+        status: _s,  
+        owner: _o, 
+        createdAt: _c, 
+        assets, 
+        assetsPr 
+    } = asIs
 
-        // check to see if update matches existing node
-        const no_change = new EquivMap([
-            [{ type: _t, status: _s, owner: _o, createdAt: _c }, true]
-        ]).get({type, status, owner, createdAt})
-
-        if (no_change) return asIs
-
-        const { data: { updateNode } } = await CRUD({
-            query: mutations.updateNode,
+    const op = assets?.items.length ? asset : assetPr
+    const ass = assets?.items.length ? assets : assetsPr
+    const title_asset = ass.items.filter(({ type }) => type === API.AssetType.T_OG_TITLE)[0]
+    // check to see if update matches existing node
+    const is_hashed = title_asset.split("~")[1]
+    // title hasn't yet been integrated into node_id
+    if (is_hashed && title_asset !== _i) {
+        // UPDATE ASSETS
+        const updated_assets = await Promise.all(ass.items.map(async ({ 
+            id, content, createdAt, editors, index, name, node_id, type 
+        }) =>  await op.update({ 
+                id, content, createdAt, editors, index, name, node_id: title_asset, type 
+            })
+        ))
+        console.log({ updated_assets })
+        // UPDATE EDGES
+        const edges = await getConnectedNodesByNodeID({ id: _i })
+        const updated_edges = edges && await Promise.all(edges.map(async ({edge}) => {
+            const { id: edge_id } = edge
+            const updatedEdge = await edge.relink({
+                edge_id, 
+                node_id: title_asset
+            })
+            return updatedEdge
+        })) || null
+        console.log({ updated_edges })
+        // CREATE NEW NODE
+        const {  data: { createNode } } = await CRUD({
+            query: mutations.createNode,
             variables: {
                 input: {
-                    id: id || _i,
-                    type: type || _t,
-                    status: status || _s,
-                    owner: owner || _o,
-                    createdAt: createdAt || _c,
-                },
+                    id: title_asset,
+                    type,
+                    status,
+                    createdAt,
+                }
+            }
+        })
+        // DELETE OLD NODE
+        console.log({ createNode })
+        const { data: { deleteNode } } = await CRUD({
+            query: mutations.deleteNode,
+            variables: {
+                input: { id: _i },
             },
             authMode,
         })
-        console.log({ updateNode })
-        return updateNode
+        console.log({ deleteNode })
+        return createNode
     }
-    const edges = await getConnectedNodesByNodeID({ id })
-    const new_edges = edges && await Promise.all(edges.map(async ({edge}) => {
-        const { id: edge_id } = edge
-        const updatedEdge = await edge.relink({
-            edge_id, 
-            node_id: id
-        })
-        console.log({ updatedEdge })
-        return ({ createNode, updatedEdge })
-    })) || null
-    //const new_assets = await assets
-    const { data: { deleteNode } } = await CRUD({
-        query: mutations.deleteNode,
+    const no_other_changes = new EquivMap([
+        [{ type: _t, status: _s, owner: _o, createdAt: _c }, true]
+    ]).get({ type, status, owner, createdAt })
+
+    if (no_other_changes) return asIs
+
+    const { data: { updateNode } } = await CRUD({
+        query: mutations.updateNode,
         variables: {
-            input: { id },
+            input: {
+                id: id || _i,
+                type: type || _t,
+                status: status || _s,
+                owner: owner || _o,
+                createdAt: createdAt || _c,
+            },
         },
         authMode,
     })
-    console.log({ deleteNode })
-    const {  data: { createNode } } = await CRUD({
-        query: mutations.createNode,
-        variables: {
-            input: {
-                id: new_id,
-                type,
-                status,
-                createdAt,
-            }
-        }
-    })
-    const { assets, assetsPr } = createNode
-    const op = assets?.items.length ? asset : assetPr
-    const ass = assets?.items.length ? assets : assetsPr
-    const todos = await Promise.all(ass.items.map(async ({ id, }) => {
-        return await op.update({ id, node_id: new_id })
-    }))
-    console.log({ new_edges, createNode, todos })
-    return new_edges
+    console.log({ updateNode })
+    return updateNode
 }
+
+
 
 const nodeDelete = async (
     { id }: api.DeleteNodeInput,

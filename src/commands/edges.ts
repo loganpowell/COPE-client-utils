@@ -135,7 +135,7 @@ const relinkToNewNodeID = async (
     const { id, owner, type, createdAt, weight, nodes: { items } } = getEdge
 
     if (!items.length) {
-        console.warn("No items found for this Edge:", id)
+        console.warn("No EdgeNodes found for this Edge:", id)
         return
     }
     const [ { id: from, owner: o_from }, { id: to, owner: o_to } ] = items.map(({ id, owner }) => ({
@@ -144,31 +144,6 @@ const relinkToNewNodeID = async (
     }))
     const batch = /* GraphQL */ `
         mutation {
-            edge: updateEdge(input: {
-                id: "${id}"
-                type: "${type}"
-                createdAt: "${createdAt}"
-                owner: "${owner}"
-                weight: "${weight}"
-            }) {
-                id
-                type
-                createdAt
-                owner
-                weight
-                updatedAt
-                nodes {
-                    items {
-                        id
-                        edge_id
-                        node_id
-                        owner
-                        createdAt
-                        updatedAt
-                    }
-                    nextToken
-                }
-            }
             edgeNodeFrom: updateEdgeNode(input: {
                 id: "${from}"
                 edge_id: "${edge_id}"
