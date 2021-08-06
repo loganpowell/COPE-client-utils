@@ -1,0 +1,9 @@
+node_modules/
+.cache
+.parcel-cache
+.vscode
+.env
+package-lock.json
+build/
+dist/
+node_modules/

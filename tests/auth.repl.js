@@ -16,7 +16,8 @@ import {
 import { createReadStream, readFile, readFileSync, promises } from "fs"
 import FormData from "form-data"
 
-import util from "util"
+import { API as api } from "../lib/graphql"
+import { CRUD } from "../lib/utils"
 import API from "@aws-amplify/api"
 
 dotenv.config()
@@ -24,18 +25,18 @@ configureWith(aws_exports)
 
 const id = "longrandomstringthatsmyID2"
 const _node = {
-    status : NodeStatus.DRAFT,
-    type   : NodeType.A_GEM,
+    status: NodeStatus.DRAFT,
+    type: NodeType.A_GEM,
     id,
 }
 
 const _asset = {
-    node_id : id, // connect the assetPr/asset to the Gem node
-    id      : "thiswouldbeanotehrlongID1",
-    name    : "alt text for image 2",
-    content :
+    node_id: id, // connect the assetPr/asset to the Gem node
+    id: "thiswouldbeanotehrlongID1",
+    name: "alt text for image 2",
+    content:
         "https://public.govdelivery.com/system/images/72747/original/Census%20Registered%20Banner%20%28High-res%29.png?1553871440",
-    type    : AssetType.A_IMAGE,
+    type: AssetType.A_IMAGE,
 }
 
 function streamToBlob(stream, mimeType) {
@@ -55,11 +56,10 @@ function streamToBlob(stream, mimeType) {
     })
 }
 
-auth
-    .logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
+auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
     .catch(e => console.error("error:", JSON.stringify(e, null, 4)))
     .then(async user => {
-        console.log({ user })
+        console.log({ user: user.email })
         //const new_node = await node.create(_node)
         //return { new_node }
 
@@ -177,14 +177,68 @@ auth
         //console.log({ stuff })
         // 🔥
 
-        //const res = await node.connections({
-        //    id       : "MockCourseModule02",
-        //    edgeType : EdgeType.HAS_PART,
+        //const res = await node.list({
+        //    type: api.NodeType.A_GEM,
+        //    status: api.NodeStatus.DRAFT,
+        //    limit: 1000,
         //})
 
-        const res = await toggleAssets({
-            id : "MockCourseNodeId",
-        })
+        const res = await node.read({ id: "05e18aef-e62b-4852-a49b-aa00598b6a55" })
+        //const res = await node.connections({
+        //    id: "is-this-your-special-bush!~Ed9OrHh17Y98",
+        //    //edgeType: EdgeType.HAS_NEXT,
+        //})
+
+        //const res = await toggleAssets({
+        //    id: "this-is-going-to-change-everything~mCXY0mHTjb9s",
+        //})
+
+        //const res = await node.update({
+        //    id: "is-this-your-special-bush!~Ed9OrHh17Y98",
+        //    type: NodeType.A_GEM,
+        //})
+
+        //console.log("res:", JSON.stringify(res, null, 2))
+
+        //const res = await node.delete({
+        //    id: "this-is-going-to-change-everything~mCXY0mHTjb9s",
+        //})
+
+        // "this-is-going-to-change-everything~mCXY0mHTjb9s"
+        //const res = await edge.relink({
+        //    edge_id: "60926cd9-a637-4a74-af0b-a70d5b991deb",
+        //    node_id: "this-is-going-to-change-everything~mCXY0mHTjb9s",
+        //})
+
+        //const newEdge = await edge.create({
+        //    type: EdgeType.HAS_PART,
+        //    from_node_id: "some-title-for-open-graph~Mj7o5oD3snEu",
+        //    to_node_id: "testNode3",
+        //})
+        //console.log("newEdge:", JSON.stringify(newEdge, null, 2))
+
+        //const res = await asset.update({
+        //    id: "380b0f9c-3b63-4a4d-b13f-724089a910f6",
+        //    content: "Everybody wants to rule the world",
+        //})
 
         console.log("res:", JSON.stringify(res, null, 2))
+        //console.log("updatedTitle:", JSON.stringify(updatedTitle, null, 2))
     }) //?
+
+/*
+    [ { id: '60926cd9-a637-4a74-af0b-a70d5b991deb',
+       type: 'HAS_PART',
+       createdAt: '2021-08-05T21:29:40.052Z',
+       owner: 'logan@hyperlocals.com',
+       weight: 0,
+       updatedAt: '2021-08-05T21:29:40.052Z',
+       nodes: 1,
+       node: [Object] },
+     { id: 'f00a541c-db0b-45cb-8085-9212d6cc36f3',
+       type: 'HAS_PART',
+       */
+/*
+
+
+*/

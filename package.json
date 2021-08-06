@@ -73,6 +73,9 @@
         "endOfLine": "lf",
         "tabWidth": 4,
         "semi": false,
-        "arrowParens": "avoid"
+        "arrowParens": "avoid",
+        "useTabs": false,
+        "trailingComma": "all",
+        "bracketSpacing": true
     }
 }

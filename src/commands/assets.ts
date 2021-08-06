@@ -19,7 +19,7 @@ const assetCreate = async (
         index,
     }: api.CreateAssetInput | CreateFileAssetInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
+): Promise<api.Asset | api.AssetPr> => {
     if (isFile({ type, content })) {
         // file upload if content isn't empty or a string
         return await storeObject({
@@ -34,7 +34,9 @@ const assetCreate = async (
             owner,
         })
     }
-    const { data: { createAsset } } = await CRUD({
+    const {
+        data: { createAsset },
+    } = await CRUD({
         query: mutations.createAsset,
         variables: {
             input: {
@@ -57,8 +59,10 @@ const assetCreate = async (
 const assetRead = async (
     { id }: api.GetAssetQueryVariables,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
-    const { data: { getAsset } } = await CRUD({
+): Promise<api.Asset> => {
+    const {
+        data: { getAsset },
+    } = await CRUD({
         query: queries.getAsset,
         variables: { id },
         authMode,
@@ -73,8 +77,12 @@ const assetRead = async (
 const assetUpdate = async (
     { id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
+): Promise<api.Asset | api.AssetPr> => {
     const asIs = await assetRead({ id })
+    if (!asIs) {
+        console.log("No Asset found with this ID:", id)
+        return
+    }
     const {
         content: _co,
         name: _na,
@@ -103,7 +111,8 @@ const assetUpdate = async (
     ]).get({ content, createdAt, editors, name, node_id, owner, type, index })
 
     if (no_change) return asIs
-    if (isFile({ type, content }) && _co.length) {
+    // FIXME: check on new or old type?
+    if (isFile({ type: type || _t, content: content || _co }) && _co.length) {
         // if _co.length -> new File replacing old URL
         await removeObject(_co)
         return await storeObject({
@@ -121,7 +130,9 @@ const assetUpdate = async (
         // create new Object
     }
 
-    const { data: { updateAsset } } = await CRUD({
+    const {
+        data: { updateAsset },
+    } = await CRUD({
         query: mutations.updateAsset,
         variables: {
             input: {
@@ -145,14 +156,16 @@ const assetUpdate = async (
 const assetDelete = async (
     { id }: api.DeleteAssetInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
-    const { data: { deleteAsset } } = await CRUD({
+): Promise<api.Asset> => {
+    const {
+        data: { deleteAsset },
+    } = await CRUD({
         query: mutations.deleteAsset,
         variables: { input: { id } },
         authMode,
     })
     const { type, content } = deleteAsset
-    const [ cat ] = type.split("_")
+    const [cat] = type.split("_")
     if (cat === "F" && content.length) {
         const removed = await removeObject(content)
         //console.log("removed S3 Object:\n", { removed, content })
@@ -163,13 +176,15 @@ const assetDelete = async (
 const assetConvert = async (
     { id }: api.GetAssetQueryVariables,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
+): Promise<api.Asset> => {
     const { node_id, createdAt, type, name, owner, content, editors, index } = await assetDelete({
         id,
     })
 
-    const { data: { createAssetPr } } = await CRUD({
-        query: mutations.createAssetPr,
+    const {
+        data: { createAsset },
+    } = await CRUD({
+        query: mutations.createAsset,
         variables: {
             input: { id, node_id, createdAt, type, name, owner, content, editors, index },
         },
@@ -177,7 +192,7 @@ const assetConvert = async (
     })
     console.log("Asset converted to AssetPr:", id)
 
-    return createAssetPr
+    return createAsset
 }
 
 export const asset = {

@@ -26,7 +26,7 @@ interface HTMLFileInput {
     lastModifiedDate: Date
 }
 export const isFile = ({ type, content }) => {
-    const [ cat, sub ] = type.split("_")
+    const [cat, sub] = type.split("_")
     const isFile = content.size // a File object has a size property
     return cat === "F" && isFile
 }
@@ -48,7 +48,7 @@ export const storeObject = async (
     { content, name, id, node_id, createdAt, type, index, owner, editors }: CreateFileAssetInput,
     isAssetPr = true,
     level = Level.protected,
-) => {
+): Promise<api.Asset | api.AssetPr> => {
     const {
         // @ts-ignore
         aws_user_files_s3_bucket: bucket,
@@ -101,9 +101,9 @@ export const storeObject = async (
 // "https://cope-storage-bucket180042-dev.s3.us-east-1.amazonaws.com/protected/us-east-1:92a4c58a-36ff-44ca-8f04-ae3cf469c3ec/jpg/99b318a9-9902-4fcb-87a3-fce9c05b6f51--jimi.jpg"
 
 export const removeObject = async (url, { level } = { level: "protected" }) => {
-    const [ _, target ] = url.split(level)
-    const [ __, bucket, format, file ] = target.split("/")
-    const todo = [ format, file ].join("/")
+    const [_, target] = url.split(level)
+    const [__, bucket, format, file] = target.split("/")
+    const todo = [format, file].join("/")
     console.log("removing s3 Object:", { todo })
 
     const deleted = await Storage.remove(todo, { level }).catch(e => {

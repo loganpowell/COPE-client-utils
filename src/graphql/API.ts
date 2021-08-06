@@ -2,6 +2,7 @@ export type CreateAssetInput = {
     id?: string | null
     node_id: string
     createdAt?: string | null
+    updatedAt?: string | null
     type: AssetType
     name: string
     index?: number | null
@@ -41,6 +42,7 @@ export enum AssetType {
 export type ModelAssetConditionInput = {
     node_id?: ModelIDInput | null
     createdAt?: ModelStringInput | null
+    updatedAt?: ModelStringInput | null
     type?: ModelAssetTypeInput | null
     name?: ModelStringInput | null
     index?: ModelIntInput | null
@@ -127,13 +129,13 @@ export type Asset = {
     id: string
     node_id: string
     createdAt: string
+    updatedAt: string
     type: AssetType
     name: string
     index?: number | null
     owner?: string | null
     content?: string | null
     editors?: Array<string | null> | null
-    updatedAt: string
 }
 
 export type Resource = {
@@ -141,6 +143,7 @@ export type Resource = {
     id: string
     node_id: string
     createdAt: string
+    updatedAt: string
     type: AssetType
     name: string
     index?: number | null
@@ -154,19 +157,20 @@ export type AssetPr = {
     id: string
     node_id: string
     createdAt: string
+    updatedAt: string
     type: AssetType
     name: string
     index?: number | null
     owner?: string | null
     content?: string | null
     editors?: Array<string | null> | null
-    updatedAt: string
 }
 
 export type UpdateAssetInput = {
     id: string
     node_id?: string | null
     createdAt?: string | null
+    updatedAt?: string | null
     type?: AssetType | null
     name?: string | null
     index?: number | null
@@ -183,6 +187,7 @@ export type CreateAssetPrInput = {
     id?: string | null
     node_id: string
     createdAt?: string | null
+    updatedAt?: string | null
     type: AssetType
     name: string
     index?: number | null
@@ -194,6 +199,7 @@ export type CreateAssetPrInput = {
 export type ModelAssetPrConditionInput = {
     node_id?: ModelIDInput | null
     createdAt?: ModelStringInput | null
+    updatedAt?: ModelStringInput | null
     type?: ModelAssetTypeInput | null
     name?: ModelStringInput | null
     index?: ModelIntInput | null
@@ -207,6 +213,7 @@ export type UpdateAssetPrInput = {
     id: string
     node_id?: string | null
     createdAt?: string | null
+    updatedAt?: string | null
     type?: AssetType | null
     name?: string | null
     index?: number | null
@@ -416,6 +423,7 @@ export type ModelAssetFilterInput = {
     id?: ModelIDInput | null
     node_id?: ModelIDInput | null
     createdAt?: ModelStringInput | null
+    updatedAt?: ModelStringInput | null
     type?: ModelAssetTypeInput | null
     name?: ModelStringInput | null
     index?: ModelIntInput | null
@@ -461,6 +469,7 @@ export type ModelAssetPrFilterInput = {
     id?: ModelIDInput | null
     node_id?: ModelIDInput | null
     createdAt?: ModelStringInput | null
+    updatedAt?: ModelStringInput | null
     type?: ModelAssetTypeInput | null
     name?: ModelStringInput | null
     index?: ModelIntInput | null
@@ -563,13 +572,13 @@ export type CreateAssetMutation = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -584,13 +593,13 @@ export type UpdateAssetMutation = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -605,13 +614,13 @@ export type DeleteAssetMutation = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -626,13 +635,13 @@ export type CreateAssetPrMutation = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -647,13 +656,13 @@ export type UpdateAssetPrMutation = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -668,13 +677,13 @@ export type DeleteAssetPrMutation = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -699,13 +708,13 @@ export type CreateNodeMutation = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -716,13 +725,13 @@ export type CreateNodeMutation = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -763,13 +772,13 @@ export type UpdateNodeMutation = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -780,13 +789,13 @@ export type UpdateNodeMutation = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -827,13 +836,13 @@ export type DeleteNodeMutation = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -844,13 +853,13 @@ export type DeleteNodeMutation = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1123,13 +1132,13 @@ export type GetAssetQuery = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1147,13 +1156,13 @@ export type ListAssetsQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1175,13 +1184,13 @@ export type AssetsByNodeQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1204,13 +1213,13 @@ export type AssetsByTypeQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1233,13 +1242,13 @@ export type AssetsByOwnerTypeQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1255,13 +1264,13 @@ export type GetAssetPrQuery = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1279,13 +1288,13 @@ export type ListAssetPrsQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1307,13 +1316,13 @@ export type AssetsPrByNodeQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1336,13 +1345,13 @@ export type AssetsPrByOwnerTypeQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1365,13 +1374,13 @@ export type AssetsPrByTypeQuery = {
             id: string
             node_id: string
             createdAt: string
+            updatedAt: string
             type: AssetType
             name: string
             index?: number | null
             owner?: string | null
             content?: string | null
             editors?: Array<string | null> | null
-            updatedAt: string
         } | null> | null
         nextToken?: string | null
     } | null
@@ -1397,13 +1406,13 @@ export type GetNodeQuery = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1414,13 +1423,13 @@ export type GetNodeQuery = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1643,13 +1652,13 @@ export type OnCreateAssetSubscription = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1664,13 +1673,13 @@ export type OnUpdateAssetSubscription = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1685,13 +1694,13 @@ export type OnDeleteAssetSubscription = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1706,13 +1715,13 @@ export type OnCreateAssetPrSubscription = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1727,13 +1736,13 @@ export type OnUpdateAssetPrSubscription = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1748,13 +1757,13 @@ export type OnDeleteAssetPrSubscription = {
         id: string
         node_id: string
         createdAt: string
+        updatedAt: string
         type: AssetType
         name: string
         index?: number | null
         owner?: string | null
         content?: string | null
         editors?: Array<string | null> | null
-        updatedAt: string
     } | null
 }
 
@@ -1778,13 +1787,13 @@ export type OnCreateNodeSubscription = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1795,13 +1804,13 @@ export type OnCreateNodeSubscription = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1841,13 +1850,13 @@ export type OnUpdateNodeSubscription = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1858,13 +1867,13 @@ export type OnUpdateNodeSubscription = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1904,13 +1913,13 @@ export type OnDeleteNodeSubscription = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null
@@ -1921,13 +1930,13 @@ export type OnDeleteNodeSubscription = {
                 id: string
                 node_id: string
                 createdAt: string
+                updatedAt: string
                 type: AssetType
                 name: string
                 index?: number | null
                 owner?: string | null
                 content?: string | null
                 editors?: Array<string | null> | null
-                updatedAt: string
             } | null> | null
             nextToken?: string | null
         } | null

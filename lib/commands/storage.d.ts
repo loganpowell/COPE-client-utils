@@ -27,7 +27,7 @@ export declare type CreateFileAssetInput = {
     owner?: string;
     editors?: string[];
 };
-export declare const storeObject: ({ content, name, id, node_id, createdAt, type, index, owner, editors }: CreateFileAssetInput, isAssetPr?: boolean, level?: Level) => Promise<any>;
+export declare const storeObject: ({ content, name, id, node_id, createdAt, type, index, owner, editors }: CreateFileAssetInput, isAssetPr?: boolean, level?: Level) => Promise<api.Asset | api.AssetPr>;
 export declare const removeObject: (url: any, { level }?: {
     level: string;
 }) => Promise<any>;

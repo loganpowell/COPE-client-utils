@@ -1,33 +1,32 @@
 export const fragmentResource = /* GraphQL */ `
-    fragment resource on Resource{
+    fragment resource on Resource {
         id
+        type
+        owner
+        index
         name
         content
-        type
         createdAt
-        index
-        owner
+        updatedAt
         node_id
     }
 `
-export const fragmentNode = /* GraphQL */ ` 
+export const fragmentNode = /* GraphQL */ `
     ${fragmentResource}
     fragment node on Node {
         id
-        status
         type
+        owner
+        status
         createdAt
         updatedAt
-        owner
-        assets{
-            items{
-                updatedAt
+        assets {
+            items {
                 ...resource
             }
         }
-        assetsPr{
-            items{
-                updatedAt
+        assetsPr {
+            items {
                 ...resource
             }
         }
@@ -38,13 +37,13 @@ export const fragmentEdge = /* GraphQL */ `
     fragment edge on Edge {
         id
         type
-        createdAt
         owner
         weight
+        createdAt
         updatedAt
-        nodes{
-            items{
-                node{
+        nodes {
+            items {
+                node {
                     ...node
                 }
             }
@@ -54,18 +53,19 @@ export const fragmentEdge = /* GraphQL */ `
 
 export const getEdgesByNodeID = /* GraphQL */ `
     ${fragmentEdge}
-    query getNodesByEdgeType($id:ID!){
-        getNode(id: $id){
+    #${fragmentNode}
+    query getNodesByEdgeType($id: ID!) {
+        getNode(id: $id) {
             id
             type
+            owner
             status
             createdAt
             updatedAt
-            owner
-            edges{
-                items{
-                    edge{
-                    ...edge
+            edges {
+                items {
+                    edge {
+                        ...edge
                     }
                 }
             }

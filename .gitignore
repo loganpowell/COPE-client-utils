@@ -4,7 +4,9 @@ node_modules/
 .vscode
 .env
 package-lock.json
-up.json
+build/
+dist/
+node_modules/
 
 #amplify
 amplify/\#current-cloud-backend
@@ -17,9 +19,7 @@ amplify/backend/.temp
 amplify/team-provider-info.json
 src/aws-exports.js
 
-build/
-dist/
-node_modules/
+
 aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json

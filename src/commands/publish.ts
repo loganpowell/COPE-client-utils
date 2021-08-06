@@ -25,9 +25,13 @@ export const toggleAssets = async ({ id }: API.GetNodeQueryVariables) => {
      * 4. toggle all `assets` -> `assetsPr`
      */
     const res = await node.read({ id })
+    if (!res) {
+        console.log("No Node found when toggleing assets for this id:", id)
+        return null
+    }
     const { assets, assetsPr } = res
     const pub = assets?.items.length
     const todo = pub ? assets.items : assetsPr.items
     const op = pub ? asset : assetPr
-    return await Promise.all(todo.map(async ({ id }) =>  await op.convert({ id })))
+    return await Promise.all(todo.map(async ({ id }) => await op.convert({ id })))
 }

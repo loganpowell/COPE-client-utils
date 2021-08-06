@@ -1,9 +1,10 @@
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import * as api from "../graphql/API";
+import { CreateFileAssetInput } from "./storage";
 export declare const assetPr: {
-    create: ({ name, node_id, type, content, createdAt, editors, id, owner, index }: api.CreateAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
-    read: ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
-    update: ({ id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
-    delete: ({ id }: api.DeleteAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
-    convert: ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<any>;
+    create: ({ name, node_id, type, content, createdAt, editors, id, owner, index, }: api.CreateAssetPrInput | CreateFileAssetInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.Asset | api.AssetPr>;
+    read: ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.AssetPr>;
+    update: ({ id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.Asset | api.AssetPr>;
+    delete: ({ id }: api.DeleteAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.AssetPr>;
+    convert: ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.AssetPr>;
 };

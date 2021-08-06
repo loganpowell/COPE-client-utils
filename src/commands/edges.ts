@@ -47,8 +47,10 @@ import { CRUD } from "../utils"
 const edgeRead = async (
     { id }: api.GetEdgeQueryVariables,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
-    const { data: { getEdge } } = await CRUD({
+): Promise<api.Edge> => {
+    const {
+        data: { getEdge },
+    } = await CRUD({
         query: queries.getEdge,
         variables: { id },
         authMode,
@@ -59,12 +61,12 @@ const edgeRead = async (
 const edgeUpdate = async (
     { id, createdAt, owner, type, weight }: api.UpdateEdgeInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
+): Promise<api.Edge> => {
     const asIs = await edgeRead({ id })
     const { createdAt: _c, owner: _o, type: _t, weight: _w } = asIs
 
     const no_change = new EquivMap([
-        [ { createdAt: _c, owner: _o, type: _t, weight: _w }, true ],
+        [{ createdAt: _c, owner: _o, type: _t, weight: _w }, true],
     ]).get({ createdAt, owner, type, weight })
 
     if (no_change) return asIs
@@ -123,7 +125,9 @@ const relinkToNewNodeID = async (
     { edge_id, node_id },
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
-    const { data: { getEdge } } = await CRUD({
+    const {
+        data: { getEdge },
+    } = await CRUD({
         query: queries.getEdge,
         variables: { id: edge_id },
         authMode,
@@ -132,22 +136,42 @@ const relinkToNewNodeID = async (
         console.warn("No Edge found with this id:", edge_id)
         return
     }
-    const { id, owner, type, createdAt, weight, nodes: { items } } = getEdge
+    const {
+        id,
+        owner,
+        type,
+        createdAt,
+        weight,
+        nodes: { items },
+    }: api.Edge = getEdge
 
     if (!items.length) {
         console.warn("No EdgeNodes found for this Edge:", id)
         return
     }
-    const [ { id: from, owner: o_from }, { id: to, owner: o_to } ] = items.map(({ id, owner }) => ({
-        id,
-        owner,
-    }))
+    /*
+     [ { id: 'f00a541c-db0b-45cb-8085-9212d6cc36f3',
+       type: 'HAS_PART',
+       createdAt: '2021-08-05T21:30:21.398Z',
+       owner: 'logan@hyperlocals.com',
+       weight: 0,
+       updatedAt: '2021-08-05T21:30:21.398Z',
+       nodes: 1,
+       node: [Object] } ] }
+       */
+    const [
+        { id: from, owner: o_from, edge_id: e_from, node_id: n_from },
+        { id: to, owner: o_to, edge_id: e_to, node_id: n_to },
+    ] = items
+
+    // if edge ID input matches one of the edge IDs of the EdgeNodes, that's the one to update
+
     const batch = /* GraphQL */ `
         mutation {
             edgeNodeFrom: updateEdgeNode(input: {
                 id: "${from}"
-                edge_id: "${edge_id}"
-                node_id: "${node_id}"
+                edge_id: "${e_from}"
+                node_id: "${(e_from === edge_id && node_id) || n_from}"
                 owner: "${o_from}"
             }) {
                 id
@@ -156,39 +180,11 @@ const relinkToNewNodeID = async (
                 owner
                 createdAt
                 updatedAt
-                node {
-                    id
-                    status
-                    type
-                    createdAt
-                    updatedAt
-                    owner
-                    assets {
-                        nextToken
-                    }
-                    assetsPr {
-                        nextToken
-                    }
-                    edges {
-                        nextToken
-                    }
-                }
-                edge {
-                    id
-                    type
-                    createdAt
-                    owner
-                    weight
-                    updatedAt
-                    nodes {
-                        nextToken
-                    }
-                }
             }
             edgeNodeTo: updateEdgeNode(input: {
                 id: "${to}"
-                edge_id: "${to}"
-                node_id: "${node_id}"
+                edge_id: "${e_to}"
+                node_id: "${(e_to === edge_id && node_id) || n_to}"
                 owner: "${o_to}"
             }) {
                 id
@@ -197,34 +193,6 @@ const relinkToNewNodeID = async (
                 owner
                 createdAt
                 updatedAt
-                node {
-                    id
-                    status
-                    type
-                    createdAt
-                    updatedAt
-                    owner
-                    assets {
-                        nextToken
-                    }
-                    assetsPr {
-                        nextToken
-                    }
-                    edges {
-                        nextToken
-                    }
-                }
-                edge {
-                    id
-                    type
-                    createdAt
-                    owner
-                    weight
-                    updatedAt
-                    nodes {
-                        nextToken
-                    }
-                }
             }
         }
     `
@@ -236,11 +204,25 @@ const relinkToNewNodeID = async (
 
     return results
 }
+
+type DeletedLink = {
+    edge: {
+        deleteEdge: api.Edge
+    }
+    edgeNodeFrom: {
+        deleteEdgeNode: api.EdgeNode
+    }
+    edgeNodeTo: {
+        deleteEdgeNode: api.EdgeNode
+    }
+}
 const linkDelete = async (
     { id },
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-) => {
-    const { data: { getEdge } } = await CRUD({
+): Promise<DeletedLink> => {
+    const {
+        data: { getEdge },
+    } = await CRUD({
         query: queries.getEdge,
         variables: { id },
         authMode,
@@ -249,12 +231,14 @@ const linkDelete = async (
         console.warn("No Edge found with this id:", id)
         return
     }
-    const { nodes: { items } } = getEdge
+    const {
+        nodes: { items },
+    } = getEdge
     if (!items.length) {
         console.warn("No items found for this Edge:", id)
         return
     }
-    const [ from, to ] = items.map(({ id }) => id)
+    const [from, to] = items.map(({ id }) => id)
     const mutation = /* GraphQL */ `
         mutation {
             edge: deleteEdge(input: { 
