@@ -1,7 +1,7 @@
 import { EquivMap } from "@thi.ng/associative"
-import { isArray } from "@thi.ng/checks"
+import { isArray, isUUID } from "@thi.ng/checks"
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
-
+//import { v4 as uuid } from "uuid"
 import { graphql, API as api } from "../graphql"
 import { ListNodesInput, Resource, ResourceOps, ResourceConnection } from "../api"
 import { edge, assetPr, asset } from "../commands"
@@ -116,11 +116,11 @@ const nodeUpdate = async (
 
     //console.log({ _assets, title_asset })
     // check to see if update matches existing node
-    //const is_hashed = title_asset.content.split("~")[1]
+
     const title = title_asset.content
     const stub = url_compat(title)
     //console.log({ stub, _i_frendly: _i.split("~")[0] })
-    if (title_asset && stub !== id.split("~")[0]) {
+    if (title && stub !== id.split("~")[0]) {
         console.log("changing Node IDs for all connections to: ", id)
         // FIXME: convert into a single batch Graphql Query string
         // TODO: check on batch operation count limit for Appsync/Amplify
