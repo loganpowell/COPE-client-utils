@@ -181,9 +181,10 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //    //type: api.NodeType.A_GEM,
         //    owner: "logan@hyperlocals.com",
         //    limit: 1000,
+        //    sortDirection: api.ModelSortDirection.DESC,
         //})
 
-        const id = "~YJrDJaLAaADI"
+        const id = "~j51rqFndqPCd"
 
         const res = await node.read({ id })
 
