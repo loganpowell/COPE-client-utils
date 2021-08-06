@@ -7,7 +7,7 @@ import { ListNodesInput, Resource, ResourceOps, ResourceConnection } from "../ap
 import { edge, assetPr, asset } from "../commands"
 const { mutations, queries, custom } = graphql
 
-import { CRUD, shortUUID, url_compat } from "../utils"
+import { CRUD, shortUUID, url_compat, getAssetsAndOp } from "../utils"
 
 const nodeCreate = async (
     { id, status, type, createdAt, owner, updatedAt }: api.CreateNodeInput,
@@ -65,19 +65,12 @@ export const getConnectedNodesByNodeID = async (
         authMode,
     })
 
+    if (!getNode) {
+        console.warn("No Node found for this id:", id)
+        return null
+    }
     //console.log("getNode:", JSON.stringify(getNode, null, 2))
-    /*
-    { getNode: 
-       { id: 'is-this-your-special-bush!~Ed9OrHh17Y98',
-         status: 'DRAFT',
-         type: 'A_GEM',
-         createdAt: '2021-08-06T18:38:00.399Z',
-         updatedAt: '2021-08-06T18:43:17.423Z',
-         owner: 'logan@hyperlocals.com',
-         assets: { items: [Object] },
-         assetsPr: { items: [] },
-         edges: { items: [Object] } } }
-     */
+
     const node: api.Node = getNode
     const all = node?.edges?.items.reduce((acc, { edge }: api.EdgeNode) => {
         //console.log("edge:", JSON.stringify(edge, null, 2))
@@ -90,17 +83,6 @@ export const getConnectedNodesByNodeID = async (
     return edgeType ? all.filter(({ type }: api.Edge) => type === edgeType) : all
 }
 
-const getAssetsAndOp = ({
-    assets,
-    assetsPr,
-}: {
-    assets: api.ModelAssetConnection
-    assetsPr: api.ModelAssetPrConnection
-}) => {
-    const op: ResourceOps = assets?.items.length ? asset : assetPr
-    const _assets: ResourceConnection = assets?.items.length ? assets : assetsPr
-    return { _assets, op }
-}
 /**
  * "When updating any part of the composite sort key for
  * @key 'Nodes_by_type_status_createdAt', you must provide
@@ -125,7 +107,7 @@ const nodeUpdate = async (
         console.warn("No Node found for this id:", id)
         return
     }
-    const { id: _i, type: _t, status: _s, owner: _o, createdAt: _c, assets, assetsPr } = asIs
+    const { type: _t, status: _s, owner: _o, createdAt: _c, assets, assetsPr } = asIs
 
     const { _assets, op } = getAssetsAndOp({ assets, assetsPr })
 
@@ -138,7 +120,7 @@ const nodeUpdate = async (
     const title = title_asset.content
     const stub = url_compat(title)
     //console.log({ stub, _i_frendly: _i.split("~")[0] })
-    if (title_asset && stub !== _i.split("~")[0]) {
+    if (title_asset && stub !== id.split("~")[0]) {
         console.log("changing Node IDs for all connections to: ", id)
         // FIXME: convert into a single batch Graphql Query string
         // TODO: check on batch operation count limit for Appsync/Amplify
@@ -164,20 +146,21 @@ const nodeUpdate = async (
         )
         //console.log({ updated_assets })
         // UPDATE EDGES
-        const edges = await getConnectedNodesByNodeID({ id: _i })
+        const edges = await getConnectedNodesByNodeID({ id })
         const updated_edges =
             (edges &&
                 (await Promise.all(
                     edges.map(async ({ id: edge_id }: api.Edge) => {
                         const updatedEdge = await edge.relink({
                             edge_id,
-                            node_id: friendly,
+                            node_id_old: id,
+                            node_id_new: friendly,
                         })
                         return updatedEdge
                     }),
                 ))) ||
             null
-        console.log("updated Edges:", JSON.stringify(updated_edges, null, 2))
+        //console.log("updated Edges:", JSON.stringify(updated_edges, null, 2))
         // CREATE NEW NODE
         const {
             data: { createNode },
@@ -199,7 +182,7 @@ const nodeUpdate = async (
         } = await CRUD({
             query: mutations.deleteNode,
             variables: {
-                input: { id: _i },
+                input: { id },
             },
             authMode,
         })
@@ -218,7 +201,7 @@ const nodeUpdate = async (
         query: mutations.updateNode,
         variables: {
             input: {
-                id: id || _i,
+                id,
                 type: type || _t,
                 status: status || _s,
                 owner: owner || _o,

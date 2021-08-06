@@ -5,7 +5,7 @@
         "lib": ["ES2017", "ES7", "ES6", "DOM"],
         "declaration": true,
         "importHelpers": true,
-        "noUnusedParameters": true,
+        "noUnusedParameters": false,
         "noUnusedLocals": false,
         "rootDir": "src",
         "outDir": "lib",

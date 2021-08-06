@@ -174,27 +174,32 @@ const assetPrDelete = async (
 }
 
 const assetPrConvert = async (
-    { id }: api.GetAssetPrQueryVariables,
+    { id }: api.GetAssetQueryVariables,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-): Promise<api.AssetPr> => {
-    const { node_id, createdAt, type, name, owner, content, editors, index } = await assetPrDelete({
-        id,
+): Promise<api.Asset> => {
+    const { node_id, createdAt, type, name, owner, content, editors, index } = await CRUD({
+        query: mutations.deleteAssetPr,
+        variables: {
+            input: {
+                id,
+            },
+        },
+        authMode,
     })
 
     const {
-        data: { createAssetPr },
+        data: { createAsset },
     } = await CRUD({
-        query: mutations.createAssetPr,
+        query: mutations.createAsset,
         variables: {
             input: { id, node_id, createdAt, type, name, owner, content, editors, index },
         },
         authMode,
     })
-    console.log("AssetPr converted to AssetPr:", id)
+    console.log("Asset converted to AssetPr:", id)
 
-    return createAssetPr
+    return createAsset
 }
-
 export const assetPr = {
     create: assetPrCreate,
     read: assetPrRead,

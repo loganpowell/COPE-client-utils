@@ -58,8 +58,8 @@ function streamToBlob(stream, mimeType) {
 
 auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
     .catch(e => console.error("error:", JSON.stringify(e, null, 4)))
-    .then(async user => {
-        console.log({ user: user.email })
+    .then(async ({ payload: { email } }) => {
+        console.log({ email })
         //const new_node = await node.create(_node)
         //return { new_node }
 
@@ -178,23 +178,26 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         // 🔥
 
         //const res = await node.list({
-        //    type: api.NodeType.A_GEM,
-        //    status: api.NodeStatus.DRAFT,
+        //    //type: api.NodeType.A_GEM,
+        //    owner: "logan@hyperlocals.com",
         //    limit: 1000,
         //})
 
-        const res = await node.read({ id: "05e18aef-e62b-4852-a49b-aa00598b6a55" })
+        const id = "~YJrDJaLAaADI"
+
+        const res = await node.read({ id })
+
         //const res = await node.connections({
-        //    id: "is-this-your-special-bush!~Ed9OrHh17Y98",
+        //    id,
         //    //edgeType: EdgeType.HAS_NEXT,
         //})
 
         //const res = await toggleAssets({
-        //    id: "this-is-going-to-change-everything~mCXY0mHTjb9s",
+        //    id,
         //})
 
         //const res = await node.update({
-        //    id: "is-this-your-special-bush!~Ed9OrHh17Y98",
+        //    id,
         //    type: NodeType.A_GEM,
         //})
 
@@ -210,15 +213,15 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //    node_id: "this-is-going-to-change-everything~mCXY0mHTjb9s",
         //})
 
-        //const newEdge = await edge.create({
+        //const res = await edge.create({
         //    type: EdgeType.HAS_PART,
-        //    from_node_id: "some-title-for-open-graph~Mj7o5oD3snEu",
+        //    from_node_id: "05e18aef-e62b-4852-a49b-aa00598b6a55",
         //    to_node_id: "testNode3",
         //})
         //console.log("newEdge:", JSON.stringify(newEdge, null, 2))
 
         //const res = await asset.update({
-        //    id: "380b0f9c-3b63-4a4d-b13f-724089a910f6",
+        //    id: "4507e08b-6758-4bf0-aff9-7ccbb56e2f20",
         //    content: "Everybody wants to rule the world",
         //})
 

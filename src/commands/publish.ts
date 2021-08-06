@@ -2,7 +2,7 @@ import { API } from "../graphql"
 import { asset } from "./assets"
 import { assetPr } from "./assetsPr"
 import { node } from "./nodes"
-import { CRUD } from "../utils"
+import { CRUD, getAssetsAndOp } from "../utils"
 
 type Publisher = {
     node_id: string
@@ -29,9 +29,9 @@ export const toggleAssets = async ({ id }: API.GetNodeQueryVariables) => {
         console.log("No Node found when toggleing assets for this id:", id)
         return null
     }
+
     const { assets, assetsPr } = res
-    const pub = assets?.items.length
-    const todo = pub ? assets.items : assetsPr.items
-    const op = pub ? asset : assetPr
-    return await Promise.all(todo.map(async ({ id }) => await op.convert({ id })))
+    const { _assets, op } = getAssetsAndOp({ assets, assetsPr })
+
+    return await Promise.all(_assets?.items.map(async ({ id }) => await op.convert({ id })))
 }

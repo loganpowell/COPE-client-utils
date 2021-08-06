@@ -6,5 +6,5 @@ export declare const assetPr: {
     read: ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.AssetPr>;
     update: ({ id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.Asset | api.AssetPr>;
     delete: ({ id }: api.DeleteAssetPrInput, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.AssetPr>;
-    convert: ({ id }: api.GetAssetPrQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.AssetPr>;
+    convert: ({ id }: api.GetAssetQueryVariables, authMode?: GRAPHQL_AUTH_MODE) => Promise<api.Asset>;
 };

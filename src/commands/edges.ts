@@ -122,7 +122,7 @@ const linkCreate = async (
 }
 
 const relinkToNewNodeID = async (
-    { edge_id, node_id },
+    { edge_id, node_id_old, node_id_new },
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const {
@@ -162,7 +162,7 @@ const relinkToNewNodeID = async (
     const [
         { id: from, owner: o_from, edge_id: e_from, node_id: n_from },
         { id: to, owner: o_to, edge_id: e_to, node_id: n_to },
-    ] = items
+    ] = items.sort(({ createdAt: ca1 }, { createdAt: ca2 }) => (ca1 < ca2 ? -1 : ca1 > ca2 ? 1 : 0))
 
     // if edge ID input matches one of the edge IDs of the EdgeNodes, that's the one to update
 
@@ -171,7 +171,7 @@ const relinkToNewNodeID = async (
             edgeNodeFrom: updateEdgeNode(input: {
                 id: "${from}"
                 edge_id: "${e_from}"
-                node_id: "${(e_from === edge_id && node_id) || n_from}"
+                node_id: "${n_from === node_id_old ? node_id_new : n_from}"
                 owner: "${o_from}"
             }) {
                 id
@@ -184,7 +184,7 @@ const relinkToNewNodeID = async (
             edgeNodeTo: updateEdgeNode(input: {
                 id: "${to}"
                 edge_id: "${e_to}"
-                node_id: "${(e_to === edge_id && node_id) || n_to}"
+                node_id: "${n_to === node_id_old ? node_id_new : n_to}"
                 owner: "${o_to}"
             }) {
                 id

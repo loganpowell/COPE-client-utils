@@ -24,9 +24,10 @@ export declare const edge: {
     delete: ({ id }: {
         id: any;
     }, authMode?: GRAPHQL_AUTH_MODE) => Promise<DeletedLink>;
-    relink: ({ edge_id, node_id }: {
+    relink: ({ edge_id, node_id_old, node_id_new }: {
         edge_id: any;
-        node_id: any;
+        node_id_old: any;
+        node_id_new: any;
     }, authMode?: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS) => Promise<any>;
 };
 export {};
