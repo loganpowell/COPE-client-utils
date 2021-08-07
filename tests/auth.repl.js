@@ -184,7 +184,7 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //    sortDirection: api.ModelSortDirection.DESC,
         //})
 
-        const id = "~j51rqFndqPCd"
+        const id = "please-work~WX9BXIPTkZcA"
 
         const res = await node.read({ id })
 
