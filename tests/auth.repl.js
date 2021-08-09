@@ -18,7 +18,7 @@ import FormData from "form-data"
 
 import { API as api } from "../lib/graphql"
 import { CRUD } from "../lib/utils"
-import API from "@aws-amplify/api"
+import { API, GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 
 dotenv.config()
 configureWith(aws_exports)
@@ -184,16 +184,19 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //    sortDirection: api.ModelSortDirection.DESC,
         //})
 
-        const id = "a-new-gem~6x9ypoERIhGS"
+        const id = "MockCourseNodeId"
 
-        const res = await node.read({ id })
+        //const res = await node.read({ id })
 
         //const res = await node.delete({ id })
 
-        //const res = await node.connections({
-        //    id,
-        //    //edgeType: EdgeType.HAS_NEXT,
-        //})
+        const res = await node.connections(
+            {
+                id,
+                //edgeType: EdgeType.HAS_NEXT,
+            },
+            GRAPHQL_AUTH_MODE.API_KEY,
+        )
 
         //const res = await toggleAssets({
         //    id,

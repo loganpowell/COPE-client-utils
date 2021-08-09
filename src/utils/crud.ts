@@ -4,7 +4,7 @@ import { API, GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
  * Local mocking with Auth is a bit more circuitous:
  * https://aws.amazon.com/blogs/mobile/amplify-framework-local-mocking/
  * (see "Seamless transition between local and cloud environments" - paragraph 2)
- * 
+ *
  */
 export const CRUD = async ({
     query,
@@ -21,7 +21,7 @@ export const CRUD = async ({
             authMode,
         })
     } catch (e) {
-        console.warn("Graphql Error for query: \n", JSON.stringify(query, null, 4))
+        console.warn("Graphql Error for query: \n", query)
         console.warn("... called with these variables: \n", JSON.stringify(variables, null, 4))
         console.warn(JSON.stringify(e, null, 4))
     }

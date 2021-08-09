@@ -35,8 +35,27 @@ export const fragmentNode = /* GraphQL */ `
         }
     }
 `
-export const fragmentEdge = /* GraphQL */ `
-    ${fragmentNode}
+
+export const fragmentNodePublic = /* GraphQL */ `
+    ${fragmentResource}
+    fragment node on Node {
+        id
+        type
+        owner
+        status
+        createdAt
+        updatedAt
+        assets {
+            items {
+                ...resource
+            }
+            nextToken
+        }
+    }
+`
+
+export const fragmentEdge = node_fragment => /* GraphQL */ `
+    ${node_fragment}
     fragment edge on Edge {
         id
         type
@@ -55,10 +74,31 @@ export const fragmentEdge = /* GraphQL */ `
     }
 `
 
-export const getEdgesByNodeID = /* GraphQL */ `
-    ${fragmentEdge}
-    #${fragmentNode}
-    query getNodesByEdgeType($id: ID!) {
+export const connections = /* GraphQL */ `
+    ${fragmentEdge(fragmentNode)}
+    query getConnections($id: ID!) {
+        getNode(id: $id) {
+            id
+            type
+            owner
+            status
+            createdAt
+            updatedAt
+            edges {
+                items {
+                    edge {
+                        ...edge
+                    }
+                }
+                nextToken
+            }
+        }
+    }
+`
+
+export const connectionsPublic = /* GraphQL */ `
+    ${fragmentEdge(fragmentNodePublic)}
+    query getConnections($id: ID!) {
         getNode(id: $id) {
             id
             type

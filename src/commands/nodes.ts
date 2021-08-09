@@ -61,7 +61,10 @@ export const getConnectedNodesByNodeID = async (
     const {
         data: { getNode },
     } = await CRUD({
-        query: custom.getEdgesByNodeID,
+        query:
+            authMode === GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+                ? custom.connections
+                : custom.connectionsPublic,
         variables: { id },
         authMode,
     })
@@ -167,7 +170,7 @@ const nodeDelete = async (
     const {
         data: { getNode },
     } = await CRUD({
-        query: custom.getEdgesByNodeID,
+        query: custom.connections,
         variables: { id },
         authMode,
     })
