@@ -184,9 +184,11 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //    sortDirection: api.ModelSortDirection.DESC,
         //})
 
-        const id = "please-work~WX9BXIPTkZcA"
+        const id = "a-new-gem~6x9ypoERIhGS"
 
         const res = await node.read({ id })
+
+        //const res = await node.delete({ id })
 
         //const res = await node.connections({
         //    id,

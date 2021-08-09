@@ -5,6 +5,7 @@ import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 import { graphql, API as api } from "../graphql"
 import { ListNodesInput, Resource, ResourceOps, ResourceConnection } from "../api"
 import { edge, assetPr, asset } from "../commands"
+import { titleizeNodeIds } from "./titleizeNodeIds"
 const { mutations, queries, custom } = graphql
 
 import { CRUD, shortUUID, url_compat, getAssetsAndOp } from "../utils"
@@ -40,7 +41,7 @@ const nodeRead = async (
     const {
         data: { getNode },
     } = await CRUD({
-        query: queries.getNode,
+        query: custom.getNodeWithAssets,
         variables: { id },
         authMode,
     })
@@ -122,72 +123,17 @@ const nodeUpdate = async (
     //console.log({ stub, _i_frendly: _i.split("~")[0] })
     if (title && stub !== id.split("~")[0]) {
         console.log("changing Node IDs for all connections to: ", id)
-        // FIXME: convert into a single batch Graphql Query string
-        // TODO: check on batch operation count limit for Appsync/Amplify
-        // SEE utils/batch.ts
-        const friendly = shortUUID(title)
-        // title hasn't yet been integrated into node_id
-        // UPDATE ASSETS
-        const updated_assets = await Promise.all(
-            _assets?.items.map(
-                async ({ id, content, createdAt, editors, index, name, type, owner }: Resource) =>
-                    await op.update({
-                        id,
-                        content,
-                        createdAt,
-                        editors,
-                        index,
-                        name,
-                        node_id: friendly,
-                        type,
-                        owner,
-                    }),
-            ),
-        )
-        //console.log({ updated_assets })
-        // UPDATE EDGES
-        const edges = await getConnectedNodesByNodeID({ id })
-        const updated_edges =
-            (edges &&
-                (await Promise.all(
-                    edges.map(async ({ id: edge_id }: api.Edge) => {
-                        const updatedEdge = await edge.relink({
-                            edge_id,
-                            node_id_old: id,
-                            node_id_new: friendly,
-                        })
-                        return updatedEdge
-                    }),
-                ))) ||
-            null
-        //console.log("updated Edges:", JSON.stringify(updated_edges, null, 2))
-        // CREATE NEW NODE
-        const {
-            data: { createNode },
-        } = await CRUD({
-            query: mutations.createNode,
-            variables: {
-                input: {
-                    id: friendly,
-                    type: type || _t,
-                    status: status || _s,
-                    createdAt: createdAt || _c,
-                },
-            },
-        })
-        // DELETE OLD NODE
-        //console.log({ createNode })
-        const {
-            data: { deleteNode },
-        } = await CRUD({
-            query: mutations.deleteNode,
-            variables: {
-                input: { id },
-            },
+        return titleizeNodeIds({
+            id,
+            title,
+            type: type || _t,
+            status: status || _s,
+            createdAt: createdAt || _c,
+            _assets,
             authMode,
+            edges: getConnectedNodesByNodeID({ id }),
+            op,
         })
-        //console.log({ deleteNode })
-        return createNode
     }
     const no_change = new EquivMap([
         [{ type: _t, status: _s, owner: _o, createdAt: _c }, true],
@@ -210,7 +156,7 @@ const nodeUpdate = async (
         },
         authMode,
     })
-    console.log({ updateNode })
+    //console.log({ updateNode })
     return updateNode
 }
 
@@ -230,19 +176,23 @@ const nodeDelete = async (
     // TODO: check on batch operation count limit for Appsync/Amplify
 
     const { assets, assetsPr, edges }: api.Node = getNode
+    //console.log({ assets, assetsPr, edges })
     // clean up connections
     const deletedEdges = await Promise.all(
-        edges?.items.map(async ({ id }: api.EdgeNode) => await edge.delete({ id })),
+        edges?.items.map(async ({ edge: { id } }: api.EdgeNode) => await edge.delete({ id })),
     )
-    console.log({ deletedEdges })
+    //console.log("deletedEdges:", JSON.stringify(deletedEdges, null, 2))
     // clean up assets
     const { _assets, op } = getAssetsAndOp({ assets, assetsPr })
 
     // FIXME: when converting to GraphQL batch, 🔥 must delete any `F_` assets with code (s3) 🔥
-    const deletedAssets = await Promise.all(
-        _assets?.items.map(async ({ id }: Resource) => await op.delete({ id })),
-    )
-    console.log({ deletedAssets })
+    const deletedAssets =
+        (_assets?.items &&
+            (await Promise.all(
+                _assets.items.map(async ({ id }: Resource) => await op.delete({ id })),
+            ))) ||
+        null
+    //console.log({ deletedAssets })
     const {
         data: { deleteNode },
     } = await CRUD({

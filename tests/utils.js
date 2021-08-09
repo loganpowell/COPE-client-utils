@@ -29,14 +29,14 @@ import { is_alias } from "../src/utils"
  *    ]
  *})
  *
- * // =>  { nodes:  
- * // =>     [ { id: 'id0', status: 'A', type: 'B' }, 
- * // =>     { id: 'id1', status: 'A', type: 'B' } ], 
- * // =>     edge: { id: 'edge_id', type: 'TO', weight: null }, 
- * // =>     edge_nodes:  
- * // =>     [ { edge_id: 'edge_id', node_id: 'id0' }, 
- * // =>     { edge_id: 'edge_id', node_id: 'id1' } ] } 
-*/
+ * // =>  { nodes:
+ * // =>     [ { id: 'id0', status: 'A', type: 'B' },
+ * // =>     { id: 'id1', status: 'A', type: 'B' } ],
+ * // =>     edge: { id: 'edge_id', type: 'TO', weight: null },
+ * // =>     edge_nodes:
+ * // =>     [ { edge_id: 'edge_id', node_id: 'id0' },
+ * // =>     { edge_id: 'edge_id', node_id: 'id1' } ] }
+ */
 export const abbreviateIDVals = (input, i = 0, edge = false) => {
     if (edge) {
         if (input) return (input.id = `edge_id`)
@@ -46,8 +46,8 @@ export const abbreviateIDVals = (input, i = 0, edge = false) => {
         if (input.id && !is_alias(input.id)) input.id = `id${i}`
         if (input.edge_id && !is_alias(input.edge_id)) input.edge_id = `edge_id`
         if (input.node_id && !is_alias(input.node_id)) input.node_id = `id${i}`
-        Object.entries(input).forEach(
-            ([ k, v ], idx) => (k === "edge" ? abbreviateIDVals(v, idx, true) : abbreviateIDVals(v, idx))
+        Object.entries(input).forEach(([k, v], idx) =>
+            k === "edge" ? abbreviateIDVals(v, idx, true) : abbreviateIDVals(v, idx),
         )
     }
     if (isArray(input)) {

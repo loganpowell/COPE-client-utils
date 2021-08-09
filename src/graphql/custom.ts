@@ -1,14 +1,15 @@
 export const fragmentResource = /* GraphQL */ `
     fragment resource on Resource {
         id
-        type
-        owner
-        index
-        name
-        content
+        node_id
         createdAt
         updatedAt
-        node_id
+        type
+        name
+        index
+        owner
+        content
+        editors
     }
 `
 export const fragmentNode = /* GraphQL */ `
@@ -24,11 +25,13 @@ export const fragmentNode = /* GraphQL */ `
             items {
                 ...resource
             }
+            nextToken
         }
         assetsPr {
             items {
                 ...resource
             }
+            nextToken
         }
     }
 `
@@ -47,6 +50,7 @@ export const fragmentEdge = /* GraphQL */ `
                     ...node
                 }
             }
+            nextToken
         }
     }
 `
@@ -68,7 +72,17 @@ export const getEdgesByNodeID = /* GraphQL */ `
                         ...edge
                     }
                 }
+                nextToken
             }
+        }
+    }
+`
+
+export const getNodeWithAssets = /* GraphQL */ `
+    ${fragmentNode}
+    query GetNode($id: ID!) {
+        getNode(id: $id) {
+            ...node
         }
     }
 `
