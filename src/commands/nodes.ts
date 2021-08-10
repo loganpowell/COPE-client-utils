@@ -189,12 +189,10 @@ const nodeDelete = async (
     const { _assets, op } = getAssetsAndOp({ assets, assetsPr })
 
     // FIXME: when converting to GraphQL batch, 🔥 must delete any `F_` assets with code (s3) 🔥
-    const deletedAssets =
-        (_assets?.items &&
-            (await Promise.all(
-                _assets.items.map(async ({ id }: Resource) => await op.delete({ id })),
-            ))) ||
-        null
+    const deletedAssets = await Promise.all(
+        _assets?.items.map(async ({ id }: Resource) => await op.delete({ id })),
+    )
+
     //console.log({ deletedAssets })
     const {
         data: { deleteNode },
