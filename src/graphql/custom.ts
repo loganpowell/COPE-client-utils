@@ -76,14 +76,10 @@ export const fragmentEdge = node_fragment => /* GraphQL */ `
 
 export const connections = /* GraphQL */ `
     ${fragmentEdge(fragmentNode)}
+    ${fragmentNode}
     query getConnections($id: ID!) {
         getNode(id: $id) {
-            id
-            type
-            owner
-            status
-            createdAt
-            updatedAt
+            ...node
             edges {
                 items {
                     edge {
