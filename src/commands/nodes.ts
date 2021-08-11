@@ -101,6 +101,7 @@ export const getConnectedNodesByNodeID = async (
 const nodeUpdate = async (
     { id, type, status, owner, createdAt }: api.UpdateNodeInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+    titleize = true
 ): Promise<api.Node> => {
     // if the id changes asIs is undefined
     // change everything but id
@@ -124,7 +125,7 @@ const nodeUpdate = async (
     const title = title_asset.content
     const stub = url_compat(title)
     //console.log({ stub, _i_frendly: _i.split("~")[0] })
-    if (title && stub !== id.split("~")[0]) {
+    if (titleize && title && stub !== id.split("~")[0]) {
         console.log("changing Node IDs for all connections to: ", id)
         return titleizeNodeIds({
             id,
@@ -348,6 +349,7 @@ const list = async (
     const response =
         data?.nodesByOwnerStatus?.items ||
         data?.nodesByStatusType?.items ||
+        data?.nodesByOwnerType?.items ||
         data?.listNodes?.items ||
         data
 
