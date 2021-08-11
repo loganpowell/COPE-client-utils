@@ -177,12 +177,12 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //console.log({ stuff })
         // 🔥
 
-        //const res = await node.list({
-        //    //type: api.NodeType.A_GEM,
-        //    owner: "logan@hyperlocals.com",
-        //    limit: 1000,
-        //    sortDirection: api.ModelSortDirection.DESC,
-        //})
+        const res = await node.list({
+            type: api.NodeType.A_PAGE,
+            owner: "logan@hyperlocals.com",
+            limit: 1000,
+            sortDirection: api.ModelSortDirection.DESC,
+        })
 
         const id = "MockCourseNodeId"
 
@@ -190,13 +190,13 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
 
         //const res = await node.delete({ id })
 
-        const res = await node.connections(
-            {
-                id,
-                //edgeType: EdgeType.HAS_NEXT,
-            },
-            GRAPHQL_AUTH_MODE.API_KEY,
-        )
+        //const res = await node.connections(
+        //    {
+        //        id,
+        //        //edgeType: EdgeType.HAS_NEXT,
+        //    },
+        //    GRAPHQL_AUTH_MODE.API_KEY,
+        //)
 
         //const res = await toggleAssets({
         //    id,

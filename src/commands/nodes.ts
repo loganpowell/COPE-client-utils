@@ -241,6 +241,7 @@ const list = async (
     const Q = {
         ST: queries.nodesByStatusType,
         OS: queries.nodesByOwnerStatus,
+        OT: queries.nodesByOwnerType,
         LN: queries.listNodes,
     }
 
@@ -253,6 +254,21 @@ const list = async (
             statusCreatedAt: { beginsWith: { status } },
             ...pruned,
         },
+        OwnerStatusCreatedAt: {
+            owner,
+            statusCreatedAt: { beginsWith: { status, createdAt } },
+            ...pruned,
+        },
+        OwnerStatusCreatedBetween: {
+            owner,
+            statusCreatedAt: {
+                between: [
+                    { status, createdAt: CA[0] },
+                    { status, createdAt: CA[1] },
+                ],
+            },
+            ...pruned,
+        },
         StatusType: {
             status,
             typeCreatedAt: { beginsWith: { type } },
@@ -261,11 +277,6 @@ const list = async (
         StatusTypeCreatedAt: {
             status,
             typeCreatedAt: { beginsWith: { type, createdAt } },
-            ...pruned,
-        },
-        StatusOwnerCreatedAt: {
-            owner,
-            statusCreatedAt: { beginsWith: { status, createdAt } },
             ...pruned,
         },
         StatusTypeCreatedBetween: {
@@ -278,39 +289,51 @@ const list = async (
             },
             ...pruned,
         },
-        StatusOwnerCreatedBetween: {
+        OwnerType: {
             owner,
-            statusCreatedAt: {
+            typeCreatedAt: { beginsWith: { type } },
+            ...pruned
+        },
+        OwnerTypeCreatedAt: {
+            owner,
+            typeCreatedAt: { beginsWith: { type, createdAt } },
+            ...pruned
+        },
+        OwnerTypeCreatedBetween: {
+            owner,
+            typeCreatedAt: {
                 between: [
-                    { status, createdAt: CA[0] },
-                    { status, createdAt: CA[1] },
+                    { type, createdAt: CA[0] },
+                    { type, createdAt: CA[1] },
                 ],
             },
             ...pruned,
-        },
+        }
     }
 
     const CAA = isArray(createdAt) ? { createdAt } : { createdAt: undefined }
-    const CAR = !isArray(createdAt) ? { createdAt } : { createdAt: undefined }
+    const CAD = !isArray(createdAt) ? { createdAt } : { createdAt: undefined }
 
     const err_msg = (needs, has) =>
         `Must provide \`${needs}\` when using \`${has}\` with \`createdAt\``
     // prettier-ignore
     const match = new EquivMap([
         [ list_only,                            { query: Q.LN, variables: V.ListNodes } ],
-        [ { type, ...pruned },                  { error: "must provide `status` with `type`" } ],
-        [ { type, owner, ...pruned },           { error: "currently unsupported query: `owner` with `type`" } ],
-        [ { status, ...pruned },                { query: Q.ST, variables: V.ListNodes } ],
+        [ { type, ...pruned },                  { error: "must provide `status` or `owner` with `type`" } ],
+        [ { owner, ...pruned },                 { error: "must provide `status` or `type` with `owner`" } ],
+        [ { status, ...pruned },                { error: "must provide `owner` or `type` with `status`" }  ],
+        [ { status, createdAt, ...pruned },     { error: err_msg("type", "status") } ],
+        [ { type, createdAt, ...pruned },       { error: err_msg("status` or `owner", "type") } ],
+        [ { owner, createdAt, ...pruned },      { error: err_msg("status` or `type", "owner") } ],
         [ { status, type, ...pruned },          { query: Q.ST, variables: V.StatusType } ], 
-        [ { status, createdAt, ...pruned },     { error: err_msg("type", "status")} ],
-        [ { type, createdAt, ...pruned },       { error: err_msg("status", "type")} ],
-        [ { owner, createdAt, ...pruned },      { error: err_msg("status", "owner")} ],
-        [ { owner, ...pruned },                 { query: Q.OS, variables: V.ListNodes } ],
+        [ { type, owner, ...pruned },           { query: Q.OT, variables: V.OwnerType } ],
         [ { status, owner, ...pruned },         { query: Q.OS, variables: V.OwnerStatus } ],
+        [ { type, owner, ...CAA, ...pruned },   { query: Q.OT, variables: V.OwnerTypeCreatedBetween } ],
         [ { status, type, ...CAA, ...pruned  }, { query: Q.ST, variables: V.StatusTypeCreatedBetween } ],
-        [ { status, owner, ...CAA, ...pruned }, { query: Q.OS, variables: V.StatusOwnerCreatedBetween } ],
-        [ { status, type, ...CAR, ...pruned  }, { query: Q.ST, variables: V.StatusTypeCreatedAt } ],
-        [ { status, owner, ...CAR, ...pruned }, { query: Q.OS, variables: V.StatusOwnerCreatedAt } ]
+        [ { status, owner, ...CAA, ...pruned }, { query: Q.OS, variables: V.OwnerStatusCreatedBetween } ],
+        [ { status, type, ...CAD, ...pruned  }, { query: Q.ST, variables: V.StatusTypeCreatedAt } ],
+        [ { status, owner, ...CAD, ...pruned }, { query: Q.OS, variables: V.OwnerStatusCreatedAt } ],
+        [ { type, owner, ...CAD, ...pruned },   { query: Q.OT, variables: V.OwnerTypeCreatedAt } ]
     ]).get(cleaned) || { error: "no match for arguments provided to node.list(arguments)" }
 
     //console.log("entries:", JSON.stringify([ ...EM.keys() ], null, 4))

@@ -3,11 +3,11 @@ import { isArray, isUUID } from "@thi.ng/checks"
 import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 //import { v4 as uuid } from "uuid"
 import { graphql, API as api } from "../graphql"
-import { ListNodesInput, Resource, ResourceOps, ResourceConnection } from "../api"
-import { edge, assetPr, asset } from "../commands"
-const { mutations, queries, custom } = graphql
+import { Resource } from "../api"
+import { edge } from "../commands"
+const { mutations } = graphql
 
-import { CRUD, shortUUID, url_compat, getAssetsAndOp } from "../utils"
+import { CRUD, shortUUID } from "../utils"
 
 export const titleizeNodeIds = async ({
     title,
@@ -39,7 +39,7 @@ export const titleizeNodeIds = async ({
                     node_id: friendly,
                     type,
                     owner,
-                }),
+                }, authMode ),
         ),
     )
     //console.log({ updated_assets })
@@ -53,12 +53,12 @@ export const titleizeNodeIds = async ({
                         edge_id,
                         node_id_old: id,
                         node_id_new: friendly,
-                    })
+                    }, authMode)
                     return updatedEdge
                 }),
             ))) ||
         null
-    console.log("updated Edges:", JSON.stringify(updated_edges, null, 2))
+    //console.log("updated Edges:", JSON.stringify(updated_edges, null, 2))
     // CREATE NEW NODE
     const {
         data: { createNode },
@@ -72,6 +72,7 @@ export const titleizeNodeIds = async ({
                 createdAt,
             },
         },
+        authMode
     })
     //console.log({ createNode })
     // DELETE OLD NODE

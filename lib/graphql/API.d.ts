@@ -486,6 +486,19 @@ export declare type ModelNodeNodes_by_owner_status_createdAtCompositeKeyInput = 
     status?: NodeStatus | null;
     createdAt?: string | null;
 };
+export declare type ModelNodeNodes_by_owner_type_createdAtCompositeKeyConditionInput = {
+    eq?: ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput | null;
+    le?: ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput | null;
+    lt?: ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput | null;
+    ge?: ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput | null;
+    gt?: ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput | null;
+    between?: Array<ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput | null> | null;
+    beginsWith?: ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput | null;
+};
+export declare type ModelNodeNodes_by_owner_type_createdAtCompositeKeyInput = {
+    type?: NodeType | null;
+    createdAt?: string | null;
+};
 export declare type ModelEdgeFilterInput = {
     id?: ModelIDInput | null;
     type?: ModelEdgeTypeInput | null;
@@ -1414,6 +1427,41 @@ export declare type NodesByOwnerStatusQueryVariables = {
 };
 export declare type NodesByOwnerStatusQuery = {
     nodesByOwnerStatus?: {
+        __typename: "ModelNodeConnection";
+        items?: Array<{
+            __typename: "Node";
+            id: string;
+            status: NodeStatus;
+            type: NodeType;
+            createdAt: string;
+            updatedAt: string;
+            owner?: string | null;
+            assets?: {
+                __typename: "ModelAssetConnection";
+                nextToken?: string | null;
+            } | null;
+            assetsPr?: {
+                __typename: "ModelAssetPrConnection";
+                nextToken?: string | null;
+            } | null;
+            edges?: {
+                __typename: "ModelEdgeNodeConnection";
+                nextToken?: string | null;
+            } | null;
+        } | null> | null;
+        nextToken?: string | null;
+    } | null;
+};
+export declare type NodesByOwnerTypeQueryVariables = {
+    owner?: string | null;
+    typeCreatedAt?: ModelNodeNodes_by_owner_type_createdAtCompositeKeyConditionInput | null;
+    sortDirection?: ModelSortDirection | null;
+    filter?: ModelNodeFilterInput | null;
+    limit?: number | null;
+    nextToken?: string | null;
+};
+export declare type NodesByOwnerTypeQuery = {
+    nodesByOwnerType?: {
         __typename: "ModelNodeConnection";
         items?: Array<{
             __typename: "Node";
