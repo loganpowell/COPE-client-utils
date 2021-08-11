@@ -101,7 +101,7 @@ export const getConnectedNodesByNodeID = async (
 const nodeUpdate = async (
     { id, type, status, owner, createdAt }: api.UpdateNodeInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-    titleize = true
+    titleize = true,
 ): Promise<api.Node> => {
     // if the id changes asIs is undefined
     // change everything but id
@@ -250,6 +250,10 @@ const list = async (
 
     const V = {
         ListNodes: cleaned,
+        Owner: {
+            owner,
+            ...pruned,
+        },
         OwnerStatus: {
             owner,
             statusCreatedAt: { beginsWith: { status } },
@@ -268,6 +272,10 @@ const list = async (
                     { status, createdAt: CA[1] },
                 ],
             },
+            ...pruned,
+        },
+        Status: {
+            status,
             ...pruned,
         },
         StatusType: {
@@ -293,12 +301,12 @@ const list = async (
         OwnerType: {
             owner,
             typeCreatedAt: { beginsWith: { type } },
-            ...pruned
+            ...pruned,
         },
         OwnerTypeCreatedAt: {
             owner,
             typeCreatedAt: { beginsWith: { type, createdAt } },
-            ...pruned
+            ...pruned,
         },
         OwnerTypeCreatedBetween: {
             owner,
@@ -309,7 +317,7 @@ const list = async (
                 ],
             },
             ...pruned,
-        }
+        },
     }
 
     const CAA = isArray(createdAt) ? { createdAt } : { createdAt: undefined }
@@ -321,8 +329,8 @@ const list = async (
     const match = new EquivMap([
         [ list_only,                            { query: Q.LN, variables: V.ListNodes } ],
         [ { type, ...pruned },                  { error: "must provide `status` or `owner` with `type`" } ],
-        [ { owner, ...pruned },                 { error: "must provide `status` or `type` with `owner`" } ],
-        [ { status, ...pruned },                { error: "must provide `owner` or `type` with `status`" }  ],
+        [ { owner, ...pruned },                 { query: Q.OT, variables: V.Owner } ],
+        [ { status, ...pruned },                { query: Q.ST, variables: V.Status } ],
         [ { status, createdAt, ...pruned },     { error: err_msg("type", "status") } ],
         [ { type, createdAt, ...pruned },       { error: err_msg("status` or `owner", "type") } ],
         [ { owner, createdAt, ...pruned },      { error: err_msg("status` or `type", "owner") } ],

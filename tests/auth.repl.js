@@ -179,9 +179,10 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
 
         const res = await node.list({
             type: api.NodeType.A_PAGE,
-            owner: "logan@hyperlocals.com",
-            limit: 1000,
-            sortDirection: api.ModelSortDirection.DESC,
+            //owner: "logan@hyperlocals.com",
+            status: api.NodeStatus.DRAFT,
+            //limit: 1000,
+            //sortDirection: api.ModelSortDirection.DESC,
         })
 
         const id = "MockCourseNodeId"
