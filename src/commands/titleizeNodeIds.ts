@@ -29,31 +29,37 @@ export const titleizeNodeIds = async ({
     const updated_assets = await Promise.all(
         _assets?.items.map(
             async ({ id, content, createdAt, editors, index, name, type, owner }: Resource) =>
-                await op.update({
-                    id,
-                    content,
-                    createdAt,
-                    editors,
-                    index,
-                    name,
-                    node_id: friendly,
-                    type,
-                    owner,
-                }, authMode ),
+                await op.update(
+                    {
+                        id,
+                        content,
+                        createdAt,
+                        editors,
+                        index,
+                        name,
+                        node_id: friendly,
+                        type,
+                        owner,
+                    },
+                    authMode,
+                ),
         ),
     )
     //console.log({ updated_assets })
     // UPDATE EDGES
     //const edges = await getConnectedNodesByNodeID({ id })
     const updated_edges =
-        (edges &&
+        (edges.length &&
             (await Promise.all(
                 edges.map(async ({ id: edge_id }: api.Edge) => {
-                    const updatedEdge = await edge.relink({
-                        edge_id,
-                        node_id_old: id,
-                        node_id_new: friendly,
-                    }, authMode)
+                    const updatedEdge = await edge.relink(
+                        {
+                            edge_id,
+                            node_id_old: id,
+                            node_id_new: friendly,
+                        },
+                        authMode,
+                    )
                     return updatedEdge
                 }),
             ))) ||
@@ -72,7 +78,7 @@ export const titleizeNodeIds = async ({
                 createdAt,
             },
         },
-        authMode
+        authMode,
     })
     //console.log({ createNode })
     // DELETE OLD NODE
