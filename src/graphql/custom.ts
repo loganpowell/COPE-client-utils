@@ -12,6 +12,7 @@ export const fragmentResource = /* GraphQL */ `
         editors
     }
 `
+
 export const fragmentNode = /* GraphQL */ `
     ${fragmentResource}
     fragment node on Node {
