@@ -1,14 +1,14 @@
 import { Storage } from "@aws-amplify/storage"
-import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 import { Auth } from "@aws-amplify/auth"
-import { URL2obj } from "@-0/utils"
 import { v4 as uuid } from "uuid"
-import { getIn } from "@thi.ng/paths"
 import * as mutations from "../graphql/mutations"
-import * as queries from "../graphql/queries"
 import * as api from "../graphql/API"
 import { $global$ } from "./amplifyConfig"
-import { CRUD, MIMETypes } from "../utils"
+//import { URL2obj } from "@-0/utils"
+//import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
+//import { getIn } from "@thi.ng/paths"
+//import * as queries from "../graphql/queries"
+import { CRUD } from "../utils"
 
 enum Level {
     private = "private",
@@ -106,6 +106,7 @@ export const removeObject = async (url, { level } = { level: "protected" }) => {
     const todo = [format, file].join("/")
     console.log("removing s3 Object:", { todo })
 
+    // @ts-ignore
     const deleted = await Storage.remove(todo, { level }).catch(e => {
         console.warn("Error deleting S3 Object:", e)
     })

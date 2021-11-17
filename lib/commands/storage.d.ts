@@ -30,5 +30,5 @@ export declare type CreateFileAssetInput = {
 export declare const storeObject: ({ content, name, id, node_id, createdAt, type, index, owner, editors }: CreateFileAssetInput, isAssetPr?: boolean, level?: Level) => Promise<api.Asset | api.AssetPr>;
 export declare const removeObject: (url: any, { level }?: {
     level: string;
-}) => Promise<any>;
+}) => Promise<void | import("@aws-sdk/client-s3").DeleteObjectCommandOutput>;
 export {};

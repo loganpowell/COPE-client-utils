@@ -91,6 +91,6 @@ export const titleizeNodeIds = async ({
         },
         authMode,
     })
-    //console.log({ deleteNode })
+    console.log({ deleteNode, createNode, updated_assets, updated_edges })
     return createNode
 }
