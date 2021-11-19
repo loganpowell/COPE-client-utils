@@ -13,12 +13,16 @@ import {
     storeObject,
     toggleAssets,
 } from "../lib/commands"
+import * as jqs from "../lib/graphql/json_queries"
+import * as jms from "../lib/graphql/json_mutations"
 import { createReadStream, readFile, readFileSync, promises } from "fs"
 import FormData from "form-data"
 
 import { API as api } from "../lib/graphql"
-import { CRUD } from "../lib/utils"
+import * as qs from "../lib/graphql/queries"
+import { CRUD, gen_GQL_batch_json } from "../lib/utils"
 import { API, GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
+import { EnumType, jsonToGraphQLQuery } from "json-to-graphql-query"
 
 dotenv.config()
 configureWith(aws_exports)
@@ -59,7 +63,7 @@ function streamToBlob(stream, mimeType) {
 auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
     .catch(e => console.error("error:", JSON.stringify(e, null, 4)))
     .then(async ({ payload: { email } }) => {
-        console.log({ email })
+        //console.log({ email })
         //const new_node = await node.create(_node)
         //return { new_node }
 
@@ -177,16 +181,16 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //console.log({ stuff })
         // 🔥
 
-        const res = await node.list({
-            type: api.NodeType.A_GEM,
-            owner: "logan@hyperlocals.com",
-            //status: api.NodeStatus.DRAFT,
-            createdAt: ["2021-08-01", "2021-08-10"],
-            //limit: 1000,
-            //sortDirection: api.ModelSortDirection.DESC,
-        })
+        //const res = await node.list({
+        //    type: api.NodeType.A_GEM,
+        //    owner: "logan@hyperlocals.com",
+        //    //status: api.NodeStatus.DRAFT,
+        //    createdAt: ["2021-08-01", "2021-08-10"],
+        //    //limit: 1000,
+        //    //sortDirection: api.ModelSortDirection.DESC,
+        //})
 
-        const id = "MockCourseNodeId"
+        //const id = "MockCourseNodeId"
 
         //const res = await node.read({ id })
 
@@ -233,6 +237,136 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //    content: "Everybody wants to rule the world",
         //})
 
+        //const res = jsonToGraphQLQuery(jqs.listEdges({ filter: undefined }), { pretty: true })
+        //const res = await CRUD({
+        //    query: jsonToGraphQLQuery(
+        //        {
+        //            query: jqs.assetsByNode({
+        //                node_id: "MockCourseSubmodule03",
+        //            }),
+        //        },
+        //        { pretty: true },
+        //    ),
+        //    //query: qs.listEdges,
+        //})
+
+        //const query = gen_GQL_batch_json([
+        //    //jqs.assetsByNode({
+        //    //    node_id: "MockCourseSubmodule03",
+        //    //}),
+        //    //jqs.listNodes(),
+        //    jqs.nodesByStatusType({
+        //        status: api.NodeStatus.DRAFT,
+        //        typeCreatedAt: {
+        //            beginsWith: {
+        //                type: new EnumType(api.NodeType.A_GEM),
+        //            },
+        //        },
+        //    }),
+        //])
+        //const res = await CRUD({
+        //    query
+        //})
+
+        //const res = await CRUD({
+        //    query: jsonToGraphQLQuery(
+        //        {
+        //            mutation: jms.createNode({
+        //                input: {
+        //                    status: new EnumType(api.NodeStatus.DRAFT),
+        //                    type: new EnumType(api.NodeType.H_AUTHOR),
+        //                    id: "ready-player-1",
+        //                },
+        //            }),
+        //        },
+        //        { prety: true },
+        //    ),
+        //})
+
+        // WORKS 🥳
+        //const json = gen_GQL_batch_json(
+        //    [
+        //        jms.createNode({
+        //            input: {
+        //                status: api.NodeStatus.DRAFT,
+        //                type: api.NodeType.H_AUTHOR,
+        //                id: "logan-author-2",
+        //            },
+        //        }),
+        //        jms.createNode({
+        //            input: {
+        //                status: api.NodeStatus.DRAFT,
+        //                type: api.NodeType.A_ARTICLE,
+        //                id: "logan-article-2",
+        //            },
+        //        }),
+        //        jms.createEdge({
+        //            input: {
+        //                type: api.EdgeType.AUTHORED,
+        //                id: "authored-edge-2",
+        //            },
+        //        }),
+        //        jms.createEdgeNode({
+        //            input: {
+        //                edge_id: "authored-edge-2",
+        //                node_id: "logan-author-2",
+        //            },
+        //        }),
+        //        jms.createEdgeNode({
+        //            input: {
+        //                edge_id: "authored-edge-2",
+        //                node_id: "logan-article-2",
+        //            },
+        //        }),
+        //    ],
+        //    "mutation",
+        //)
+
+        //const res = await CRUD({
+        //    query: json,
+        //})
+
+        const res = await CRUD({
+            query: jsonToGraphQLQuery({
+                query: jqs.nodesByStatusType({
+                    status: api.NodeStatus.DRAFT,
+                    typeCreatedAt: {
+                        beginsWith: {
+                            type: new EnumType(api.NodeType.A_ARTICLE),
+                            createdAt: "2021-11",
+                        },
+                    },
+                }),
+
+                //query: jqs.nodesByOwnerType({
+                //    owner: "logan@hyperlocals.com",
+                //    typeCreatedAt: {
+                //        ge: {
+                //            type: new EnumType(api.NodeType.A_ARTICLE),
+                //            createdAt: "2021-11",
+                //        },
+                //    },
+                //}),
+                //query: jqs.nodesByOwnerStatus({
+                //    owner: "logan@hyperlocals.com",
+                //    statusCreatedAt: {
+                //        beginsWith: {
+                //            status: new EnumType(api.NodeStatus.DRAFT),
+
+                //        },
+                //    },
+                //}),
+
+                //query: jqs.edgesByType({ type: api.EdgeType.AUTHORED }),
+                //query: jqs.assetsByType({ type: api.AssetType.A_IMAGE }),
+                //query: jqs.assetsByOwnerType({ owner: "logan@hyperlocals.com" }),
+                //query: jqs.assetsByNode({ node_id: "MockCourseModule02" }),
+                //query: jqs.listNodes({ limit: 3 }),
+                //query: jqs.getNode({ id: "logan-author-1" })
+            }),
+        })
+
+        //console.log(json)
         console.log("res:", JSON.stringify(res, null, 2))
         //console.log("updatedTitle:", JSON.stringify(updatedTitle, null, 2))
     }) //?

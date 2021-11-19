@@ -1,16 +1,5 @@
 import * as api from "../graphql/API"
 import { assetPr, asset } from "../commands"
-//
-//
-//   e88~~8e  888-~88e 888  888 888-~88e-~88e  d88~\
-//  d888  88b 888  888 888  888 888  888  888 C888
-//  8888__888 888  888 888  888 888  888  888  Y88b
-//  Y888    , 888  888 888  888 888  888  888   888D
-//   "88___/  888  888 "88_-888 888  888  888 \_88P
-//
-//
-
-// REMOVED: use "./src/modesl/index.d.ts" instead
 
 //
 //    d8
