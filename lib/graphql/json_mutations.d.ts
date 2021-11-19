@@ -1,4 +1,3 @@
-import { EnumType } from "json-to-graphql-query";
 import * as API from "./API";
 export declare const createAsset: ({ input, condition, }: {
     input: API.CreateAssetInput;
@@ -16,19 +15,8 @@ export declare const createAsset: ({ input, condition, }: {
         content: boolean;
         editors: boolean;
         __args: {
-            condition: API.ModelAssetConditionInput;
-            input: {
-                id?: string;
-                node_id: string;
-                createdAt?: string;
-                updatedAt?: string;
-                name: string;
-                index?: number;
-                owner?: string;
-                content?: string;
-                editors?: string[];
-                type: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -48,19 +36,8 @@ export declare const updateAsset: ({ input, condition, }: {
         content: boolean;
         editors: boolean;
         __args: {
-            condition: API.ModelAssetConditionInput;
-            input: {
-                id: string;
-                node_id?: string;
-                createdAt?: string;
-                updatedAt?: string;
-                name?: string;
-                index?: number;
-                owner?: string;
-                content?: string;
-                editors?: string[];
-                type: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -80,7 +57,7 @@ export declare const deleteAsset: ({ input, condition, }: {
         content: boolean;
         editors: boolean;
         __args: {
-            condition: API.ModelAssetConditionInput;
+            condition: {};
             input: API.DeleteAssetInput;
         };
     };
@@ -101,19 +78,8 @@ export declare const createAssetPr: ({ input, condition, }: {
         content: boolean;
         editors: boolean;
         __args: {
-            condition: API.ModelAssetPrConditionInput;
-            input: {
-                id?: string;
-                node_id: string;
-                createdAt?: string;
-                updatedAt?: string;
-                name: string;
-                index?: number;
-                owner?: string;
-                content?: string;
-                editors?: string[];
-                type: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -133,19 +99,8 @@ export declare const updateAssetPr: ({ input, condition, }: {
         content: boolean;
         editors: boolean;
         __args: {
-            condition: API.ModelAssetPrConditionInput;
-            input: {
-                id: string;
-                node_id?: string;
-                createdAt?: string;
-                updatedAt?: string;
-                name?: string;
-                index?: number;
-                owner?: string;
-                content?: string;
-                editors?: string[];
-                type: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -165,7 +120,7 @@ export declare const deleteAssetPr: ({ input, condition, }: {
         content: boolean;
         editors: boolean;
         __args: {
-            condition: API.ModelAssetPrConditionInput;
+            condition: {};
             input: API.DeleteAssetPrInput;
         };
     };
@@ -212,15 +167,8 @@ export declare const createNode: ({ input, condition, }: {
             nextToken: boolean;
         };
         __args: {
-            condition: API.ModelNodeConditionInput;
-            input: {
-                id?: string;
-                createdAt?: string;
-                updatedAt?: string;
-                owner?: string;
-                type: EnumType;
-                status: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -266,15 +214,8 @@ export declare const updateNode: ({ input, condition, }: {
             nextToken: boolean;
         };
         __args: {
-            condition: API.ModelNodeConditionInput;
-            input: {
-                id: string;
-                createdAt?: string;
-                updatedAt?: string;
-                owner?: string;
-                type: EnumType;
-                status: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -320,7 +261,7 @@ export declare const deleteNode: ({ input, condition, }: {
             nextToken: boolean;
         };
         __args: {
-            condition: API.ModelNodeConditionInput;
+            condition: {};
             input: API.DeleteNodeInput;
         };
     };
@@ -380,14 +321,8 @@ export declare const createEdge: ({ input, condition, }: {
             nextToken: boolean;
         };
         __args: {
-            condition: API.ModelEdgeConditionInput;
-            input: {
-                id?: string;
-                createdAt?: string;
-                owner?: string;
-                weight?: number;
-                type: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -446,14 +381,8 @@ export declare const updateEdge: ({ input, condition, }: {
             nextToken: boolean;
         };
         __args: {
-            condition: API.ModelEdgeConditionInput;
-            input: {
-                id: string;
-                createdAt?: string;
-                owner?: string;
-                weight?: number;
-                type: EnumType;
-            };
+            condition: {};
+            input: {};
         };
     };
 };
@@ -512,7 +441,7 @@ export declare const deleteEdge: ({ input, condition, }: {
             nextToken: boolean;
         };
         __args: {
-            condition: API.ModelEdgeConditionInput;
+            condition: {};
             input: API.DeleteEdgeInput;
         };
     };
@@ -618,7 +547,7 @@ export declare const createEdgeNode: ({ input, condition, }: {
             };
         };
         __args: {
-            condition: API.ModelEdgeNodeConditionInput;
+            condition: {};
             input: API.CreateEdgeNodeInput;
         };
     };
@@ -724,7 +653,7 @@ export declare const updateEdgeNode: ({ input, condition, }: {
             };
         };
         __args: {
-            condition: API.ModelEdgeNodeConditionInput;
+            condition: {};
             input: API.UpdateEdgeNodeInput;
         };
     };
@@ -830,7 +759,7 @@ export declare const deleteEdgeNode: ({ input, condition, }: {
             };
         };
         __args: {
-            condition: API.ModelEdgeNodeConditionInput;
+            condition: {};
             input: API.DeleteEdgeNodeInput;
         };
     };

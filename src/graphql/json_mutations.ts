@@ -1,6 +1,7 @@
 import { EnumType } from "json-to-graphql-query"
 import * as API from "./API"
 import { assetFields, nodeFields, edgeNodeFields, edgeFields } from "./json_API"
+import { enumerator } from "../utils"
 //
 //       e                                d8
 //      d8b      d88~\  d88~\  e88~~8e  _d88__
@@ -18,15 +19,11 @@ export const createAsset = ({
     input: API.CreateAssetInput
     condition?: API.ModelAssetConditionInput
 }) => {
-    const { type, ...rest } = input
     return {
         createAsset: {
             __args: {
-                input: {
-                    type: new EnumType(type),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...assetFields,
         },
@@ -40,15 +37,11 @@ export const updateAsset = ({
     input: API.UpdateAssetInput
     condition?: API.ModelAssetConditionInput
 }) => {
-    const { type, ...rest } = input
     return {
         updateAsset: {
             __args: {
-                input: {
-                    ...(type && { type: new EnumType(type) }),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...assetFields,
         },
@@ -65,7 +58,7 @@ export const deleteAsset = ({
     deleteAsset: {
         __args: {
             input,
-            ...(condition && { condition }),
+            ...(condition && { condition: enumerator(condition) }),
         },
         ...assetFields,
     },
@@ -88,15 +81,11 @@ export const createAssetPr = ({
     input: API.CreateAssetPrInput
     condition?: API.ModelAssetPrConditionInput
 }) => {
-    const { type, ...rest } = input
     return {
         createAssetPr: {
             __args: {
-                input: {
-                    type: new EnumType(type),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...assetFields,
         },
@@ -110,15 +99,11 @@ export const updateAssetPr = ({
     input: API.UpdateAssetPrInput
     condition?: API.ModelAssetPrConditionInput
 }) => {
-    const { type, ...rest } = input
     return {
         updateAssetPr: {
             __args: {
-                input: {
-                    ...(type && { type: new EnumType(type) }),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...assetFields,
         },
@@ -135,7 +120,7 @@ export const deleteAssetPr = ({
     deleteAssetPr: {
         __args: {
             input,
-            ...(condition && { condition }),
+            ...(condition && { condition: enumerator(condition) }),
         },
         ...assetFields,
     },
@@ -161,12 +146,8 @@ export const createNode = ({
     return {
         createNode: {
             __args: {
-                input: {
-                    ...(status && { status: new EnumType(status) }),
-                    ...(type && { type: new EnumType(type) }),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...nodeFields,
             //edges: {
@@ -189,12 +170,8 @@ export const updateNode = ({
     return {
         updateNode: {
             __args: {
-                input: {
-                    ...(status && { status: new EnumType(status) }),
-                    ...(type && { type: new EnumType(type) }),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...nodeFields,
             //edges: {
@@ -215,7 +192,7 @@ export const deleteNode = ({
     deleteNode: {
         __args: {
             input,
-            ...(condition && { condition }),
+            ...(condition && { condition: enumerator(condition) }),
         },
         ...nodeFields,
         //edges: {
@@ -242,15 +219,11 @@ export const createEdge = ({
     input: API.CreateEdgeInput
     condition?: API.ModelEdgeConditionInput
 }) => {
-    const { type, ...rest } = input
     return {
         createEdge: {
             __args: {
-                input: {
-                    ...(type && { type: new EnumType(type) }),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...edgeFields,
         },
@@ -264,15 +237,11 @@ export const updateEdge = ({
     input: API.UpdateEdgeInput
     condition?: API.ModelEdgeConditionInput
 }) => {
-    const { type, ...rest } = input
     return {
         updateEdge: {
             __args: {
-                input: {
-                    ...(type && { type: new EnumType(type) }),
-                    ...rest,
-                },
-                ...(condition && { condition }),
+                input: enumerator(input),
+                ...(condition && { condition: enumerator(condition) }),
             },
             ...edgeFields,
         },
@@ -289,7 +258,7 @@ export const deleteEdge = ({
     deleteEdge: {
         __args: {
             input,
-            ...(condition && { condition }),
+            ...(condition && { condition: enumerator(condition) }),
         },
         ...edgeFields,
     },
@@ -315,7 +284,7 @@ export const createEdgeNode = ({
     createEdgeNode: {
         __args: {
             input,
-            ...(condition && { condition }),
+            ...(condition && { condition: enumerator(condition) }),
         },
         ...edgeNodeFields,
     },
@@ -331,7 +300,7 @@ export const updateEdgeNode = ({
     updateEdgeNode: {
         __args: {
             input,
-            ...(condition && { condition }),
+            ...(condition && { condition: enumerator(condition) }),
         },
         ...edgeNodeFields,
     },
@@ -347,7 +316,7 @@ export const deleteEdgeNode = ({
     deleteEdgeNode: {
         __args: {
             input,
-            ...(condition && { condition }),
+            ...(condition && { condition: enumerator(condition) }),
         },
         ...edgeNodeFields,
     },

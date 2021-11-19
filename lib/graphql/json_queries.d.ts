@@ -41,7 +41,7 @@ export declare const listAssets: ({ filter, limit, nextToken, }?: {
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetFilterInput;
+            filter: {};
         };
     };
 };
@@ -56,8 +56,8 @@ export declare const assetsByNode: ({ node_id, sortDirection, filter, limit, nex
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetFilterInput;
-            sortDirection: API.ModelSortDirection;
+            filter: {};
+            sortDirection: {};
             node_id: string;
         };
         items: {
@@ -88,7 +88,7 @@ export declare const assetsByType: ({ type, createdAt, sortDirection, filter, li
             nextToken: string;
             limit: number;
             filter: API.ModelAssetFilterInput;
-            sortDirection: EnumType;
+            sortDirection: {};
             createdAt: API.ModelStringKeyConditionInput;
             type: EnumType;
         };
@@ -119,9 +119,9 @@ export declare const assetsByOwnerType: ({ owner, typeCreatedAt, sortDirection, 
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetFilterInput;
-            sortDirection: EnumType;
-            typeCreatedAt: API.ModelAssetAssets_by_owner_typeCompositeKeyConditionInput;
+            filter: {};
+            sortDirection: {};
+            typeCreatedAt: {};
             owner: string;
         };
         items: {
@@ -180,7 +180,7 @@ export declare const listAssetPrs: ({ filter, limit, nextToken, }?: {
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetPrFilterInput;
+            filter: {};
         };
     };
 };
@@ -195,8 +195,8 @@ export declare const assetsPrByNode: ({ node_id, sortDirection, filter, limit, n
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetPrFilterInput;
-            sortDirection: EnumType;
+            filter: {};
+            sortDirection: {};
             node_id: string;
         };
         items: {
@@ -226,8 +226,8 @@ export declare const assetsPrByType: ({ type, createdAt, sortDirection, filter, 
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetPrFilterInput;
-            sortDirection: EnumType;
+            filter: {};
+            sortDirection: {};
             createdAt: API.ModelStringKeyConditionInput;
             type: EnumType;
         };
@@ -258,9 +258,9 @@ export declare const assetsPrByOwnerType: ({ owner, typeCreatedAt, sortDirection
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetPrFilterInput;
-            sortDirection: EnumType;
-            typeCreatedAt: API.ModelAssetPrAssetsPr_by_owner_typeCompositeKeyConditionInput;
+            filter: {};
+            sortDirection: {};
+            typeCreatedAt: {};
             owner: string;
         };
         items: {
@@ -571,7 +571,7 @@ export declare const listNodes: ({ filter, limit, nextToken, }?: {
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelNodeFilterInput;
+            filter: {};
         };
     };
 };
@@ -587,9 +587,9 @@ export declare const nodesByStatusType: ({ status, typeCreatedAt, sortDirection,
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelNodeFilterInput;
-            sortDirection: EnumType;
-            typeCreatedAt: API.ModelNodeNodes_by_status_type_createdAtCompositeKeyConditionInput;
+            filter: {};
+            sortDirection: {};
+            typeCreatedAt: {};
             status: EnumType;
         };
         items: {
@@ -645,9 +645,9 @@ export declare const nodesByOwnerStatus: ({ owner, statusCreatedAt, sortDirectio
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelNodeFilterInput;
-            sortDirection: EnumType;
-            statusCreatedAt: API.ModelNodeNodes_by_owner_status_createdAtCompositeKeyConditionInput;
+            filter: {};
+            sortDirection: {};
+            statusCreatedAt: {};
             owner: string;
         };
         items: {
@@ -803,9 +803,9 @@ export declare const nodesByOwnerType: ({ owner, typeCreatedAt, sortDirection, f
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelNodeFilterInput;
-            sortDirection: EnumType;
-            typeCreatedAt: API.ModelNodeNodes_by_owner_type_createdAtCompositeKeyConditionInput;
+            filter: {};
+            sortDirection: {};
+            typeCreatedAt: {};
             owner: string;
         };
         items: {
@@ -1068,7 +1068,7 @@ export declare const listEdges: ({ filter, limit, nextToken, }?: {
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetFilterInput;
+            filter: {};
         };
     };
 };
@@ -1084,8 +1084,8 @@ export declare const edgesByType: ({ type, createdAt, sortDirection, filter, lim
         __args: {
             nextToken: string;
             limit: number;
-            filter: API.ModelAssetPrFilterInput;
-            sortDirection: EnumType;
+            filter: {};
+            sortDirection: {};
             createdAt: API.ModelStringKeyConditionInput;
             type: EnumType;
         };

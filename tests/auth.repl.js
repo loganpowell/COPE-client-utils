@@ -331,10 +331,20 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
                 query: jqs.nodesByStatusType({
                     status: api.NodeStatus.DRAFT,
                     typeCreatedAt: {
-                        beginsWith: {
-                            type: new EnumType(api.NodeType.A_ARTICLE),
-                            createdAt: "2021-11",
-                        },
+                        //beginsWith: {
+                        //    type: new EnumType(api.NodeType.A_ARTICLE),
+                        //    createdAt: "2021-11",
+                        //},
+                        between: [
+                            {
+                                type: api.NodeType.A_PAGE,
+                                createdAt: "2021-07-27T20",
+                            },
+                            {
+                                type: api.NodeType.A_PAGE,
+                                createdAt: "2021-11-04T18",
+                            },
+                        ],
                     },
                 }),
 

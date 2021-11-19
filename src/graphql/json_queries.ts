@@ -1,6 +1,8 @@
 import { EnumType } from "json-to-graphql-query"
 import * as API from "./API"
 import { assetFields, nodeFields, edgeNodeFields, edgeFields } from "./json_API"
+import { enumerator } from "../utils"
+
 //
 //       e                                d8
 //      d8b      d88~\  d88~\  e88~~8e  _d88__
@@ -32,7 +34,7 @@ export const listAssets = ({
     listAssets: {
         ...((filter || limit || nextToken) && {
             __args: {
-                ...(filter && { filter }),
+                ...(filter && { filter: enumerator(filter) }),
                 ...(limit && { limit }),
                 ...(nextToken && { nextToken }),
             },
@@ -58,8 +60,8 @@ export const assetsByNode = ({
     assetsByNode: {
         __args: {
             node_id,
-            ...(sortDirection && { sortDirection }),
-            ...(filter && { filter }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+            ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
         },
@@ -87,7 +89,7 @@ export const assetsByType = ({
         __args: {
             type: new EnumType(type),
             ...(createdAt && { createdAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
             ...(filter && { filter }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
@@ -111,20 +113,22 @@ export const assetsByOwnerType = ({
     filter: API.ModelAssetFilterInput
     limit: number
     nextToken: string
-}) => ({
-    assetsByOwnerType: {
-        __args: {
-            owner,
-            ...(typeCreatedAt && { typeCreatedAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-            ...(filter && { filter }),
-            ...(limit && { limit }),
-            ...(nextToken && { nextToken }),
+}) => {
+    return {
+        assetsByOwnerType: {
+            __args: {
+                owner,
+                ...(typeCreatedAt && { typeCreatedAt: enumerator(typeCreatedAt) }),
+                ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+                ...(filter && { filter: enumerator(filter) }),
+                ...(limit && { limit }),
+                ...(nextToken && { nextToken }),
+            },
+            items: assetFields,
+            nextToken: true,
         },
-        items: assetFields,
-        nextToken: true,
-    },
-})
+    }
+}
 
 //
 //       e                                d8   888~-_
@@ -157,7 +161,7 @@ export const listAssetPrs = ({
     listAssetPrs: {
         ...((filter || limit || nextToken) && {
             __args: {
-                ...(filter && { filter }),
+                ...(filter && { filter: enumerator(filter) }),
                 ...(limit && { limit }),
                 ...(nextToken && { nextToken }),
             },
@@ -183,8 +187,8 @@ export const assetsPrByNode = ({
     assetsPrByNode: {
         __args: {
             node_id,
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-            ...(filter && { filter }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+            ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
         },
@@ -212,9 +216,8 @@ export const assetsPrByType = ({
         __args: {
             type: new EnumType(type),
             ...(createdAt && { createdAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-
-            ...(filter && { filter }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+            ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
         },
@@ -237,21 +240,22 @@ export const assetsPrByOwnerType = ({
     filter: API.ModelAssetPrFilterInput
     limit: number
     nextToken: string
-}) => ({
-    assetsPrByOwnerType: {
-        __args: {
-            owner,
-            ...(typeCreatedAt && { typeCreatedAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-
-            ...(filter && { filter }),
-            ...(limit && { limit }),
-            ...(nextToken && { nextToken }),
+}) => {
+    return {
+        assetsPrByOwnerType: {
+            __args: {
+                owner,
+                ...(typeCreatedAt && { typeCreatedAt: enumerator(typeCreatedAt) }),
+                ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+                ...(filter && { filter: enumerator(filter) }),
+                ...(limit && { limit }),
+                ...(nextToken && { nextToken }),
+            },
+            items: assetFields,
+            nextToken: true,
         },
-        items: assetFields,
-        nextToken: true,
-    },
-})
+    }
+}
 
 //
 //  888b    |                888
@@ -287,7 +291,7 @@ export const listNodes = ({
     listNodes: {
         ...((filter || limit || nextToken) && {
             __args: {
-                ...(filter && { filter }),
+                ...(filter && { filter: enumerator(filter) }),
                 ...(limit && { limit }),
                 ...(nextToken && { nextToken }),
             },
@@ -321,9 +325,9 @@ export const nodesByStatusType = ({
     nodesByStatusType: {
         __args: {
             status: new EnumType(status),
-            ...(typeCreatedAt && { typeCreatedAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-            ...(filter && { filter }),
+            ...(typeCreatedAt && { typeCreatedAt: enumerator(typeCreatedAt) }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+            ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
         },
@@ -356,9 +360,9 @@ export const nodesByOwnerStatus = ({
     nodesByOwnerStatus: {
         __args: {
             owner,
-            ...(statusCreatedAt && { statusCreatedAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-            ...(filter && { filter }),
+            ...(statusCreatedAt && { statusCreatedAt: enumerator(statusCreatedAt) }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+            ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
         },
@@ -391,9 +395,9 @@ export const nodesByOwnerType = ({
     nodesByOwnerType: {
         __args: {
             owner,
-            ...(typeCreatedAt && { typeCreatedAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-            ...(filter && { filter }),
+            ...(typeCreatedAt && { typeCreatedAt: enumerator(typeCreatedAt) }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+            ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
         },
@@ -439,7 +443,7 @@ export const listEdges = ({
     listEdges: {
         ...((filter || limit || nextToken) && {
             __args: {
-                ...(filter && { filter }),
+                ...(filter && { filter: enumerator(filter) }),
                 ...(limit && { limit }),
                 ...(nextToken && { nextToken }),
             },
@@ -468,8 +472,8 @@ export const edgesByType = ({
         __args: {
             type: new EnumType(type),
             ...(createdAt && { createdAt }),
-            ...(sortDirection && { sortDirection: new EnumType(sortDirection) }),
-            ...(filter && { filter }),
+            ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
+            ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
             ...(nextToken && { nextToken }),
         },
