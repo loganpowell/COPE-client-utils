@@ -1,385 +1,355 @@
 fragment assetsAndProxies on Node {
-  assets {
-    items {
-      id
-      name
-      content
+    assets {
+        items {
+            id
+            name
+            content
+        }
     }
-  }
 }
 
 query nodesByStatusType {
-  nodesByStatusType(
-    status:DRAFT
-    typeCreatedAt:{
-      between:[
-        {
-          type: A_GEM,
-          createdAt:"2020"
-      	},
-        {
-          type:A_GEM,
-          createdAt:"2021"
+    nodesByStatusType(
+        status: DRAFT
+        typeCreatedAt: {
+            between: [{ type: A_GEM, createdAt: "2020" }, { type: A_GEM, createdAt: "2021" }]
+        } # typeCreatedAt: { beginsWith: { type: A_GEM } }
+    ) {
+        items {
+            id
+            type
+            status
+            createdAt
         }
-      ]
     }
-   # typeCreatedAt: { beginsWith: { type: A_GEM } } 
-    
-  ) {
-    items {
-      id
-      type
-      status
-      createdAt
-    }
-  }
 }
 
 query nodesByOwnerStatus {
-  nodesByOwnerStatus{
-    items{
-      id
+    nodesByOwnerStatus {
+        items {
+            id
+        }
     }
-  }
 }
 
 query listNodes {
-  listNodes(limit:1) {
-    items {
-      type
-      id
-      ...assetsAndProxies
-      edges {
+    listNodes(limit: 1) {
         items {
-          edge_id
-          edge {
             type
-            nodes(sortDirection: DESC) {
-              items {
-                node_id
-                edge_id
-                createdAt
-                updatedAt
-              }
+            id
+            ...assetsAndProxies
+            edges {
+                items {
+                    edgeID
+                    edge {
+                        type
+                        nodes(sortDirection: DESC) {
+                            items {
+                                nodeID
+                                edgeID
+                                createdAt
+                                updatedAt
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
 }
 
-
 query getEdges {
-  getNode(id: "longrandomstringthatsmyID1") {
-    id
-    type
-    edges {
-      items {
-        edge {
-          id
-          type
-          nodes(sortDirection: DESC) {
+    getNode(id: "longrandomstringthatsmyID1") {
+        id
+        type
+        edges {
             items {
-              node {
-                id
-                type
-                assets(filter: {type: {eq: A_IMAGE}}) {
-                  nextToken
-                  items {
+                edge {
                     id
-                    name
-                    content
-                  }
+                    type
+                    nodes(sortDirection: DESC) {
+                        items {
+                            node {
+                                id
+                                type
+                                assets(filter: { type: { eq: A_IMAGE } }) {
+                                    nextToken
+                                    items {
+                                        id
+                                        name
+                                        content
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
         }
-      }
     }
-  }
 }
 
 query assetsByType {
-  assetsByNode(node_id: "longrandomstringthatsmyID1") {
-    items {
-      type
+    assetsByNode(nodeID: "longrandomstringthatsmyID1") {
+        items {
+            type
+        }
     }
-  }
 }
 
-
-
-#  
-#  ,e,            d8                                                        d8   ,e,                   
-#   "  888-~88e _d88__ 888-~\  e88~-_   d88~\ 888-~88e   e88~~8e   e88~~\ _d88__  "   e88~-_  888-~88e 
-#  888 888  888  888   888    d888   i C888   888  888b d888  88b d888     888   888 d888   i 888  888 
-#  888 888  888  888   888    8888   |  Y88b  888  8888 8888__888 8888     888   888 8888   | 888  888 
-#  888 888  888  888   888    Y888   '   888D 888  888P Y888    , Y888     888   888 Y888   ' 888  888 
-#  888 888  888  "88_/ 888     "88_-~  \_88P  888-_88"   "88___/   "88__/  "88_/ 888  "88_-~  888  888 
-#                                             888                                                      
-#  
+#
+#  ,e,            d8                                                        d8   ,e,
+#   "  888-~88e _d88__ 888-~\  e88~-_   d88~\ 888-~88e   e88~~8e   e88~~\ _d88__  "   e88~-_  888-~88e
+#  888 888  888  888   888    d888   i C888   888  888b d888  88b d888     888   888 d888   i 888  888
+#  888 888  888  888   888    8888   |  Y88b  888  8888 8888__888 8888     888   888 8888   | 888  888
+#  888 888  888  888   888    Y888   '   888D 888  888P Y888    , Y888     888   888 Y888   ' 888  888
+#  888 888  888  "88_/ 888     "88_-~  \_88P  888-_88"   "88___/   "88__/  "88_/ 888  "88_-~  888  888
+#                                             888
+#
 
 # Example of using introspection to get enum values
 
 # shift-option/alt-click on a query below to jump to it in the explorer
 # option/alt-click on a field in the explorer to select all subfields
 query nodeEnums {
-  __type(name: "NodeType"){
-    name
-    enumValues(includeDeprecated:true){
-      name
-      description      
-      isDeprecated     
-      deprecationReason
+    __type(name: "NodeType") {
+        name
+        enumValues(includeDeprecated: true) {
+            name
+            description
+            isDeprecated
+            deprecationReason
+        }
     }
-  }
 }
 
-#  
-#    88~\                        /                                    d8          
-#  _888__ 888-~\   /~~~8e  e88~88e 888-~88e-~88e  e88~~8e  888-~88e _d88__  d88~\ 
-#   888   888          88b 888 888 888  888  888 d888  88b 888  888  888   C888   
-#   888   888     e88~-888 "88_88" 888  888  888 8888__888 888  888  888    Y88b  
-#   888   888    C888  888  /      888  888  888 Y888    , 888  888  888     888D 
-#   888   888     "88_-888 Cb      888  888  888  "88___/  888  888  "88_/ \_88P  
-#                           Y8""8D                                                
-#  
+#
+#    88~\                        /                                    d8
+#  _888__ 888-~\   /~~~8e  e88~88e 888-~88e-~88e  e88~~8e  888-~88e _d88__  d88~\
+#   888   888          88b 888 888 888  888  888 d888  88b 888  888  888   C888
+#   888   888     e88~-888 "88_88" 888  888  888 8888__888 888  888  888    Y88b
+#   888   888    C888  888  /      888  888  888 Y888    , 888  888  888     888D
+#   888   888     "88_-888 Cb      888  888  888  "88___/  888  888  "88_/ \_88P
+#                           Y8""8D
+#
 
 # shift-option/alt-click on a query below to jump to it in the explorer
 # option/alt-click on a field in the explorer to select all subfields
 fragment asset on Resource {
-  id
-  type
-  node_id
-	name
-  content
+    id
+    type
+    nodeID
+    name
+    content
 }
 
 fragment node on Node {
-  id
-  status
-  type
-  createdAt
-  owner
-  assets{
-    items{
-      ...asset
-    }
-  }
-  _assets{
-    items {
-      ...asset
-    }
-  }
-  edges(sortDirection:DESC){
-    items{ #nodeEdges
-      # id
-      # edge_id
-      # node_id
-      # createdAt
-      # owner
-      edge{
-        id
-        type
-        weight
-        createdAt
-        owner
-        nodes(filter:{
-          id:{
-            ne: $nodeEdge
-          }
-        }){
-          items{
-            id
-            node{
-              id
-              type
-            }
-          }
+    id
+    status
+    type
+    createdAt
+    owner
+    assets {
+        items {
+            ...asset
         }
-      }
     }
-  }
+    _assets {
+        items {
+            ...asset
+        }
+    }
+    edges(sortDirection: DESC) {
+        items {
+            #nodeEdges
+            # id
+            # edgeID
+            # nodeID
+            # createdAt
+            # owner
+            edge {
+                id
+                type
+                weight
+                createdAt
+                owner
+                nodes(filter: { id: { ne: $nodeEdge } }) {
+                    items {
+                        id
+                        node {
+                            id
+                            type
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
-#  
-#                                      ,e,                  
-#   e88~-888 888  888  e88~~8e  888-~\  "   e88~~8e   d88~\ 
-#  d888  888 888  888 d888  88b 888    888 d888  88b C888   
-#  8888  888 888  888 8888__888 888    888 8888__888  Y88b  
-#  Y888  888 888  888 Y888    , 888    888 Y888    ,   888D 
-#   "88_-888 "88_-888  "88___/  888    888  "88___/  \_88P  
-#        888                                                
-#  
-
+#
+#                                      ,e,
+#   e88~-888 888  888  e88~~8e  888-~\  "   e88~~8e   d88~\
+#  d888  888 888  888 d888  88b 888    888 d888  88b C888
+#  8888  888 888  888 8888__888 888    888 8888__888  Y88b
+#  Y888  888 888  888 Y888    , 888    888 Y888    ,   888D
+#   "88_-888 "88_-888  "88___/  888    888  "88___/  \_88P
+#        888
+#
 
 query listNodes($nodeEdge: ID) {
-  listNodes {
-    items {
-      ...node
+    listNodes {
+        items {
+            ...node
+        }
     }
-  }
 }
 
-query getNode ($nodeEdge: ID){
-  getNode(id:1){
-    ...node
-  }
+query getNode($nodeEdge: ID) {
+    getNode(id: 1) {
+        ...node
+    }
 }
 
 query listEdges {
-  listEdges {
-    items{
-      id
-      type
-      weight
-      owner
-      nodes{
-        items{
-          createdAt
-          id
-          edge_id
-          node_id
-          node{
+    listEdges {
+        items {
+            id
             type
-          }
+            weight
+            owner
+            nodes {
+                items {
+                    createdAt
+                    id
+                    edgeID
+                    nodeID
+                    node {
+                        type
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
-
-
-query listAssets{
-  listAssets{
-    items{
-      id
-      node_id
-      type
-      name
+query listAssets {
+    listAssets {
+        items {
+            id
+            nodeID
+            type
+            name
+        }
     }
-  }
 }
 
 query nodesByTypeStatus($nodeEdge: ID) {
-  nodesByTypeStatus(
-    type:H_AUTHOR_PAGE
-    sortDirection:DESC
-    statusCreatedAt:{
-			beginsWith:{
-				status:STUBBED
-				# createdAt:"2021-04-05T21"
-			}
-			# ge:{
-			# status:PROVISIONAL
-			# createdAt:"2021-04-05T20"
-			# }
+    nodesByTypeStatus(
+        type: H_AUTHOR_PAGE
+        sortDirection: DESC
+        statusCreatedAt: {
+            beginsWith: {
+                status: STUBBED
+                # createdAt:"2021-04-05T21"
+            }
+            # ge:{
+            # status:PROVISIONAL
+            # createdAt:"2021-04-05T20"
+            # }
+        }
+    ) {
+        items {
+            ...node
+        }
     }
-  ){
-    items{
-      ...node
-    }
-  }
 }
 
-query edgesByTypeWeight{
-  edgesByTypeWeight(
-    type:WORKED_WITH
-    weightCreatedAt:{
-      lt:{
-        weight:2,
-        # createdAt:"2022"
-      }
+query edgesByTypeWeight {
+    edgesByTypeWeight(
+        type: WORKED_WITH
+        weightCreatedAt: {
+            lt: {
+                weight: 2
+                # createdAt:"2022"
+            }
+        }
+        sortDirection: DESC
+    ) {
+        items {
+            id
+            type
+            weight
+            createdAt
+        }
     }
-    sortDirection:DESC
-  ){
-    items{
-      id
-      type
-      weight
-      createdAt
-    }
-  }
 }
 
-
-#  
-#                           d8               d8   ,e,                          
-#  888-~88e-~88e 888  888 _d88__   /~~~8e  _d88__  "   e88~-_  888-~88e  d88~\ 
-#  888  888  888 888  888  888         88b  888   888 d888   i 888  888 C888   
-#  888  888  888 888  888  888    e88~-888  888   888 8888   | 888  888  Y88b  
-#  888  888  888 888  888  888   C888  888  888   888 Y888   ' 888  888   888D 
-#  888  888  888 "88_-888  "88_/  "88_-888  "88_/ 888  "88_-~  888  888 \_88P  
-#                                                                              
-#  
+#
+#                           d8               d8   ,e,
+#  888-~88e-~88e 888  888 _d88__   /~~~8e  _d88__  "   e88~-_  888-~88e  d88~\
+#  888  888  888 888  888  888         88b  888   888 d888   i 888  888 C888
+#  888  888  888 888  888  888    e88~-888  888   888 8888   | 888  888  Y88b
+#  888  888  888 888  888  888   C888  888  888   888 Y888   ' 888  888   888D
+#  888  888  888 "88_-888  "88_/  "88_-888  "88_/ 888  "88_-~  888  888 \_88P
+#
+#
 
 mutation createNode {
-  createNode(input:{
-    id:1,
-    type:H_AUTHOR_PAGE,
-    status:STUBBED,
-  }){
-    id
-    type
-    status
-    updatedAt
-    createdAt
-  }
+    createNode(input: { id: 1, type: H_AUTHOR_PAGE, status: STUBBED }) {
+        id
+        type
+        status
+        updatedAt
+        createdAt
+    }
 }
 
 mutation create_Resource {
-  create_Asset(input:{
-    id:1
-    node_id:1
-    type:V_IMAGE
-    name:"this is a anothah boogah"
-    content:"so you're saying we can't just..."
-  }){
-    id
-    updatedAt
-  }
+    create_Asset(
+        input: {
+            id: 1
+            nodeID: 1
+            type: V_IMAGE
+            name: "this is a anothah boogah"
+            content: "so you're saying we can't just..."
+        }
+    ) {
+        id
+        updatedAt
+    }
 }
 
 mutation createResource {
-  createAsset(input:{
-    id:1
-    node_id:1
-    type:V_IMAGE
-    name:"public resource name"
-    content:"once upon a midnight, dreary"
-  }){
-    id
-    updatedAt
-  }
+    createAsset(
+        input: {
+            id: 1
+            nodeID: 1
+            type: V_IMAGE
+            name: "public resource name"
+            content: "once upon a midnight, dreary"
+        }
+    ) {
+        id
+        updatedAt
+    }
 }
 
-
 mutation createEdge {
-  createEdge(input:{
-    id:1
-    type:CREATED_BY
-    weight:0
-  }){
-    id
-  }
+    createEdge(input: { id: 1, type: CREATED_BY, weight: 0 }) {
+        id
+    }
 }
 
 # each Edge should have two Nodes: [from, to]
 # create NodeEdge after creating both Nodes
 # link each Node in order [from, to]
 mutation createNodeEdge {
-  createNodeEdge(input:{
-    id: "1:1"
-    node_id:1,
-    edge_id:1,
-  }){
-    edge{
-      id
-      type
-      weight
+    createNodeEdge(input: { id: "1:1", nodeID: 1, edgeID: 1 }) {
+        edge {
+            id
+            type
+            weight
+        }
     }
-  }
 }

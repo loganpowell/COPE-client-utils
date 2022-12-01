@@ -9,7 +9,7 @@ import { CRUD } from "../utils"
 const assetCreate = async (
     {
         name,
-        node_id,
+        nodeID,
         type,
         content,
         createdAt,
@@ -25,7 +25,7 @@ const assetCreate = async (
         return await storeObject({
             content,
             name,
-            node_id,
+            nodeID,
             type,
             createdAt,
             editors,
@@ -41,7 +41,7 @@ const assetCreate = async (
         variables: {
             input: {
                 name,
-                node_id,
+                nodeID,
                 type,
                 content,
                 createdAt,
@@ -75,7 +75,7 @@ const assetRead = async (
  * TODO: if (typeof content !== "string") ||(typeof content !== "number") && type.split("_")[0] === "F" -> store object
  */
 const assetUpdate = async (
-    { id, content, createdAt, editors, name, node_id, owner, type, index }: api.UpdateAssetInput,
+    { id, content, createdAt, editors, name, nodeID, owner, type, index }: api.UpdateAssetInput,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ): Promise<api.Asset | api.AssetPr> => {
     const asIs = await assetRead({ id })
@@ -90,7 +90,7 @@ const assetUpdate = async (
         editors: _e,
         type: _t,
         owner: _o,
-        node_id: _no,
+        nodeID: _no,
         index: _i,
     } = asIs
 
@@ -103,12 +103,12 @@ const assetUpdate = async (
                 editors: _e,
                 type: _t,
                 owner: _o,
-                node_id: _no,
+                nodeID: _no,
                 index: _i,
             },
             true,
         ],
-    ]).get({ content, createdAt, editors, name, node_id, owner, type, index })
+    ]).get({ content, createdAt, editors, name, nodeID, owner, type, index })
 
     if (no_change) return asIs
     // FIXME: check on new or old type?
@@ -121,7 +121,7 @@ const assetUpdate = async (
             createdAt: createdAt || _cr,
             editors: editors || _e,
             name: name || _na,
-            node_id: node_id || _no,
+            nodeID: nodeID || _no,
             owner: owner || _o,
             type: type || _t,
             index: index === 0 ? 0 : index || _i,
@@ -141,7 +141,7 @@ const assetUpdate = async (
                 createdAt: createdAt || _cr,
                 editors: editors || _e,
                 name: name || _na,
-                node_id: node_id || _no,
+                nodeID: nodeID || _no,
                 owner: owner || _o,
                 type: type || _t,
                 index: index === 0 ? index : index || _i,
@@ -177,7 +177,7 @@ const assetConvert = async (
     { id }: api.GetAssetQueryVariables,
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ): Promise<api.Asset> => {
-    const { node_id, createdAt, type, name, owner, content, editors, index } = await CRUD({
+    const { nodeID, createdAt, type, name, owner, content, editors, index } = await CRUD({
         query: mutations.deleteAsset,
         variables: {
             input: {
@@ -192,7 +192,7 @@ const assetConvert = async (
     } = await CRUD({
         query: mutations.createAssetPr,
         variables: {
-            input: { id, node_id, createdAt, type, name, owner, content, editors, index },
+            input: { id, nodeID, createdAt, type, name, owner, content, editors, index },
         },
         authMode,
     })

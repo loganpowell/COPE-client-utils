@@ -1,6 +1,6 @@
 export const assetFields = {
     id: true,
-    node_id: true,
+    nodeID: true,
     createdAt: true,
     updatedAt: true,
     type: true,
@@ -46,8 +46,8 @@ export const edgeFields = {
 
 export const edgeNodeFields = {
     id: true,
-    edge_id: true,
-    node_id: true,
+    edgeID: true,
+    nodeID: true,
     owner: true,
     createdAt: true,
     updatedAt: true,

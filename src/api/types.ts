@@ -13,8 +13,8 @@ import { assetPr, asset } from "../commands"
 
 type EdgeNodeStitch = {
     id: string
-    edge_id: string
-    node_id: string
+    edgeID: string
+    nodeID: string
 }
 export type Relation =
     | {

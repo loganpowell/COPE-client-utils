@@ -1,7 +1,7 @@
 export const fragmentResource = /* GraphQL */ `
     fragment resource on Resource {
         id
-        node_id
+        nodeID
         createdAt
         updatedAt
         type

@@ -45,13 +45,13 @@ export const listAssets = ({
 })
 
 export const assetsByNode = ({
-    node_id,
+    nodeID,
     sortDirection,
     filter,
     limit,
     nextToken,
 }: {
-    node_id: string
+    nodeID: string
     sortDirection?: API.ModelSortDirection
     filter?: API.ModelAssetFilterInput
     limit?: number
@@ -59,7 +59,7 @@ export const assetsByNode = ({
 }) => ({
     assetsByNode: {
         __args: {
-            node_id,
+            nodeID,
             ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
             ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),
@@ -172,13 +172,13 @@ export const listAssetPrs = ({
 })
 
 export const assetsPrByNode = ({
-    node_id,
+    nodeID,
     sortDirection,
     filter,
     limit,
     nextToken,
 }: {
-    node_id: string
+    nodeID: string
     sortDirection?: API.ModelSortDirection
     filter?: API.ModelAssetPrFilterInput
     limit?: number
@@ -186,7 +186,7 @@ export const assetsPrByNode = ({
 }) => ({
     assetsPrByNode: {
         __args: {
-            node_id,
+            nodeID,
             ...(sortDirection && { sortDirection: enumerator(sortDirection) }),
             ...(filter && { filter: enumerator(filter) }),
             ...(limit && { limit }),

@@ -141,22 +141,19 @@ export const createNode = ({
 }: {
     input: API.CreateNodeInput
     condition?: API.ModelNodeConditionInput
-}) => {
-    const { status, type, ...rest } = input
-    return {
-        createNode: {
-            __args: {
-                input: enumerator(input),
-                ...(condition && { condition: enumerator(condition) }),
-            },
-            ...nodeFields,
-            //edges: {
-            //    items: edgeNodeFields,
-            //    nextToken: true,
-            //},
+}) => ({
+    createNode: {
+        __args: {
+            input: enumerator(input),
+            ...(condition && { condition: enumerator(condition) }),
         },
-    }
-}
+        ...nodeFields,
+        //edges: {
+        //    items: edgeNodeFields,
+        //    nextToken: true,
+        //},
+    },
+})
 
 export const updateNode = ({
     input,
@@ -164,23 +161,19 @@ export const updateNode = ({
 }: {
     input: API.UpdateNodeInput
     condition?: API.ModelNodeConditionInput
-}) => {
-    const { status, type, ...rest } = input
-
-    return {
-        updateNode: {
-            __args: {
-                input: enumerator(input),
-                ...(condition && { condition: enumerator(condition) }),
-            },
-            ...nodeFields,
-            //edges: {
-            //    items: edgeNodeFields,
-            //    nextToken: true,
-            //},
+}) => ({
+    updateNode: {
+        __args: {
+            input: enumerator(input),
+            ...(condition && { condition: enumerator(condition) }),
         },
-    }
-}
+        ...nodeFields,
+        //edges: {
+        //    items: edgeNodeFields,
+        //    nextToken: true,
+        //},
+    },
+})
 
 export const deleteNode = ({
     input,
@@ -218,17 +211,15 @@ export const createEdge = ({
 }: {
     input: API.CreateEdgeInput
     condition?: API.ModelEdgeConditionInput
-}) => {
-    return {
-        createEdge: {
-            __args: {
-                input: enumerator(input),
-                ...(condition && { condition: enumerator(condition) }),
-            },
-            ...edgeFields,
+}) => ({
+    createEdge: {
+        __args: {
+            input: enumerator(input),
+            ...(condition && { condition: enumerator(condition) }),
         },
-    }
-}
+        ...edgeFields,
+    },
+})
 
 export const updateEdge = ({
     input,
@@ -236,17 +227,15 @@ export const updateEdge = ({
 }: {
     input: API.UpdateEdgeInput
     condition?: API.ModelEdgeConditionInput
-}) => {
-    return {
-        updateEdge: {
-            __args: {
-                input: enumerator(input),
-                ...(condition && { condition: enumerator(condition) }),
-            },
-            ...edgeFields,
+}) => ({
+    updateEdge: {
+        __args: {
+            input: enumerator(input),
+            ...(condition && { condition: enumerator(condition) }),
         },
-    }
-}
+        ...edgeFields,
+    },
+})
 
 export const deleteEdge = ({
     input,

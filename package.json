@@ -11,7 +11,7 @@
     "homepage": "https://github.com/loganpowell/COPE-client-utils",
     "scripts": {
         "pages": "npm run types && npm run jsdoc",
-        "clean": "rm -rf ./lib & rm -rf ./dist &  rm -rf .cache",
+        "clean": "rm -rf ./lib/* & rm -rf ./dist &  rm -rf .cache",
         "madge": "madge --circular lib/",
         "typewatch": "tsc --project tsconfig.json",
         "types": "tsc --project tsconfig.build.json",

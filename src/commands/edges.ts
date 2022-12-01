@@ -23,16 +23,16 @@ import { CRUD } from "../utils"
         "items": [
           {
             "id": "edgeNode5",
-            "edge_id": "testedge2",
-            "node_id": "testNode1",
+            "edgeID": "testedge2",
+            "nodeID": "testNode1",
             "owner": "logan@hyperlocals.com",
             "createdAt": "2021-07-17T17:25:24.543Z",
             "updatedAt": "2021-07-17T17:25:24.543Z"
           },
           {
             "id": "edgeNode6",
-            "edge_id": "testedge2",
-            "node_id": "testNode3",
+            "edgeID": "testedge2",
+            "nodeID": "testNode3",
             "owner": "logan@hyperlocals.com",
             "createdAt": "2021-07-17T17:25:24.549Z",
             "updatedAt": "2021-07-17T17:25:24.549Z"
@@ -88,7 +88,7 @@ const edgeUpdate = async (
 }
 
 const linkCreate = async (
-    { id = uuid(), type = api.EdgeType.HAS_CHILD, weight = 0, from_node_id, to_node_id },
+    { id = uuid(), type = api.EdgeType.HAS_CHILD, weight = 0, from_nodeID, to_nodeID },
     authMode: GRAPHQL_AUTH_MODE = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     // prettier-ignore
@@ -100,14 +100,14 @@ const linkCreate = async (
                 weight: ${weight} 
             }) { id }
             edgeNodeFrom: createEdgeNode(input: { 
-                id: "${id + '|' + from_node_id}", 
-                edge_id: "${id}", 
-                node_id: "${from_node_id}"
+                id: "${id + '|' + from_nodeID}", 
+                edgeID: "${id}", 
+                nodeID: "${from_nodeID}"
             }) { id } 
             edgeNodeTo: createEdgeNode(input: {
-                 id: "${id + '|' + to_node_id}", 
-                 edge_id: "${id}", 
-                 node_id: "${to_node_id}"
+                 id: "${id + '|' + to_nodeID}", 
+                 edgeID: "${id}", 
+                 nodeID: "${to_nodeID}"
             }) { id }
         }
     `
@@ -122,18 +122,18 @@ const linkCreate = async (
 }
 
 const relinkToNewNodeID = async (
-    { edge_id, node_id_old, node_id_new },
+    { edgeID, nodeID_old, nodeID_new },
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS = GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
 ) => {
     const {
         data: { getEdge },
     } = await CRUD({
         query: queries.getEdge,
-        variables: { id: edge_id },
+        variables: { id: edgeID },
         authMode,
     })
     if (!getEdge) {
-        console.warn("No Edge found with this id:", edge_id)
+        console.warn("No Edge found with this id:", edgeID)
         return
     }
     const {
@@ -160,8 +160,8 @@ const relinkToNewNodeID = async (
        node: [Object] } ] }
        */
     const [
-        { id: from, owner: o_from, edge_id: e_from, node_id: n_from },
-        { id: to, owner: o_to, edge_id: e_to, node_id: n_to },
+        { id: from, owner: o_from, edgeID: e_from, nodeID: n_from },
+        { id: to, owner: o_to, edgeID: e_to, nodeID: n_to },
     ] = items.sort(({ createdAt: ca1 }, { createdAt: ca2 }) => (ca1 < ca2 ? -1 : ca1 > ca2 ? 1 : 0))
 
     // if edge ID input matches one of the edge IDs of the EdgeNodes, that's the one to update
@@ -170,26 +170,26 @@ const relinkToNewNodeID = async (
         mutation {
             edgeNodeFrom: updateEdgeNode(input: {
                 id: "${from}"
-                edge_id: "${e_from}"
-                node_id: "${n_from === node_id_old ? node_id_new : n_from}"
+                edgeID: "${e_from}"
+                nodeID: "${n_from === nodeID_old ? nodeID_new : n_from}"
                 owner: "${o_from}"
             }) {
                 id
-                edge_id
-                node_id
+                edgeID
+                nodeID
                 owner
                 createdAt
                 updatedAt
             }
             edgeNodeTo: updateEdgeNode(input: {
                 id: "${to}"
-                edge_id: "${e_to}"
-                node_id: "${n_to === node_id_old ? node_id_new : n_to}"
+                edgeID: "${e_to}"
+                nodeID: "${n_to === nodeID_old ? nodeID_new : n_to}"
                 owner: "${o_to}"
             }) {
                 id
-                edge_id
-                node_id
+                edgeID
+                nodeID
                 owner
                 createdAt
                 updatedAt

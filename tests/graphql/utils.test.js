@@ -1,4 +1,8 @@
-import { gen_link_input, gen_link_cluster_input, gen_assets_for_node_input } from "../../lib/utils/inputs"
+import {
+    gen_link_input,
+    gen_link_cluster_input,
+    gen_assets_for_node_input,
+} from "../../lib/utils/inputs"
 import { abbreviateIDVals } from "../utils"
 import { create_assets_new_node, create_assets_old_node, dummy_links } from "./data"
 import { NodeStatus, NodeType, EdgeType } from "../../lib/graphql/API"
@@ -13,10 +17,10 @@ describe("gen_link_input", () => {
                 { id: "id0", status: NodeStatus.DRAFT, type: NodeType.A_ARTICLE }, 
                 { id: "id1", status: NodeStatus.PUBLISHED, type: NodeType.GR_COURSE } 
             ],
-            edge       : { id: "edge_id", type: EdgeType.HAS_CHILD, weight: null },
+            edge       : { id: "edgeID", type: EdgeType.HAS_CHILD, weight: null },
             edge_nodes : [ 
-                { edge_id: "edge_id", node_id: "id0" }, 
-                { edge_id: "edge_id", node_id: "id1" } 
+                { edgeID: "edgeID", nodeID: "id0" }, 
+                { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -30,10 +34,10 @@ describe("gen_link_input", () => {
                 { id: "id0", status: NodeStatus.DRAFT, type: NodeType.A_ARTICLE }, 
                 { id: "id1", status: NodeStatus.PUBLISHED, type: NodeType.GR_COURSE } 
             ],
-            edge       : { id: "edge_id" },
+            edge       : { id: "edgeID" },
             edge_nodes : [ 
-                { edge_id: "edge_id", node_id: "id0" }, 
-                { edge_id: "edge_id", node_id: "id1" } 
+                { edgeID: "edgeID", nodeID: "id0" }, 
+                { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -47,10 +51,10 @@ describe("gen_link_input", () => {
                 null, 
                 null 
             ],
-            edge       : { id: "edge_id", type: EdgeType.HAS_CHILD, weight: null },
+            edge       : { id: "edgeID", type: EdgeType.HAS_CHILD, weight: null },
             edge_nodes : [
-                 { edge_id: "edge_id", node_id: "id0" }, 
-                 { edge_id: "edge_id", node_id: "id1" } 
+                 { edgeID: "edgeID", nodeID: "id0" }, 
+                 { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -64,10 +68,10 @@ describe("gen_link_input", () => {
                 null, 
                 { id: "id1", status: NodeStatus.PUBLISHED, type: NodeType.GR_COURSE } 
             ],
-            edge       : { id: "edge_id", type: EdgeType.HAS_CHILD, weight: null },
+            edge       : { id: "edgeID", type: EdgeType.HAS_CHILD, weight: null },
             edge_nodes : [ 
-                { edge_id: "edge_id", node_id: "id0" }, 
-                { edge_id: "edge_id", node_id: "id1" } 
+                { edgeID: "edgeID", nodeID: "id0" }, 
+                { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -81,10 +85,10 @@ describe("gen_link_input", () => {
                 { id: "id0", status: NodeStatus.DRAFT, type: NodeType.A_ARTICLE }, 
                 null 
             ],
-            edge       : { id: "edge_id", type: EdgeType.HAS_CHILD, weight: null },
+            edge       : { id: "edgeID", type: EdgeType.HAS_CHILD, weight: null },
             edge_nodes : [ 
-                { edge_id: "edge_id", node_id: "id0" }, 
-                { edge_id: "edge_id", node_id: "id1" } 
+                { edgeID: "edgeID", nodeID: "id0" }, 
+                { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -98,10 +102,10 @@ describe("gen_link_input", () => {
                 null, 
                 { id: "id1", status: NodeStatus.PUBLISHED, type: NodeType.GR_COURSE } 
             ],
-            edge       : { id: "edge_id" },
+            edge       : { id: "edgeID" },
             edge_nodes : [ 
-                { edge_id: "edge_id", node_id: "id0" }, 
-                { edge_id: "edge_id", node_id: "id1" } 
+                { edgeID: "edgeID", nodeID: "id0" }, 
+                { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -115,10 +119,10 @@ describe("gen_link_input", () => {
                 { id: "id0", status: NodeStatus.DRAFT, type: NodeType.A_ARTICLE }, 
                 null 
             ],
-            edge       : { id: "edge_id" },
+            edge       : { id: "edgeID" },
             edge_nodes : [ 
-                { edge_id: "edge_id", node_id: "id0" }, 
-                { edge_id: "edge_id", node_id: "id1" } 
+                { edgeID: "edgeID", nodeID: "id0" }, 
+                { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -129,10 +133,10 @@ describe("gen_link_input", () => {
         const res_abv = abbreviateIDVals(res)
         const test = {
             nodes      : [ null, null ],
-            edge       : { id: "edge_id" },
+            edge       : { id: "edgeID" },
             edge_nodes : [ 
-                { edge_id: "edge_id", node_id: "id0" }, 
-                { edge_id: "edge_id", node_id: "id1" } 
+                { edgeID: "edgeID", nodeID: "id0" }, 
+                { edgeID: "edgeID", nodeID: "id1" } 
             ]
         }
         expect(res_abv).toMatchObject(test)
@@ -156,10 +160,10 @@ describe("gen_link_cluster_input", () => {
 describe("gen_assets_for_node_input", () => {
     test("new node", () => {
         const res = gen_assets_for_node_input(create_assets_new_node)
-        expect(res.node.id).toEqual(res.assets[0].node_id)
+        expect(res.node.id).toEqual(res.assets[0].nodeID)
     })
     test("existing node", () => {
         const res = gen_assets_for_node_input(create_assets_old_node)
-        expect(res.assets[0].node_id).toBe("this is a long id, so it will remain")
+        expect(res.assets[0].nodeID).toBe("this is a long id, so it will remain")
     })
 })

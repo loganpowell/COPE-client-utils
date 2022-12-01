@@ -5,7 +5,7 @@ import { node } from "./nodes"
 import { CRUD, getAssetsAndOp } from "../utils"
 
 type Publisher = {
-    node_id: string
+    nodeID: string
     status: API.NodeStatus
 }
 
@@ -15,7 +15,7 @@ type Publisher = {
  * vice-versa
  */
 export const toggleAssets = async ({ id }: API.GetNodeQueryVariables) => {
-    // input: node_id
+    // input: nodeID
     // output: side effects (for each asset -> CRUD convert and return)
     /**
      * UX:

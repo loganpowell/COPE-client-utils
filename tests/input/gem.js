@@ -1,7 +1,17 @@
 import { gem_input, gemCRUD } from "../../lib/input"
 import { DataStore } from "@aws-amplify/datastore"
 
-import { NodeStatus, AssetType, EdgeType, Asset, Edge, EdgeNode, Node, _Asset, NodeType } from "../../lib/models"
+import {
+    NodeStatus,
+    AssetType,
+    EdgeType,
+    Asset,
+    Edge,
+    EdgeNode,
+    Node,
+    _Asset,
+    NodeType,
+} from "../../lib/models"
 
 const body_text = `
 # My first Data Gem
@@ -26,25 +36,25 @@ all [github flavored markdown]()
 `
 
 gem_input({
-    name_50_chars_or_less  : "This Title is less than 50 characters",
+    name_50_chars_or_less: "This Title is less than 50 characters",
     body_text,
-    parent_node_id         : "this is a reference id",
-    desc_200_chars_or_less : "this description would be used f or open graph!",
+    parent_nodeID: "this is a reference id",
+    desc_200_chars_or_less: "this description would be used f or open graph!",
     //img_url                : "https://www.census.gov/content/dam/Census/public/brand/census-logo-sharing-card.jpg",
     //status                 : NodeStatus.DRAFT,
-    video_url              : "https://www.youtube.com/watch?v=uegSa6y0RQ0"
+    video_url: "https://www.youtube.com/watch?v=uegSa6y0RQ0",
 })
 ;(async () => {
     // required reading: https://docs.amplify.aws/lib/datastore/relational/q/platform/js#many-to-many
     const parentNode = await DataStore.save(
         new Node({
-            type : NodeType.A_PAGE
-        })
+            type: NodeType.A_PAGE,
+        }),
     )
     gemCRUD({
-        name_50_chars_or_less : "some random name goes here ",
-        status                : NodeStatus.DRAFT,
-        //parent_node_id        : "some parent node id goes here"
-        parentNode
+        name_50_chars_or_less: "some random name goes here ",
+        status: NodeStatus.DRAFT,
+        //parent_nodeID        : "some parent node id goes here"
+        parentNode,
     })
 })() //?

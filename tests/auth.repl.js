@@ -20,7 +20,8 @@ import FormData from "form-data"
 
 import { API as api } from "../lib/graphql"
 import * as qs from "../lib/graphql/queries"
-import { CRUD, gen_GQL_batch_json } from "../lib/utils"
+//import { CRUD, gen_GQL_batch_json } from "../lib/utils"
+import { CRUD } from "../lib/utils"
 import { API, GRAPHQL_AUTH_MODE } from "@aws-amplify/api"
 import { EnumType, jsonToGraphQLQuery } from "json-to-graphql-query"
 
@@ -35,7 +36,7 @@ const _node = {
 }
 
 const _asset = {
-    node_id: id, // connect the assetPr/asset to the Gem node
+    nodeID: id, // connect the assetPr/asset to the Gem node
     id: "thiswouldbeanotehrlongID1",
     name: "alt text for image 2",
     content:
@@ -148,8 +149,8 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //let res2 = node.list({})
 
         //const created = await edge.create({
-        //    from_node_id : "testNode1",
-        //    to_node_id   : "testNode3",
+        //    from_nodeID : "testNode1",
+        //    to_nodeID   : "testNode3",
         //    id           : "testEdge04",
         //    type         : EdgeType.HAS_NEXT,
         //})
@@ -174,7 +175,7 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //const stuff = await storeObject({
         //    fileForUpload,
         //    id            : "testingFileUpload1",
-        //    node_id       : "testNode1",
+        //    nodeID       : "testNode1",
         //    type          : AssetType.A_IMAGE,
         //    index         : 1,
         //})
@@ -221,14 +222,14 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
 
         // "this-is-going-to-change-everything~mCXY0mHTjb9s"
         //const res = await edge.relink({
-        //    edge_id: "60926cd9-a637-4a74-af0b-a70d5b991deb",
-        //    node_id: "this-is-going-to-change-everything~mCXY0mHTjb9s",
+        //    edgeID: "60926cd9-a637-4a74-af0b-a70d5b991deb",
+        //    nodeID: "this-is-going-to-change-everything~mCXY0mHTjb9s",
         //})
 
         //const res = await edge.create({
         //    type: EdgeType.HAS_PART,
-        //    from_node_id: "05e18aef-e62b-4852-a49b-aa00598b6a55",
-        //    to_node_id: "testNode3",
+        //    from_nodeID: "05e18aef-e62b-4852-a49b-aa00598b6a55",
+        //    to_nodeID: "testNode3",
         //})
         //console.log("newEdge:", JSON.stringify(newEdge, null, 2))
 
@@ -242,7 +243,7 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //    query: jsonToGraphQLQuery(
         //        {
         //            query: jqs.assetsByNode({
-        //                node_id: "MockCourseSubmodule03",
+        //                nodeID: "MockCourseSubmodule03",
         //            }),
         //        },
         //        { pretty: true },
@@ -252,7 +253,7 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
 
         //const query = gen_GQL_batch_json([
         //    //jqs.assetsByNode({
-        //    //    node_id: "MockCourseSubmodule03",
+        //    //    nodeID: "MockCourseSubmodule03",
         //    //}),
         //    //jqs.listNodes(),
         //    jqs.nodesByStatusType({
@@ -308,14 +309,14 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
         //        }),
         //        jms.createEdgeNode({
         //            input: {
-        //                edge_id: "authored-edge-2",
-        //                node_id: "logan-author-2",
+        //                edgeID: "authored-edge-2",
+        //                nodeID: "logan-author-2",
         //            },
         //        }),
         //        jms.createEdgeNode({
         //            input: {
-        //                edge_id: "authored-edge-2",
-        //                node_id: "logan-article-2",
+        //                edgeID: "authored-edge-2",
+        //                nodeID: "logan-article-2",
         //            },
         //        }),
         //    ],
@@ -370,7 +371,7 @@ auth.logIn({ user: process.env.ADMIN_EMAIL, pass: process.env.ADMIN_PASS })
                 //query: jqs.edgesByType({ type: api.EdgeType.AUTHORED }),
                 //query: jqs.assetsByType({ type: api.AssetType.A_IMAGE }),
                 //query: jqs.assetsByOwnerType({ owner: "logan@hyperlocals.com" }),
-                //query: jqs.assetsByNode({ node_id: "MockCourseModule02" }),
+                //query: jqs.assetsByNode({ nodeID: "MockCourseModule02" }),
                 //query: jqs.listNodes({ limit: 3 }),
                 //query: jqs.getNode({ id: "logan-author-1" })
             }),

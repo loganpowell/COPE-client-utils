@@ -24,7 +24,7 @@ export const titleizeNodeIds = async ({
     // TODO: check on batch operation count limit for Appsync/Amplify
     // SEE utils/batch.ts
     const friendly = shortUUID(title)
-    // title hasn't yet been integrated into node_id
+    // title hasn't yet been integrated into nodeID
     // UPDATE ASSETS
     const updated_assets = await Promise.all(
         _assets?.items.map(
@@ -37,7 +37,7 @@ export const titleizeNodeIds = async ({
                         editors,
                         index,
                         name,
-                        node_id: friendly,
+                        nodeID: friendly,
                         type,
                         owner,
                     },
@@ -51,12 +51,12 @@ export const titleizeNodeIds = async ({
     const updated_edges =
         (edges.length &&
             (await Promise.all(
-                edges.map(async ({ id: edge_id }: api.Edge) => {
+                edges.map(async ({ id: edgeID }: api.Edge) => {
                     const updatedEdge = await edge.relink(
                         {
-                            edge_id,
-                            node_id_old: id,
-                            node_id_new: friendly,
+                            edgeID,
+                            nodeID_old: id,
+                            nodeID_new: friendly,
                         },
                         authMode,
                     )

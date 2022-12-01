@@ -34,7 +34,7 @@ export type CreateFileAssetInput = {
     content: HTMLFileInput | any
     name: string
     id?: string
-    node_id: string
+    nodeID: string
     createdAt?: string
     type: api.AssetType
     index?: number
@@ -45,7 +45,7 @@ export type CreateFileAssetInput = {
 // https://w3c.github.io/FileAPI/#filelist-section
 // https://www.sufle.io/blog/aws-amplify-storage-part-3
 export const storeObject = async (
-    { content, name, id, node_id, createdAt, type, index, owner, editors }: CreateFileAssetInput,
+    { content, name, id, nodeID, createdAt, type, index, owner, editors }: CreateFileAssetInput,
     isAssetPr = true,
     level = Level.protected,
 ): Promise<api.Asset | api.AssetPr> => {
@@ -82,7 +82,7 @@ export const storeObject = async (
                         // public is different: `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
                         content: `https://${bucket}.s3.${region}.amazonaws.com/${level}/${user_id}/${key}`,
                         id,
-                        node_id,
+                        nodeID,
                         createdAt,
                         type,
                         index,

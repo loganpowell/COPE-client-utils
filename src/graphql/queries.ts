@@ -2,7 +2,7 @@ export const getAsset = /* GraphQL */ `
     query GetAsset($id: ID!) {
         getAsset(id: $id) {
             id
-            node_id
+            nodeID
             createdAt
             updatedAt
             type
@@ -19,7 +19,7 @@ export const listAssets = /* GraphQL */ `
         listAssets(filter: $filter, limit: $limit, nextToken: $nextToken) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -35,14 +35,14 @@ export const listAssets = /* GraphQL */ `
 `
 export const assetsByNode = /* GraphQL */ `
     query AssetsByNode(
-        $node_id: ID
+        $nodeID: ID
         $sortDirection: ModelSortDirection
         $filter: ModelAssetFilterInput
         $limit: Int
         $nextToken: String
     ) {
         assetsByNode(
-            node_id: $node_id
+            nodeID: $nodeID
             sortDirection: $sortDirection
             filter: $filter
             limit: $limit
@@ -50,7 +50,7 @@ export const assetsByNode = /* GraphQL */ `
         ) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -83,7 +83,7 @@ export const assetsByType = /* GraphQL */ `
         ) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -116,7 +116,7 @@ export const assetsByOwnerType = /* GraphQL */ `
         ) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -134,7 +134,7 @@ export const getAssetPr = /* GraphQL */ `
     query GetAssetPr($id: ID!) {
         getAssetPr(id: $id) {
             id
-            node_id
+            nodeID
             createdAt
             updatedAt
             type
@@ -151,7 +151,7 @@ export const listAssetPrs = /* GraphQL */ `
         listAssetPrs(filter: $filter, limit: $limit, nextToken: $nextToken) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -167,14 +167,14 @@ export const listAssetPrs = /* GraphQL */ `
 `
 export const assetsPrByNode = /* GraphQL */ `
     query AssetsPrByNode(
-        $node_id: ID
+        $nodeID: ID
         $sortDirection: ModelSortDirection
         $filter: ModelAssetPrFilterInput
         $limit: Int
         $nextToken: String
     ) {
         assetsPrByNode(
-            node_id: $node_id
+            nodeID: $nodeID
             sortDirection: $sortDirection
             filter: $filter
             limit: $limit
@@ -182,7 +182,7 @@ export const assetsPrByNode = /* GraphQL */ `
         ) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -215,7 +215,7 @@ export const assetsPrByOwnerType = /* GraphQL */ `
         ) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -248,7 +248,7 @@ export const assetsPrByType = /* GraphQL */ `
         ) {
             items {
                 id
-                node_id
+                nodeID
                 createdAt
                 updatedAt
                 type
@@ -274,7 +274,7 @@ export const getNode = /* GraphQL */ `
             assets {
                 items {
                     id
-                    node_id
+                    nodeID
                     createdAt
                     updatedAt
                     type
@@ -289,7 +289,7 @@ export const getNode = /* GraphQL */ `
             assetsPr {
                 items {
                     id
-                    node_id
+                    nodeID
                     createdAt
                     updatedAt
                     type
@@ -304,8 +304,8 @@ export const getNode = /* GraphQL */ `
             edges {
                 items {
                     id
-                    edge_id
-                    node_id
+                    edgeID
+                    nodeID
                     owner
                     createdAt
                     updatedAt
@@ -465,8 +465,8 @@ export const getEdge = /* GraphQL */ `
             nodes {
                 items {
                     id
-                    edge_id
-                    node_id
+                    edgeID
+                    nodeID
                     owner
                     createdAt
                     updatedAt
